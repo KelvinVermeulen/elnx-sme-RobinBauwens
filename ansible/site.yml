@@ -2,4 +2,17 @@
 ---
 - hosts: pu004
   become: true
-  roles: []
+  vars:
+    rhbase_motd: true
+    rhbase_users:
+      groups:
+        - wheel
+    rhbase_install_packages:
+      - tree
+      - bash-completion
+      - git
+      - nano
+      - bind-utils
+      - vim-enhanced
+  roles:
+    - bertvv.rh-base
