@@ -5,6 +5,7 @@
   vars:
     rhbase_motd: true
     rhbase_users:
+    - name: bert # let op spaties en koppeltekens
       groups:
         - wheel
     rhbase_install_packages:
