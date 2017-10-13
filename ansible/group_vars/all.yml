@@ -13,11 +13,12 @@ rhbase_install_packages:
   - vim-enhanced
   - wget
 
-  rhbase_motd: true
-  rhbase_users:
-    - name: robinbauwens # let op spaties en koppeltekens
-    - password: 'test' #todo: hashen
-      groups:
-        - wheel
-  rhbase_ssh_user: robinbauwens
-  rhbase_ssh_key: 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDaPiR6YzZO1glBE5rMJBPSEobJn8XmvLh6Fo9RqXWcL6qOpM1JF2pKO698mB8YAgloPHgSZhWlYOreaCW7GSbwbH42vAog3HS0YwnETdPiTXJepfaV1eF2nD5AVYa1wh8ZvF+3sVAZTtDhaNEJvZXSPxuk7TYqHfyC+xN0oO2w4gPpCKc0VqShIxipNo9JHpfEboGhgyRJ/ZJ30mC1VJilSkIGmNnDqS11yHthIJjsn4PjumtYsCZDoyiSAI3rU1j27RzD1XVpqNcjDiMF55r7ENb2KRwWYAJsVuGTGiABxCFxoipixRfKL3CWsIOcyi1UsOWeku8offdgcg3MOTGmodGFiQQUOBCNcr9+0h4qxoDgZ18pfRgr04UPm47zoC9mjcr0+XSHc5zodrsMAyAUACv7eXIOW00sU4tuu3LuSP7+tvIc3uEJXp4K0uwUZCK3VlsIUDn98FTvil4jOXlgXnmYNebovzwK4ay2wZDNtHaOSnEXfK+xSz9cUIpzPxeRzcQYl9LlyY+3BEvulbjEOcjFJ0fy8QZyumfqytmRukGDVNhtcNYEpdOI4i3ywKK+IADixG8d7sxar9U9hYWSW2j4x+L77JSBk12oIVZ93xC02pn+b50+gldWCLby7zELOHi2sS07t3Hv3j29CqsetEEMGJiPRaHT/XrSBK2bZw== robin.bauwens.w0458@student.hogent.be'
+rhbase_motd: true
+rhbase_users:
+  - name: robin
+    password: '$1$1$I6mqx3WU1uVbUDOgIcxuk/'
+    groups:
+      - wheel
+
+rhbase_ssh_user: robin
+rhbase_ssh_key: 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDTCIPkHvexVX1ag3PhWnEtxqj5qI49ofNEQ7BP2v+KQ81sXFWT/N7Y5P73Tnlbh96RwesKd991CgFYc/rFnoVgXPnK8xrSAjmUnFIC+X/I76KFrRrXtkcEXlxbzyg7HVN0bwelgpgM8vay0AnKBCPrYKu75Q2j9+z7Tc4+sQhVz9LM5sIbmuG4c8EMZ2xqwP78v5pMT9UeIvdh1uUlM6URABRkWEP2hZ7ssehep062+GEczMmZp40wZJ7+wtqSbKWjdAWt3agryEFYLT16RP82WbMb0/7+Q0O4dimo4R53a37TCeaB2FIeK5bEdWcHYiw7k3d/P4xg7nKS/KXl3EvH Robin Bauwens@RobinB'
