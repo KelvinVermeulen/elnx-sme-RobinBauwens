@@ -3,12 +3,9 @@
 - Student name: Robin Bauwens 
 - Github repo: <https://github.com/HoGentTIN/elnxsme-RobinBauwens.git>
 
-Describe the goals of the current iteration/assignment in a short sentence.
+Klaarzetten van basis-setup voor alle servers.
 
 ## Test plan
-
-How are you going to verify that the requirements are met? The test plan is a detailed checklist of actions to take, including the expected result for each action, in order to prove your system meets the requirements. Part of this is running the automated tests, but it is not always possible to validate *all* requirements throught these tests.
-
 
 1. Ga naar je working directory van het Github-project.
 2. Verwijder de VM met `vagrant destroy -f pu004` indien deze bestaat. Je zou status `not created` moeten krijgen.
@@ -46,49 +43,39 @@ Verwachte output (mileage may vary):
 
 ## Procedure/Documentation
 
-Describe *in detail* how you completed the assignment, with main focus on the "manual" work. It is of course not necessary to copy/paste your code in this document, but you can refer to it with a hyperlink.
-
-Make sure to write clean Markdown code, so your report looks good and is clearly structured on Github.
-
-
-
  1. Eerst voegen we de role `bertvv.rh-base` toe, dit plaatsen we in `site.yml`.  
- ![site.yml](img/0.PNG)
+ ![site.yml](img/00/0.PNG)
 
  2. Vervolgens zorgen we ervoor dat alle packages en EPEL-repository geïnstalleerd worden.
- ![all.yml](img/1.PNG)
+ ![all.yml](img/00/1.PNG)
 
  3. Hierna maken we een gebruikeraccount `robin` aan, deze moet ook een passwoord (hashed) en sudo-rechten toegekend krijgen. Ook zorgen we ervoor dat er een message of the day getoond wordt. Dit gebeurt via:
-![all.yml](img/2.PNG)
+![all.yml](img/00/2.PNG)
 
  **Opmerking**: het omzetten van een "tekstpaswoord" naar een paswoord hash gebeurt via het commando `openssl passwd -salt 1 -1 testpassword`. Vervang `testpassword` naar een eigen paswoord naar keuze.
  4. Ten slotte zorgen we ervoor dat gebruiker `robin` via SSH kan inloggen zonder een paswoord in te geven. Typ eerst `keygen.exe` in Git Bash en overschrijf de passphrase (indien deze al bestaat), kies voor een lege/geen passphrase (gewoon <Enter> ingeven).
- ![Git Bash](img/3.PNG)
- ![Git Bash](img/4.PNG)
+ ![Git Bash](img/00/3.PNG)
+ ![Git Bash](img/00/4.PNG)
  5. Kopieer de sleutel uit `id_rsa.pub` (TEMP-directory) en plak deze bij `rhbase_ssh_key`, geef ook als `rhbase_ssh_user` de gebruiker `robin` mee.
- ![all.yml](img/5.PNG)
+ ![all.yml](img/00/5.PNG)
  
 
 ## Test report
 
-The test report is a transcript of the execution of the test plan, with the actual results. Significant problems you encountered should also be mentioned here, as well as any solutions you found. The test report should clearly prove that you have met the requirements.
+![Git Bash](img/00/8.PNG)
 
-![Git Bash](img/8.PNG)
+![Git Bash](img/00/9.PNG)
 
-![Git Bash](img/9.PNG)
+![Git Bash](img/00/6.PNG)
 
-![Git Bash](img/6.PNG)
+![Git Bash](img/00/7.PNG)
 
-![Git Bash](img/7.PNG)
-
-![Git Bash](img/10.PNG)
+![Git Bash](img/00/10.PNG)
 
 - Je zal eventueel een bestaand `id_rsa.pub` moeten overschrijven indien deze al bestaat. Gebruik dus NIET de `id_rsa.pub` als je nog geen `ssh-keygen.exe` hebt uitgevoerd.
 
 
 ## Resources
-
-List all sources of useful information that you encountered while completing this assignment: books, manuals, HOWTO's, blog posts, etc.
 
 - [OpenSSL](https://serverfault.com/questions/574586/what-is-the-purpose-of-openssl-passwd)
 - https://wiki.openssl.org/index.php/Manual:Passwd(1)
