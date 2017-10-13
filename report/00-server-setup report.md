@@ -92,4 +92,5 @@ List all sources of useful information that you encountered while completing thi
 
 - [OpenSSL](https://serverfault.com/questions/574586/what-is-the-purpose-of-openssl-passwd)
 - https://wiki.openssl.org/index.php/Manual:Passwd(1)
-- https://ma.ttias.be/how-to-generate-a-passwd-password-hash-via-the-command-line-on-linux/
+- [Password hash](https://ma.ttias.be/how-to-generate-a-passwd-password-hash-via-the-command-line-on-linux/)
+- [GitHub bertvv.rh-base](https://github.com/bertvv/ansible-role-rh-base)
