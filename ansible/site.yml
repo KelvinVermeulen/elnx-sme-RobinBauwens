@@ -2,18 +2,5 @@
 ---
 - hosts: pu004
   become: true
-  vars:
-    rhbase_motd: true
-    rhbase_users:
-    - name: robinbauwens # let op spaties en koppeltekens
-      groups:
-        - wheel
-    rhbase_install_packages:
-      - tree
-      - bash-completion
-      - git
-      - nano
-      - bind-utils
-      - vim-enhanced
   roles:
     - bertvv.rh-base

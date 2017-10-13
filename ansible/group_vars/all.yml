@@ -1,3 +1,23 @@
 # group_vars/all.yml
 # Variables visible to all nodes
 ---
+rhbase_repositories:
+  - epel-release
+
+rhbase_install_packages:
+  - tree
+  - bash-completion
+  - git
+  - nano
+  - bind-utils
+  - vim-enhanced
+  - wget
+
+  rhbase_motd: true
+  rhbase_users:
+    - name: robinbauwens # let op spaties en koppeltekens
+    - password: 'test' #todo: hashen
+      groups:
+        - wheel
+  rhbase_ssh_user: robinbauwens
+  rhbase_ssh_key: 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDaPiR6YzZO1glBE5rMJBPSEobJn8XmvLh6Fo9RqXWcL6qOpM1JF2pKO698mB8YAgloPHgSZhWlYOreaCW7GSbwbH42vAog3HS0YwnETdPiTXJepfaV1eF2nD5AVYa1wh8ZvF+3sVAZTtDhaNEJvZXSPxuk7TYqHfyC+xN0oO2w4gPpCKc0VqShIxipNo9JHpfEboGhgyRJ/ZJ30mC1VJilSkIGmNnDqS11yHthIJjsn4PjumtYsCZDoyiSAI3rU1j27RzD1XVpqNcjDiMF55r7ENb2KRwWYAJsVuGTGiABxCFxoipixRfKL3CWsIOcyi1UsOWeku8offdgcg3MOTGmodGFiQQUOBCNcr9+0h4qxoDgZ18pfRgr04UPm47zoC9mjcr0+XSHc5zodrsMAyAUACv7eXIOW00sU4tuu3LuSP7+tvIc3uEJXp4K0uwUZCK3VlsIUDn98FTvil4jOXlgXnmYNebovzwK4ay2wZDNtHaOSnEXfK+xSz9cUIpzPxeRzcQYl9LlyY+3BEvulbjEOcjFJ0fy8QZyumfqytmRukGDVNhtcNYEpdOI4i3ywKK+IADixG8d7sxar9U9hYWSW2j4x+L77JSBk12oIVZ93xC02pn+b50+gldWCLby7zELOHi2sS07t3Hv3j29CqsetEEMGJiPRaHT/XrSBK2bZw== robin.bauwens.w0458@student.hogent.be'
