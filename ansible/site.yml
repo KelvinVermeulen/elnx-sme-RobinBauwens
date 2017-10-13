@@ -1,11 +1,11 @@
 # site.yml
+# enkel rollen specifiëren
 ---
 - hosts: pu004
 #pre_tasks:
 
-  become: true # enkel rollen
+  become: true
   roles:
     - bertvv.rh-base
-    - bertvv.mariadb
-    - bertvv.httpd
+
 
