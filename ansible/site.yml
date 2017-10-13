@@ -7,5 +7,6 @@
   become: true
   roles:
     - bertvv.rh-base
-
+    - bertvv.mariadb
+    - bertvv.httpd
 
