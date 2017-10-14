@@ -50,13 +50,26 @@ Make sure to write clean Markdown code, so your report looks good and is clearly
 1. We voegen de roles van httpd, mariadb en wordpress toe bij de master playbook `site.yml`.
 2. We passen de role variables `rhbase_firewall_allow_services` aan zodat webverkeer door de firewall kan passeren. We voegen hier `http` en `https` bij.
 3. Vervolgens maken we een databank `wp_db` aan voor Wordpress, tegelijk creëren we ook een gebruiker `wp_user` met een paswoord en genoeg schrijfrechten.
+4. Hierna voegen we ook toe dat de anonieme gebruikers verwijderd moeten worden.
 
 ## Test report
 
 The test report is a transcript of the execution of the test plan, with the actual results. Significant problems you encountered should also be mentioned here, as well as any solutions you found. The test report should clearly prove that you have met the requirements.
 
+
+**Opmerking:** Voer het testscript uit met adminrechten, anders krijg je volgende foutboodschap:
+
+```
+✗ Web traffic should pass through the firewall
+   (in test file /vagrant/test/pu004/lamp.bats, line 50)
+     `firewall-cmd --list-all | grep 'services.*http\b'' failed
+   Authorization failed.
+       Make sure polkit agent is running or run the application as superuser.
+```
+
+- [Zie ook opmerking over root password, VM eventueel hermaken](https://github.com/bertvv/ansible-role-mariadb)
 ## Resources
 
 - Ansible for DevOps - Jeff Geerling
-- https://docs.ansible.com/ansible/latest/mysql_user_module.html
-- https://dev.mysql.com/doc/refman/5.7/en/privileges-provided.html
+- [MariaDB privileges](https://dev.mysql.com/doc/refman/5.7/en/privileges-provided.html)
+- [Remove all anonymous user accounts](https://docs.ansible.com/ansible/latest/mysql_user_module.html)
