@@ -69,6 +69,10 @@ The test report is a transcript of the execution of the test plan, with the actu
 ```
 
 - [Zie ook opmerking over root password, VM eventueel hermaken](https://github.com/bertvv/ansible-role-mariadb)
+- Je moet ook zeker SELinux op `enforcing` hebben, anders wordt "Allow Apache to access db over network" niet uitgevoerd, en dan krijg je de boodschap `Error establishing a database connection`. Ook mag [wordpress_database_host niet op localhost staan](https://github.com/bertvv/ansible-role-wordpress/blob/master/tasks/config.yml)
+    + Wordpress code moet voor de rest staan (?)
+
+
 ## Resources
 
 - Ansible for DevOps - Jeff Geerling
