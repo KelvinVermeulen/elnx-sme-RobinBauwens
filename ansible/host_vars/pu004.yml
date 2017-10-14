@@ -4,3 +4,10 @@ rhbase_firewall_allow_services:
   - http
   - https # eventueel ook met interfaces specifiëren?
 
+mariadb_databases:
+  - name: wp_db # vergeet "name" niet mee te geven...
+
+mariadb_users:
+  - name: wp_user
+    password: CorkIgWac
+    priv: 'wp_db.*:ALL' # FILE: read and write privileges
