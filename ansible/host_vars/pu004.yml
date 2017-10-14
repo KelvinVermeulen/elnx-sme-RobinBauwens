@@ -1,10 +1,11 @@
 ---
 
+# firewall ports
 rhbase_firewall_allow_services: 
   - http
   - https # eventueel ook met interfaces specifiëren?
 
-
+#mariadb
 mariadb_root_password: fogMeHud8
 mariadb_databases:
   - name: wp_db # vergeet "name" niet mee te geven... + wissel root password en db password niet om
@@ -13,8 +14,21 @@ mariadb_users:
   - name: wp_user
     password: CorkIgWac
     priv: 'wp_db.*:ALL' # FILE: read and write privileges; nog limiteren?
+    host: 192.0.2.50
 
 mysql_user:
   name: ''
   host_all: yes
   state: absent
+
+
+#apache/httpd
+  httpd_scripting: 'php'
+
+
+#wordpress
+  wordpress_database: wp_db # geen aanhalingstekens meegeven
+  wordpress_database_host: 192.0.2.50
+  wordpress_user: wp_user
+  wordpress_password: CorkIgWac
+
