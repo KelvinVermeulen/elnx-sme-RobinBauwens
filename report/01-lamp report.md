@@ -78,3 +78,4 @@ The test report is a transcript of the execution of the test plan, with the actu
 - Ansible for DevOps - Jeff Geerling
 - [MariaDB privileges](https://dev.mysql.com/doc/refman/5.7/en/privileges-provided.html)
 - [Remove all anonymous user accounts](https://docs.ansible.com/ansible/latest/mysql_user_module.html)
+- [Poortnummers MariaDB](https://mariadb.com/kb/en/library/configuring-mariadb-for-remote-client-access/)

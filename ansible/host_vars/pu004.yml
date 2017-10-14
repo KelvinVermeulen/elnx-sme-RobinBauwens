@@ -5,6 +5,15 @@ rhbase_firewall_allow_services:
   - http
   - https # eventueel ook met interfaces specifiëren?
 
+rhbase_firewall_allow_ports:
+  - 3306/tcp #mariadb port
+  - 8080/tcp
+  - 53/udp
+
+rhbase_firewall_interfaces:
+  - enp0s3
+  - enp0s8
+
 #rhbase_selinux_state: enforcing
 
 #wordpress
@@ -22,7 +31,7 @@ mariadb_databases:
 
 mariadb_users:
   - name: wp_user
-    password: 'CorkIgWac'
+    password: CorkIgWac # aanhalingstekens?
     priv: "wp_db.*:ALL,GRANT" # FILE: read and write privileges; nog limiteren?
     host: '%' # niet enkel beperken tot 192.0.2.50, dan werkt localhost niet meer
 
