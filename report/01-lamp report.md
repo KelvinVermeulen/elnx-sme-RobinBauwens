@@ -49,7 +49,7 @@ Make sure to write clean Markdown code, so your report looks good and is clearly
 
 1. We voegen de roles van httpd, mariadb en wordpress toe bij de master playbook `site.yml`.
 2. We passen de role variables `rhbase_firewall_allow_services` aan zodat webverkeer door de firewall kan passeren. We voegen hier `http` en `https` bij.
-3. Vervolgens maken we een databank `wp_db` aan voor Wordpress, tegelijk creëren we ook een gebruiker `wp_user` met een paswoord en genoeg schrijfrechten.
+3. Vervolgens maken we een databank `wp_db` aan voor Wordpress, tegelijk creëren we ook een gebruiker `wp_user` met een paswoord en genoeg schrijfrechten en zetten we een root password op.
 4. Hierna voegen we ook toe dat de anonieme gebruikers verwijderd moeten worden.
 
 ## Test report
