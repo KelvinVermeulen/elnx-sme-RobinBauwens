@@ -9,4 +9,5 @@
     - bertvv.rh-base
     - bertvv.mariadb
     - bertvv.httpd
+    - bertvv.wordpress
 

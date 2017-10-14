@@ -3,11 +3,43 @@
 - Student name: 
 - Github repo: <https://github.com/HoGentTIN/elnx-USER.git>
 
-Describe the goals of the current iteration/assignment in a short sentence.
+Het opzetten van een LAMP-stack adhv Vagrant en Ansible.
 
 ## Test plan
 
-How are you going to verify that the requirements are met? The test plan is a detailed checklist of actions to take, including the expected result for each action, in order to prove your system meets the requirements. Part of this is running the automated tests, but it is not always possible to validate *all* requirements throught these tests.
+1. Ga naar je working directory van het Github-project.
+2. Verwijder de VM met `vagrant destroy -f pu004` indien deze bestaat. Je zou status `not created` moeten krijgen.
+3. Voer `vagrant up pu004` uit.
+4. Log in op de server met `vagrant ssh pu004` en voer de testen uit (`vagrant/test/runbats.sh`).
+Je zou volgende output moeten krijgen:
+
+    ```
+    [robin@pu004]$ sudo /vagrant/test/runbats.sh
+    Running test /vagrant/test/lamp.bats
+     ✓ The necessary packages should be installed
+     ✓ The Apache service should be running
+     ✓ The Apache service should be started at boot
+     ✓ The MariaDB service should be running
+     ✓ The MariaDB service should be started at boot
+     ✓ The SELinux status should be ‘enforcing’
+     ✓ Web traffic should pass through the firewall
+     ✓ Mariadb should have a database for Wordpress
+     ✓ The MariaDB user should have "write access" to the database
+     ✓ The website should be accessible through HTTP
+     ✓ The website should be accessible through HTTPS
+     ✓ The certificate should not be the default one
+     ✓ The Wordpress install page should be visible under http://192.0.2.50/wordpress/                                      
+     ✓ MariaDB should not have a test database
+     ✓ MariaDB should not have anonymous users
+
+
+    15 tests, 0 failures
+    ```
+
+
+- Het surfen vanop je hostsysteem naar 192.0.2.50 zou moeten lukken.
+    + Typ 192.0.2.50 in je een webbrowser op je hostsysteem.
+
 
 ## Procedure/Documentation
 
@@ -15,10 +47,13 @@ Describe *in detail* how you completed the assignment, with main focus on the "m
 
 Make sure to write clean Markdown code, so your report looks good and is clearly structured on Github.
 
+1. We voegen de roles van httpd, mariadb en wordpress toe bij de master playbook `site.yml`.
+2. We passen de role variables `rhbase_firewall_allow_services` aan zodat webverkeer door de firewall kan passeren. We voegen hier `http` en `https` bij.
+
 ## Test report
 
 The test report is a transcript of the execution of the test plan, with the actual results. Significant problems you encountered should also be mentioned here, as well as any solutions you found. The test report should clearly prove that you have met the requirements.
 
 ## Resources
 
-List all sources of useful information that you encountered while completing this assignment: books, manuals, HOWTO's, blog posts, etc.
+- Ansible for DevOps - Jeff Geerling
