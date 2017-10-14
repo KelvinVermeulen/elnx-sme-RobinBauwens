@@ -13,8 +13,8 @@ mariadb_users:
   - name: wp_user
     password: CorkIgWac
     priv: 'wp_db.*:ALL' # FILE: read and write privileges; nog limiteren?
-  - name: ''
-    password: '' # nog aan te passen, verwijderd nog niet anonieme gebruikers
-    priv: '*.*:ALL' 
-    host: localhost
-    state: absent
+
+mysql_user:
+  name: ''
+  host_all: yes
+  state: absent
