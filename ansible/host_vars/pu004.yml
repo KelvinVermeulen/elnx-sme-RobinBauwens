@@ -5,14 +5,17 @@ rhbase_firewall_allow_services:
   - http
   - https # eventueel ook met interfaces specifiëren?
 
-rhbase_firewall_allow_ports:
-  - 3306/tcp #mariadb port
-  - 8080/tcp
-  - 53/udp
+#apache/httpd
+httpd_scripting: 'php'
 
-rhbase_firewall_interfaces:
-  - enp0s3
-  - enp0s8
+#rhbase_firewall_allow_ports:
+ # - 3306/tcp #mariadb port
+ # - 8080/tcp
+ # - 53/udp
+
+#rhbase_firewall_interfaces:
+ # - enp0s3
+ # - enp0s8
 
 #rhbase_selinux_state: enforcing
 
@@ -41,7 +44,6 @@ mysql_user: # kan weggelaten worden?
   state: absent
 
 
-#apache/httpd
-  httpd_scripting: 'php'
+
 
 
