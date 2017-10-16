@@ -8,40 +8,35 @@ rhbase_firewall_allow_services:
 #apache/httpd
 httpd_scripting: 'php'
 
-#rhbase_firewall_allow_ports:
- # - 3306/tcp #mariadb port
- # - 8080/tcp
- # - 53/udp
 
-#rhbase_firewall_interfaces:
- # - enp0s3
- # - enp0s8
+rhbase_firewall_interfaces:
+  - enp0s3
+  - enp0s8
 
 #rhbase_selinux_state: enforcing
 
 #wordpress
-wordpress_database_host: 192.0.2.50 # dit moet voor de rest komen! Dan kan bij selinux: httpd_can_network_connect_db op "on" staan
-wordpress_database: wp_db # geen aanhalingstekens meegeven
+#wordpress_database_host: 192.0.2.50 # mag niet erbij staan
+wordpress_database: wp_db
 wordpress_user: wp_user
 wordpress_password: CorkIgWac
 
 
 #mariadb
-#mariadb_version: '10.2'
 mariadb_root_password: fogMeHud8
 mariadb_databases:
   - name: wp_db # vergeet "name" niet mee te geven... + wissel root password en db password niet om
 
 mariadb_users:
   - name: wp_user
-    password: CorkIgWac # aanhalingstekens?
+    password: CorkIgWac
     priv: "wp_db.*:ALL,GRANT" # FILE: read and write privileges; nog limiteren?
-    host: '%' # niet enkel beperken tot 192.0.2.50, dan werkt localhost niet meer
+    #host: '%' # niet erbij zetten -> nog testen tussen dit of wordpress_database_host, wat er weg mag
 
-mysql_user: # kan weggelaten worden?
-  name: ''
-  host_all: yes
-  state: absent
+#mysql_user: # kan weggelaten worden?
+  #name: ''
+  #host_all: yes
+  #state: absent
 
 
 
