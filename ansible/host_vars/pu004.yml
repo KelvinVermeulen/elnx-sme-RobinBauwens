@@ -38,7 +38,7 @@ mariadb_users:
   #host_all: yes
   #state: absent
 
-
+# default van hosts zijn toch localhost? Zie config.yml van wordpress role...
 
 
 

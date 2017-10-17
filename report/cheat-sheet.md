@@ -35,26 +35,86 @@ Simple workflow for a personal project without other contributors:
 
 ## 3. Checklist netwerk layer
 
+`IP-adressering & Subnetmask`, `DNS` en `Default gateway` -> `Routing`
+
 - Staan alle IP-adressen en subnetmasks correct (todo: aan te vullen met VirtualBox adapters: DG, IP-adressen etc.)
-- Staat de default gateway voor de netwerkinterface juist?
+- Staat de default gateway voor de netwerkinterface juist? + pingen
 - Staat de DNS-server voor de netwerkinterface juist?
+
+```
+
+ip a
+ip r
+/etc/resolv.conf
+
+```
+
+
+Configbestanden:
+
+`/etc/sysconfig/network-scripts/ifcfg-*interface*`
+- enp0s3
+- enp0s8
 
 ## 4. Checklist transport layer
 
+`Firewall`, `Poorten` en `Services op poorten`
+
 - Traceroute
 
-## 5. Checklist session layer
+```
+
+sudo systemctl status *service*
+sudo systemctl start *service*
+sudo systemctl enable *service*
+
+sudo ss -tulpn
+sudo firewall-cmd --list-all
+sudo firewall-cmd --add-service=*service* --permanent
+sudo firewall-cmd --add-port=*port*/tcp --permanent
+sudo systemctl restart firewalld
+
+```
+
+
+Configbestanden:
+
+`/etc/services`
+
+## 5., 6. & 7.  Checklist presentation, application & session layer
+
+`Configuratie`
 
 - SSH
 
-## 6 & 7. Checklist presentation & application layer
 
-- `/etc/resolv.conf`
+```
+
+sudo journalctl -f -u *service*
+sudo systemctl restart *service*
+-> Open een nieuwe terminal voor ieder commando om veranderingen te zien
+
+```
+
 
 
 ## SELinux
 
 - `sudo resolvecon -R .` indien je een nieuw bestand aanmaakt in een andere directory (permissies worden niet aangepast bij `mv`)
+
+## VirtualBox configuraties
+
+- NAT-interface: `10.0.2.15/8`
+- Host-only interface: `192.168.56.X`
+
+
+## NetworkManager
+
+```
+
+dig www.hogent.be @a.b.c.d +short
+
+```
 
 
 TODO: 
