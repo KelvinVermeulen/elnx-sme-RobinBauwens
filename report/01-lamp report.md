@@ -118,3 +118,4 @@ The test report is a transcript of the execution of the test plan, with the actu
 - [Poortnummers MariaDB](https://mariadb.com/kb/en/library/configuring-mariadb-for-remote-client-access/)
 - [Copy within Ansible](http://docs.ansible.com/ansible/latest/copy_module.html)
 - Example copy (pre_tasks): p50 - Chapter 4 - Ansible Playbooks (Jeff Geerling)
+- [Copy module - Ansible](http://docs.ansible.com/ansible/latest/copy_module.html)
