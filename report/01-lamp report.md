@@ -56,6 +56,37 @@ Is niet nodig, gebeurt automatisch
 4. We kunnen nu beginnen met de configuratie van Wordpress, geef o.a. de databanknaam, paswoord, gebruiker en server (host) mee. Ook geven we mee dat de scripting taal PHP is (voor httpd).
 5. Voeg ook de interfaces (enp0s3 en enp0s8) toe bij `rhbase_firewall_interfaces`.
 6. Hierna kunnen we beginnen aan de configuratie in `site.yml`:
+    - Voer eerst volgende commando uit: `yum install mod_ssl openssl`
+    ![Git Bash](img/01/1.PNG)
+    - Voer vervolgens onderstaande commando's uit (adminrechten nodig):
+        + Geef ook enkele instellingen mee (zie afbeelding).
+
+```
+openssl genrsa -out ca.key 2048 
+openssl req -new -key ca.key -out ca.csr
+openssl x509 -req -days 365 -in ca.csr -signkey ca.key -out ca.crt
+
+sudo cp ca.crt /etc/pki/tls/certs
+sudo cp ca.key /etc/pki/tls/private/ca.key
+sudo cp ca.csr /etc/pki/tls/private/ca.csr
+
+sudo restorecon -RvF /etc/pki
+
+```
+ ![Git Bash](img/01/2.PNG)
+ ![Git Bash](img/01/3.PNG)
+
+7. Pas hierna de instellingen van `/etc/httpd/conf.d/ssl.conf` aan (met adminrechten).
+    ![Git Bash](img/01/4.PNG)
+
+    Veranderen naar:
+    ![Git Bash](img/01/5.PNG)
+
+8. Sla de veranderingen op en herstart apache met ` sudo systemctl restart httpd`.
+9. Voeg volgende code toe in `site.yml`:
+  ![Git Bash](img/01/6.PNG)
+
+
 
 ## Test report
 
@@ -83,3 +114,5 @@ The test report is a transcript of the execution of the test plan, with the actu
 - [MariaDB privileges](https://dev.mysql.com/doc/refman/5.7/en/privileges-provided.html)
 - [Remove all anonymous user accounts](https://docs.ansible.com/ansible/latest/mysql_user_module.html)
 - [Poortnummers MariaDB](https://mariadb.com/kb/en/library/configuring-mariadb-for-remote-client-access/)
+- [Copy within Ansible](http://docs.ansible.com/ansible/latest/copy_module.html)
+- Example copy (pre_tasks): p50 - Chapter 4 - Ansible Playbooks (Jeff Geerling)

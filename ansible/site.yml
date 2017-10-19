@@ -2,9 +2,22 @@
 # enkel rollen en tasks specifiëren
 ---
 - hosts: pu004
-#pre_tasks:
+  pre_tasks:
+    - name: Copy certificates
+    copy: 
+      src: "{{ item.src }}"
+      dest: "{{ item.dest}}"
+      owner: robin
+    with_items:
+      - src: "/vagrant/ansible/ca.crt" # /vagrant wordt gemount bij opstarten VM, hiervan kunnen we de certificatie-bestanden kopiëren
+        dest: "/etc/pki/tls/certs/ca.crt"
+      - src: "/vagrant/ansible/ca.key"
+        dest: "/etc/pki/tls/private/ca.key"
+      - src: "/vagrant/ansible/ca.csr"
+        dest: "/etc/pki/tls/private/ca.csr"
 
   become: true
+
   roles:
     - bertvv.rh-base
     - bertvv.mariadb
