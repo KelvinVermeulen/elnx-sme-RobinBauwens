@@ -1,5 +1,5 @@
 # site.yml
-# enkel rollen specifiëren
+# enkel rollen en tasks specifiëren
 ---
 - hosts: pu004
 #pre_tasks:

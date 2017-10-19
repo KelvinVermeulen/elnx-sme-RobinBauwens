@@ -1,7 +1,7 @@
 # Enterprise Linux Lab Report
 
-- Student name: 
-- Github repo: <https://github.com/HoGentTIN/elnx-USER.git>
+- Student name: Robin Bauwens
+- Github repo: <https://github.com/HoGentTIN/elnx-sme-RobinBauwens>
 
 Het opzetten van een LAMP-stack adhv Vagrant en Ansible.
 
@@ -39,7 +39,7 @@ Je zou volgende output moeten krijgen:
 
 - Het surfen vanop je hostsysteem naar 192.0.2.50 zou moeten lukken.
     + Typ 192.0.2.50 in je een webbrowser op je hostsysteem.
-
+- Je mag op bij het surfen naar 192.0.2.50 geen certificaatfout krijgen.
 
 ## Procedure/Documentation
 
@@ -49,9 +49,13 @@ Make sure to write clean Markdown code, so your report looks good and is clearly
 
 1. We voegen de roles van httpd, mariadb en wordpress toe bij de master playbook `site.yml`.
 2. We passen de role variables `rhbase_firewall_allow_services` aan zodat webverkeer door de firewall kan passeren. We voegen hier `http` en `https` bij.
-3. Vervolgens maken we een databank `wp_db` aan voor Wordpress, tegelijk creëren we ook een gebruiker `wp_user` met een paswoord en genoeg schrijfrechten en zetten we een root password op.
-4. Hierna voegen we ook toe dat de anonieme gebruikers verwijderd moeten worden (zie ook link onderaan van Ansible docs).
-5. We kunnen nu beginnen met de configuratie van Wordpress, geef o.a. de databanknaam, paswoord, gebruiker en server (host) mee. Ook geven we mee dat de scripting taal PHP is (voor httpd).
+3. Vervolgens maken we een MariaDB-databank `wp_db` aan voor Wordpress, tegelijk creëren we ook een gebruiker `wp_user` met een paswoord + genoeg schrijfrechten en zetten we een root password op.
+<!-- 4. Hierna voegen we ook toe dat de anonieme gebruikers verwijderd moeten worden (zie ook link onderaan van Ansible docs). 
+Is niet nodig, gebeurt automatisch
+-->
+4. We kunnen nu beginnen met de configuratie van Wordpress, geef o.a. de databanknaam, paswoord, gebruiker en server (host) mee. Ook geven we mee dat de scripting taal PHP is (voor httpd).
+5. Voeg ook de interfaces (enp0s3 en enp0s8) toe bij `rhbase_firewall_interfaces`.
+6. Hierna kunnen we beginnen aan de configuratie in `site.yml`:
 
 ## Test report
 

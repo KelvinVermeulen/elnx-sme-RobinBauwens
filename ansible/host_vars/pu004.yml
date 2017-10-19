@@ -3,7 +3,7 @@
 # firewall ports
 rhbase_firewall_allow_services: 
   - http
-  - https # eventueel ook met interfaces specifiëren?
+  - https
 
 #apache/httpd
 httpd_scripting: 'php'
@@ -32,11 +32,6 @@ mariadb_users:
     password: CorkIgWac
     priv: "wp_db.*:ALL,GRANT" # FILE: read and write privileges; nog limiteren?
     #host: '%' # niet erbij zetten -> nog testen tussen dit of wordpress_database_host, wat er weg mag
-
-#mysql_user: # kan weggelaten worden?
-  #name: ''
-  #host_all: yes
-  #state: absent
 
 # default van hosts zijn toch localhost? Zie config.yml van wordpress role...
 
