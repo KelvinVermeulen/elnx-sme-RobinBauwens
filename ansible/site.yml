@@ -26,4 +26,12 @@
 
 - hosts: pu001
   roles:
+    - bertvv.rh-base # niet vergeten!
     - bertvv.bind
+
+- hosts: pu002
+  roles:
+    - bertvv.rh-base # niet vergeten!
+    - bertvv.bind
+
+

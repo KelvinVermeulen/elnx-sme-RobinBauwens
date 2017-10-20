@@ -1,0 +1,18 @@
+---
+allow_services:
+  - dns
+
+bind_listen_ipv4:
+  - any
+bind_allow_query:
+  - any
+
+bind_zone_networks:
+  - '192.0.2'
+  - '172.16'
+bind_zone_name: 'avalon.lan'
+bind_zone_master_server_ip: 192.0.2.10
+bind_zone_name_servers:
+  - pu001
+  - pu002
+  # identiek zelfde als pu001.yml, enkel bind_zone_hosts en bind_zone_mail_servers verwijderen
