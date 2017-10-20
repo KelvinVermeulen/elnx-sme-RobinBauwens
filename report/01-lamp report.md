@@ -80,6 +80,8 @@ sudo restorecon -RvF /etc/pki
 
 9. Hierna kopiëren we (de inhoud van) alle certificaatbestanden naar directory `ansible/`.
   ![Git Bash](img/01/7.PNG)
+  
+  **Opmerking: het kopiëren van `ca.csr` (Certificate Signing Request) is niet nodig en kan dus weggelaten worden (stap 8 & 9).**
 
 
 ## Test report
