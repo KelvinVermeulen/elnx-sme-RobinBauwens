@@ -67,24 +67,19 @@ sudo cp ca.key /etc/pki/tls/private/ca.key
 sudo cp ca.csr /etc/pki/tls/private/ca.csr
 
 sudo restorecon -RvF /etc/pki
-
 ```
  ![Git Bash](img/01/2.PNG)
  ![Git Bash](img/01/3.PNG)
 
-7. Pas hierna de instellingen van `/etc/httpd/conf.d/ssl.conf` aan (met adminrechten).
-    ![Git Bash](img/01/4.PNG)
+7. Pas hierna de instellingen van `/etc/httpd/conf.d/ssl.conf` aan adhv onderstaande code.
+  ![Git Bash](img/01/12.PNG)
 
-    Veranderen naar:
-    ![Git Bash](img/01/5.PNG)
-
-8. Sla de veranderingen op en herstart apache met ` sudo systemctl restart httpd`.
-9. Voeg volgende code toe in `site.yml`:
+8. Voeg volgende code toe in `site.yml`:
   ![Git Bash](img/01/6.PNG)
 
-10. Hierna kopiëren we (de inhoud van) alle certificaatbestanden naar directory `ansible/`.
+9. Hierna kopiëren we (de inhoud van) alle certificaatbestanden naar directory `ansible/`.
   ![Git Bash](img/01/7.PNG)
-11. We passen ook de string "SomeOrganization" aan naar de waarde die we hebben ingegeven voor het genereren van de certificatiebestanden (hier 'Avalon Services'.
+10. We passen ook de string "SomeOrganization" aan naar de waarde die we hebben ingegeven voor het genereren van de certificatiebestanden (hier 'Avalon Services'.
     ![Git Bash](img/01/8.PNG)
 
 
