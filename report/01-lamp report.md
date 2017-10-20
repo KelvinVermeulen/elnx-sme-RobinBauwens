@@ -92,7 +92,7 @@ sudo restorecon -RvF /etc/pki
 - Als we naar `192.0.2.50` surfen dan krijgen we een slotje (oranje) te zien. Het certificaat wordt erkend en toegepast.
 ![Git Bash](img/01/9.PNG)
 ![Git Bash](img/01/10.PNG)
-![Git Bash](img/01/13.PNG)
+![Git Bash](img/01/13.png)
 
 ```
 ✗ Web traffic should pass through the firewall
@@ -103,8 +103,7 @@ sudo restorecon -RvF /etc/pki
 ```
 
 - [Zie ook opmerking over root password, VM eventueel hermaken](https://github.com/bertvv/ansible-role-mariadb)
-- Je moet ook zeker SELinux op `enforcing` hebben, anders wordt "Allow Apache to access db over network" niet uitgevoerd, en dan krijg je de boodschap `Error establishing a database connection`.   <!--Ook mag [wordpress_database_host niet op localhost staan](https://github.com/bertvv/ansible-role-wordpress/blob/master/tasks/config.yml)
-  + Wordpress code moet voor de rest staan (?)-->
+- Je moet ook zeker SELinux op `enforcing` hebben, anders wordt "Allow Apache to access db over network" niet uitgevoerd, en dan krijg je de boodschap `Error establishing a database connection`.
 - We hebben de certificaten getest via FireFox: we laten ook toe dat het certificaat toegepast wordt.
     + We krijgen wel een oranje driehoek bij het slotje omdat het een self-signed certificate is.
 
