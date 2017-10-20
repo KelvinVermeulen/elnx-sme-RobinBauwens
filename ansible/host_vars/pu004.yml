@@ -35,5 +35,8 @@ mariadb_users:
 
 # default van hosts zijn toch localhost? Zie config.yml van wordpress role...
 
+httpd_SSLCertificateFile: /etc/pki/tls/certs/ca.crt
+httpd_SSLCertificateKeyFile:  /etc/pki/tls/private/ca.key
+
 
 

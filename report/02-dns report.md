@@ -154,4 +154,8 @@ aliases:
 -ns1
 ```
 
+
+- DNS moet een allow_service zijn bij rh-base role.
+- Destroy en hermaak VM's eens om volledig te testen.
+
 ## Resources

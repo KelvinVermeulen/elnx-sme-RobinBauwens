@@ -1,5 +1,5 @@
 ---
-allow_services:
+rhbase_firewall_allow_services: #niet gewoon "allow_services"
   - dns
 
 bind_listen_ipv4:
