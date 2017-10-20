@@ -88,6 +88,8 @@ sudo restorecon -RvF /etc/pki
 
 10. Hierna kopiëren we (de inhoud van) alle certificaatbestanden naar directory `ansible/`.
   ![Git Bash](img/01/7.PNG)
+11. We passen ook de string "SomeOrganization" aan naar de waarde die we hebben ingegeven voor het genereren van de certificatiebestanden.
+    ![Git Bash](img/01/8.PNG)
 
 
 ## Test report

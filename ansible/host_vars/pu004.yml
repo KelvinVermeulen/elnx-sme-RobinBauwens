@@ -16,7 +16,7 @@ rhbase_firewall_interfaces:
 #rhbase_selinux_state: enforcing
 
 #wordpress
-#wordpress_database_host: 192.0.2.50 # mag niet erbij staan
+#wordpress_database_host: 192.0.2.50 # mag er niet bij staan
 wordpress_database: wp_db
 wordpress_user: wp_user
 wordpress_password: CorkIgWac
