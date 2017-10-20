@@ -40,6 +40,7 @@ Je zou volgende output moeten krijgen:
 - Het surfen vanop je hostsysteem naar 192.0.2.50 zou moeten lukken.
     + Typ 192.0.2.50 in je een webbrowser op je hostsysteem.
 - Je mag op bij het surfen naar 192.0.2.50 geen certificaatfout krijgen.
+    + **Opmerking:** het kan zijn dat je een waarschuwing (oranje driehoek bij slot) krijgt omdat het certificaat self-signed is.
 
 ## Procedure/Documentation
 
@@ -74,13 +75,11 @@ sudo restorecon -RvF /etc/pki
 7. Pas hierna de instellingen van `/etc/httpd/conf.d/ssl.conf` aan adhv onderstaande code.
   ![Git Bash](img/01/12.PNG)
 
-8. Voeg volgende code toe in `site.yml`:
+8. Voeg volgende code toe in `site.yml` om de certificaten te kopiëren naar de VM:
   ![Git Bash](img/01/6.PNG)
 
 9. Hierna kopiëren we (de inhoud van) alle certificaatbestanden naar directory `ansible/`.
   ![Git Bash](img/01/7.PNG)
-10. We passen ook de string "SomeOrganization" aan naar de waarde die we hebben ingegeven voor het genereren van de certificatiebestanden (hier 'Avalon Services'.
-    ![Git Bash](img/01/8.PNG)
 
 
 ## Test report
@@ -90,9 +89,10 @@ sudo restorecon -RvF /etc/pki
 - Alle testen slagen:
 ![Git Bash](img/01/11.PNG)
 
-- Als we naar `192.0.2.50` surfen dan krijgen we een groen slotje te zien. Het certificaat wordt erkend en toegepast.
+- Als we naar `192.0.2.50` surfen dan krijgen we een slotje (oranje) te zien. Het certificaat wordt erkend en toegepast.
 ![Git Bash](img/01/9.PNG)
 ![Git Bash](img/01/10.PNG)
+![Git Bash](img/01/13.PNG)
 
 ```
 ✗ Web traffic should pass through the firewall
@@ -106,8 +106,7 @@ sudo restorecon -RvF /etc/pki
 - Je moet ook zeker SELinux op `enforcing` hebben, anders wordt "Allow Apache to access db over network" niet uitgevoerd, en dan krijg je de boodschap `Error establishing a database connection`.   <!--Ook mag [wordpress_database_host niet op localhost staan](https://github.com/bertvv/ansible-role-wordpress/blob/master/tasks/config.yml)
   + Wordpress code moet voor de rest staan (?)-->
 - We hebben de certificaten getest via FireFox: we laten ook toe dat het certificaat toegepast wordt.
-
-
+    + We krijgen wel een oranje driehoek bij het slotje omdat het een self-signed certificate is.
 
 ## Resources
 

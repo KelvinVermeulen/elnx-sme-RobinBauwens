@@ -87,7 +87,7 @@ wordpress_password=CorkIgWac
   # The default certificate for Apache has "SomeOrganization" as the organization
   # So grepping it in the output of the openssl command should return an empty string
   # if a self-signed certificate was installed by the administrator.
-  [ -z "$(echo ${output} | grep 'Avalon Services')" ]
+  [ -z "$(echo ${output} | grep 'SomeOrganization')" ]
 }
 
 @test "The Wordpress install page should be visible under http://${sut}/wordpress/" {
