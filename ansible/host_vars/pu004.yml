@@ -31,9 +31,7 @@ mariadb_users:
   - name: wp_user
     password: CorkIgWac
     priv: "wp_db.*:ALL,GRANT" # FILE: read and write privileges; nog limiteren?
-    #host: '%' # niet erbij zetten -> nog testen tussen dit of wordpress_database_host, wat er weg mag
-
-# default van hosts zijn toch localhost? Zie config.yml van wordpress role...
+    #host: '%' # niet erbij zetten
 
 httpd_SSLCertificateFile: /etc/pki/tls/certs/ca.crt
 httpd_SSLCertificateKeyFile:  /etc/pki/tls/private/ca.key

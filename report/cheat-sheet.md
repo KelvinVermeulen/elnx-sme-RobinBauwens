@@ -142,6 +142,8 @@ TODO:
 2. Is the router/default gateway correct? `ip r -n`
 3. Is a DNS-server available? `cat /etc/resolv.conf`
 
+- Role name: bind, service: named -> DNS   `/etc/named.conf`
+
 
 ## Bronnen
 
