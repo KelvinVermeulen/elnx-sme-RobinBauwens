@@ -57,7 +57,7 @@ Is niet nodig, gebeurt automatisch
 5. Voeg ook de interfaces (enp0s3 en enp0s8) toe bij `rhbase_firewall_interfaces`.
 6. Hierna kunnen we beginnen aan de configuratie in `site.yml`:
     - Voer eerst volgende commando uit: `yum install mod_ssl openssl`
-    ![Git Bash](img/01/1.PNG)
+    ![Git Bash](img/01/1.png)
     - Voer vervolgens onderstaande commando's uit (adminrechten nodig):
         + Geef ook enkele instellingen mee (zie afbeelding).
 
