@@ -43,10 +43,6 @@ Je zou volgende output moeten krijgen:
 
 ## Procedure/Documentation
 
-Describe *in detail* how you completed the assignment, with main focus on the "manual" work. It is of course not necessary to copy/paste your code in this document, but you can refer to it with a hyperlink.
-
-Make sure to write clean Markdown code, so your report looks good and is clearly structured on Github.
-
 1. We voegen de roles van httpd, mariadb en wordpress toe bij de master playbook `site.yml`.
 2. We passen de role variables `rhbase_firewall_allow_services` aan zodat webverkeer door de firewall kan passeren. We voegen hier `http` en `https` bij.
 3. Vervolgens maken we een MariaDB-databank `wp_db` aan voor Wordpress, tegelijk creëren we ook een gebruiker `wp_user` met een paswoord + genoeg schrijfrechten en zetten we een root password op.
@@ -88,16 +84,20 @@ sudo restorecon -RvF /etc/pki
 
 10. Hierna kopiëren we (de inhoud van) alle certificaatbestanden naar directory `ansible/`.
   ![Git Bash](img/01/7.PNG)
-11. We passen ook de string "SomeOrganization" aan naar de waarde die we hebben ingegeven voor het genereren van de certificatiebestanden.
+11. We passen ook de string "SomeOrganization" aan naar de waarde die we hebben ingegeven voor het genereren van de certificatiebestanden (hier 'Avalon Services'.
     ![Git Bash](img/01/8.PNG)
 
 
 ## Test report
 
-The test report is a transcript of the execution of the test plan, with the actual results. Significant problems you encountered should also be mentioned here, as well as any solutions you found. The test report should clearly prove that you have met the requirements.
-
-
 **Opmerking:** Voer het testscript uit met adminrechten, anders krijg je volgende foutboodschap:
+
+- Alle testen slagen:
+![Git Bash](img/01/11.PNG)
+
+- Als we naar `192.0.2.50` surfen dan krijgen we een groen slotje te zien. Het certificaat wordt erkend en toegepast.
+![Git Bash](img/01/9.PNG)
+![Git Bash](img/01/10.PNG)
 
 ```
 ✗ Web traffic should pass through the firewall
@@ -110,6 +110,8 @@ The test report is a transcript of the execution of the test plan, with the actu
 - [Zie ook opmerking over root password, VM eventueel hermaken](https://github.com/bertvv/ansible-role-mariadb)
 - Je moet ook zeker SELinux op `enforcing` hebben, anders wordt "Allow Apache to access db over network" niet uitgevoerd, en dan krijg je de boodschap `Error establishing a database connection`. Ook mag [wordpress_database_host niet op localhost staan](https://github.com/bertvv/ansible-role-wordpress/blob/master/tasks/config.yml)
     + Wordpress code moet voor de rest staan (?)
+
+
 
 
 ## Resources
