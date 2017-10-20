@@ -86,7 +86,7 @@ sudo restorecon -RvF /etc/pki
 9. Voeg volgende code toe in `site.yml`:
   ![Git Bash](img/01/6.PNG)
 
-10. Hierna kopiëren we de inhoud van alle certificaatbestanden naar directory `ansible/`.
+10. Hierna kopiëren we (de inhoud van) alle certificaatbestanden naar directory `ansible/`.
   ![Git Bash](img/01/7.PNG)
 
 

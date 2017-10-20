@@ -94,9 +94,17 @@ sudo journalctl -f -u *service*
 sudo systemctl restart *service*
 -> Open een nieuwe terminal voor ieder commando om veranderingen te zien
 
+sudo tail -f /var/log/httpd/error_log
+
 ```
 
+### Configbestanden
 
+`/etc/httpd/httpd.d`
+
+**Syntax checker Apache**: `apachectl configtest`
+
+*Vergeet ook niet om service te herstarten!*
 
 ## SELinux
 
@@ -120,6 +128,13 @@ dig www.hogent.be @a.b.c.d +short
 TODO: 
 - Aan te vullen met hoe op te lossen, welke commando's te controleren
 - Notities vrijdag 13/10/17 (les troubleshooting)
+
+
+
+## Bereikbaarheid
+
+`sudo nmap -sS -p 80,443 192.0.2.50` *te testen*
+`wget 192.0.2.50/wordpress`
 
 ## Checklist network configuration
 
