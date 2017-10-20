@@ -53,5 +53,5 @@ bind_zone_hosts:
   aliases: 
     - files
 bind_zone_mail_servers:
-    - name: pu003
-      preference: 10
+  - name: pu003         
+    preference: 10

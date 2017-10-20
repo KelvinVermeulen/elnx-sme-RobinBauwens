@@ -3,7 +3,7 @@
 - Student name: Robin Bauwens
 - Github repo: <https://github.com/HoGentTIN/elnx-sme-RobinBauwens>
 
-Describe the goals of the current iteration/assignment in a short sentence.
+Installatie en configuratie van master- en slave-DNS servers via Vagrant en Ansible.
 
 ## Test plan
 
@@ -57,7 +57,7 @@ Describe the goals of the current iteration/assignment in a short sentence.
     14 tests, 0 failures
   ```
 
--Extra: `/etc/named.conf` (met adminrechten!) zou alle DNS-records moeten bevatten van alle systemen (binnen het netwerk).
+- Extra: `/etc/named.conf` (met adminrechten!) zou alle DNS-records moeten bevatten van alle systemen (binnen het netwerk).
 
 ## Procedure/Documentation
 
@@ -167,6 +167,19 @@ bind_zone_name_servers:
 
 ## Test report
 
+- Alle testen slagen op `pu001.yml`
+![Git Bash](img/02/5.png)
+
+- Alle testen slagen op `pu002.yml`
+![Git Bash](img/02/6.png)
+
+- `/etc/named.conf` bevat de meegegeven configuratie (via Ansible) op `pu001.yml`:
+![Git Bash](img/02/3.png)
+
+- `/etc/named.conf` bevat de meegegeven configuratie (via Ansible) op `pu002.yml`:
+![Git Bash](img/02/4.png)
+
+
 - `aliases: ns1` werkt niet, gebruik volgende code:
 
 ```
@@ -177,10 +190,17 @@ aliases: # zal wel werken
 ```
 
 
-- DNS moet een allow_service zijn bij rh-base role.
+- DNS moet toegelaten zijn als service; voeg dit toe bij `rhbase_firewall_allow_services` van de rh-base role.
+      + `pu001`
+      ![Git Bash](img/02/7.png)
+      + `pu002`
+      ![Git Bash](img/02/8.png)
+
+
 - Destroy en hermaak VM's eens om volledig te testen.
 
 - Role name: bind, service: named -> DNS
+- We merken ook op dat het hostsysteem (o.a.) geen alias toegekregen krijgt.
 
 ## Resources
 
