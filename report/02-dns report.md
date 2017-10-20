@@ -48,8 +48,6 @@ bind_zone_hosts:
 - name: pu004
   ip: 192.0.2.50
   aliases: www
-- name: hostsystem
-  ip: 192.0.2.1
 - name: r001
   ip: 192.0.2.254
   aliases:  gw
