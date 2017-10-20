@@ -57,7 +57,7 @@ Installatie en configuratie van master- en slave-DNS servers via Vagrant en Ansi
     14 tests, 0 failures
   ```
 
-- Extra: `/etc/named.conf` (met adminrechten!) zou alle DNS-records moeten bevatten van alle systemen (binnen het netwerk).
+- Extra: `/etc/named.conf` (openen met adminrechten!) zou alle DNS-records op beide servers moeten bevatten van alle systemen (binnen het netwerk).
 
 ## Procedure/Documentation
 
@@ -191,10 +191,11 @@ aliases: # zal wel werken
 
 
 - DNS moet toegelaten zijn als service; voeg dit toe bij `rhbase_firewall_allow_services` van de rh-base role.
-      + `pu001`
-      ![Git Bash](img/02/7.png)
-      + `pu002`
-      ![Git Bash](img/02/8.png)
+
+- `pu001`
+ ![Git Bash](img/02/7.png)
+- `pu002`
+ ![Git Bash](img/02/8.png)
 
 
 - Destroy en hermaak VM's eens om volledig te testen.
