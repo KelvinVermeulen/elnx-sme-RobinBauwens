@@ -105,6 +105,7 @@ getent services <domain>             Implementatie (zoeken naar databank service
 ```
 
 [`ss -tulpn`](img/cheat-sheet/ss.PNG)
+[`getent services`](img/cheat-sheet/getent.PNG)
 
 ```
 sudo firewall-cmd --get-services | grep dns
