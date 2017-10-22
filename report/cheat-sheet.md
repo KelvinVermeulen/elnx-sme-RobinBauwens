@@ -33,44 +33,49 @@ Simple workflow for a personal project without other contributors:
 - Zitten alle **kabels** in (VirtualBox: Network -> Adapter x -> Cable Connected/Enable Network Adapter checkboxes)?
 - Juiste interfaces (NAT & Host-Only Adapter)?
 
+
+```
+ip link
+```
+
+
 ## 2. Checklist internet layer
 
-#### `IP-adressering & Subnetmask`
+`IP-adressering & Subnetmask`, `Default gateway` en `DNS`
 
-- Staan alle IP-adressen en subnetmasks correct (todo: aan te vullen met VirtualBox adapters: DG, IP-adressen etc.)?
+- Staan alle IP-adressen en subnetmasks correct?
+- Staat de default gateway voor de netwerkinterface juist? + pingen naar DG
+- Staat de DNS-server voor de netwerkinterface juist?
+
 
 Virtualbox:
 * NAT: `10.0.2.15/8`
 * Host-Only: `192.168.56.101` - ` 192.168.56.254/24`
 
-`/etc/sysconfig/network-scripts/ifcfg-IFACE`
+* DG: `10.0.2.2`
+* DNS: `10.0.2.3`
 
+```
+ip address
+ip route
+route -n
 
-#### `Default gateway` -> `Routing`
+cat /etc/sysconfig/network-scripts/ifcfg-IFACE
+cat /etc/resolv.conf
+```
 
-- Staat de default gateway voor de netwerkinterface juist? + pingen naar DG
-
-`ip r`
-
-Virtualbox: `10.0.2.2`
-
-#### `DNS`
-
-- Staat de DNS-server voor de netwerkinterface juist?
-
-`/etc/resolv.conf`
-
-Virtualbox: `10.0.2.3`
 
 ### Extra:
 
 - Kan je de DG bereiken (via ping)?
 - Kan je de DNS-server bereiken?
+
  ```
  dig
  nslookup
  host
  ```
+ 
 - Kan je andere hosts binnen het LAN bereiken?
 
 - enp0s3
@@ -80,45 +85,57 @@ Virtualbox: `10.0.2.3`
 
 ## 3. Checklist transport layer
 
+`Firewall`, `Poorten` en `Services op poorten`
+
 - Draaien de services?
 - Draaien de services op de juiste poorten (80 in plaats van 8080 voor HTTP en 443 voor HTPPS)?
 - Worden de services toegelaten door de firewall?
-
 
 
 ```
 sudo systemctl status SERVICE
 sudo ss -tulpn
 sudo ps -ef
+
+
+cat /etc/services
 ```
 
+<!-- - Traceroute -->
 
-Configbestanden:
+```
+sudo systemctl status httpd.service
+sudo systemctl start httpd.service
+sudo systemctl enable httpd.service
 
+sudo firewall-cmd --list-all
+sudo firewall-cmd --add-service=httpd.service --permanent
+sudo firewall-cmd --add-port=80/tcp --permanent
+sudo systemctl restart firewalld
 
+sudo iptables -L -n -v
+```
+<!---
+#### Van buitenaf
+
+```
+nmap -A -T4
+namp -sS -sU
+```
+-->
 
 ## 4. Checklist application layer
 
-`Firewall`, `Poorten` en `Services op poorten`
 
-- Traceroute
 
-```
-sudo systemctl status *service*
-sudo systemctl start *service*
-sudo systemctl enable *service*
 
-sudo ss -tulpn
-sudo firewall-cmd --list-all
-sudo firewall-cmd --add-service=*service* --permanent
-sudo firewall-cmd --add-port=*port*/tcp --permanent
-sudo systemctl restart firewalld
-```
+
+
 
 
 Configbestanden:
 
-`/etc/services`
+
 
 ## 5., 6. & 7.  Checklist presentation, application & session layer
 
