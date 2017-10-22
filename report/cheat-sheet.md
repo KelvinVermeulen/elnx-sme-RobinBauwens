@@ -41,6 +41,7 @@ ip link
 - `UP`: interface is verbonden
 - `NO-CARRIER`: geen signaal op interface
 
+[`ip link`](img/cheat-sheet/iplink.PNG)
 
 ## 2. Checklist internet layer
 
@@ -68,6 +69,8 @@ cat /etc/sysconfig/network-scripts/ifcfg-IFACE
 cat /etc/resolv.conf
 ```
 
+[`ip a`](img/cheat-sheet/ip_a.PNG)
+[`cat /etc/resolv.conf`](img/cheat-sheet/ifcfg-resolv.conf.PNG)
 
 ### Extra:
 
@@ -101,6 +104,7 @@ cat /etc/services                    IANA
 getent services <domain>             Implementatie (zoeken naar databank services)
 ```
 
+[`ss -tulpn`](img/cheat-sheet/ss.PNG)
 
 ```
 sudo firewall-cmd --get-services | grep dns
@@ -116,8 +120,14 @@ sudo systemctl restart firewalld
 
 cat /var/log/messages    (hoofdlog)
 
+sudo firewall-cmd --get-active-zones
+
 sudo iptables -L -n -v
 ```
+
+[`sudo firewall-cmd --list-all`](img/cheat-sheet/firewallcmd.PNG)
+[`sudo firewall-cmd --get-active-zones`](img/cheat-sheet/getactivezones.PNG)
+
 
 ### BIND (DNS)
 - `systemd`: `named.service`
@@ -178,6 +188,10 @@ sudo resolvecon -R .
 sudo cat /var/log/audit/audit.log
 cat /etc/sysconfig/selinux     (targeted is niet voor status zoals enforcing)
 ```
+
+[`restorecon`](img/cheat-sheet/restorecon.PNG)
+[`sestatus`](img/cheat-sheet/sestatus.PNG)
+[`selinux`](img/cheat-sheet/selinux.PNG)
 
 ## Logfiles
 
