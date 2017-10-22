@@ -76,11 +76,10 @@ cat /etc/resolv.conf
  host
  ```
  
-- Kan je andere hosts binnen het LAN bereiken?
+### Kan je andere hosts binnen het LAN bereiken?
 
 - enp0s3
 - enp0s8
-
 
 
 ## 3. Checklist transport layer
@@ -88,7 +87,7 @@ cat /etc/resolv.conf
 `Firewall`, `Poorten` en `Services op poorten`
 
 - Draaien de services?
-- Draaien de services op de juiste poorten (80 in plaats van 8080 voor HTTP en 443 voor HTPPS)?
+- Draaien de services op de juiste poorten (80 in plaats van 8080 voor HTTP en 443 voor HTTPS)?
 - Worden de services toegelaten door de firewall?
 
 
@@ -113,6 +112,8 @@ sudo firewall-cmd --add-service=httpd.service --permanent
 sudo firewall-cmd --add-port=80/tcp --permanent
 sudo systemctl restart firewalld
 
+cat /var/log/messages    (hoofdlog)
+
 sudo iptables -L -n -v
 ```
 <!---
@@ -126,45 +127,45 @@ namp -sS -sU
 
 ## 4. Checklist application layer
 
-
-
-
-
-
-
-
-Configbestanden:
-
-
-
-## 5., 6. & 7.  Checklist presentation, application & session layer
-
 `Configuratie`
 
-- SSH
-
+*Vergeet ook niet om service te herstarten!*
 
 ```
-
-sudo journalctl -f -u *service*
-sudo systemctl restart *service*
+sudo journalctl -f -u httpd.service
+sudo systemctl restart httpd.service
 -> Open een nieuwe terminal voor ieder commando om veranderingen te zien
 
 sudo tail -f /var/log/httpd/error_log
 
+cat /etc/httpd/httpd.d
 ```
 
-### Configbestanden
+- Web: `apachectl configtest`
+- Fileserver: `testparm`
+- DNS: `named-checkconf`
+- DNS: `named-checkzone`
 
-`/etc/httpd/httpd.d`
-
-**Syntax checker Apache**: `apachectl configtest`
-
-*Vergeet ook niet om service te herstarten!*
 
 ## SELinux
 
-- `sudo resolvecon -R .` indien je een nieuw bestand aanmaakt in een andere directory (permissies worden niet aangepast bij `mv`)
+**Indien je een nieuw bestand aanmaakt in een andere directory (permissies worden niet aangepast bij `mv`)**
+
+``` 
+sudo resolvecon -R .
+
+cat /var/log/audit/audit.log
+```
+
+## Logfiles
+
+```
+cat /var/log/messages
+cat /var/log/audit/audit.log
+cat /var/log/httpd/error_log
+cat /var/log/samba/*
+cat /var/log/vsftpd/*
+```
 
 ## VirtualBox configuraties
 
@@ -179,6 +180,29 @@ sudo tail -f /var/log/httpd/error_log
 dig www.hogent.be @a.b.c.d +short
 
 ```
+
+## Tips
+
+### No route to host:
+
+- Internetlaag
+- Probleem met IP-configuratie
+
+### Connection refused
+
+- Transportlaag
+- Service draait niet, firewall, etc.
+
+### Unable to resolve host
+
+- Internet-/applicatielaag
+- DNS-server niet beschikbaar
+
+### Error 404
+
+- Applicatielaag
+- URL verkeerd, Apache configuratie
+
 
 
 TODO: 
@@ -204,7 +228,7 @@ TODO:
 ## Bronnen
 
 - [Zaken op te letten](https://everythingsysadmin.com/dumb-things-to-check.html)
-
+- [Screencast troubleshooting](https://www.youtube.com/watch?v=ciXpmDwJKOM&feature=youtu.be)
 
 
 
