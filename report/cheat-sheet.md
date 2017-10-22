@@ -97,7 +97,8 @@ sudo ss -tulpn
 sudo ps -ef
 
 
-cat /etc/services
+cat /etc/services                    IANA
+getent services <domain>             Implementatie (zoeken naar databank services)
 ```
 
 
@@ -121,6 +122,9 @@ sudo iptables -L -n -v
 ### BIND (DNS)
 - `systemd`: `named.service`
 - `firewalld`: `dns`
+
+- Role name: bind, service: named -> DNS   `/etc/named.conf`
+
 <!---
 #### Van buitenaf
 
@@ -171,7 +175,7 @@ sudo setsebool can_network_connect_db 1 -P
 ls -Z
 sudo resolvecon -R .
 
-cat /var/log/audit/audit.log
+sudo cat /var/log/audit/audit.log
 cat /etc/sysconfig/selinux     (targeted is niet voor status zoals enforcing)
 ```
 
@@ -197,14 +201,12 @@ cat /var/log/vsftpd/*
  ### Interfaces VirtualBox
  - `VirtualBox Host-only Ethernet Interface #1`, `VirtualBox Host-only Ethernet Interface #2`, etc.
 
-## NetworkManager
+## DNS (extra)
 
 ```
 dig www.hogent.be
 dig www.hogent.be @a.b.c.d +short
-dig -x 178.62.144.90 @193.190.173.1
-getent services domain
-
+dig -x 178.62.144.90 @193.190.173.1                
 ```
 
 ## Tips voor bekende errors
@@ -242,16 +244,18 @@ TODO:
 
 ## Bereikbaarheid
 
-`sudo nmap -sS -p 80,443 192.0.2.50` *te testen*
-`wget 192.0.2.50/wordpress`
+- `sudo nmap -sS -p 80,443 192.0.2.50` *te testen*
 
+- `wget 192.0.2.50/wordpress`
+
+<!--
 ## Checklist network configuration
 
 1. Is the IP-adress correct? `ip a`
 2. Is the router/default gateway correct? `ip r -n`
 3. Is a DNS-server available? `cat /etc/resolv.conf`
 
-- Role name: bind, service: named -> DNS   `/etc/named.conf`
+-->
 
 
 ## Bronnen
