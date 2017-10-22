@@ -130,6 +130,8 @@ namp -sS -sU
 ```
 -->
 
+**Controleer ook of panic-mode bij `firewall-cmd` uit staat!**
+
 ## 4. Checklist application layer
 
 `Configuratie`
