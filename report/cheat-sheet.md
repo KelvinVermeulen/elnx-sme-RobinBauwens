@@ -2,14 +2,17 @@
 
 - Student name: Robin Bauwens
 - [Github repo](https://github.com/HoGentTIN/elnx-sme-RobinBauwens)
-
+<!--
 ## Basic commands
+
 
 | Task                | Command |
 | :---                | :---    |
 | Query IP-adress(es) | `ip a`  |
 
+
 ## Git workflow
+
 
 Simple workflow for a personal project without other contributors:
 
@@ -20,50 +23,87 @@ Simple workflow for a personal project without other contributors:
 | Commit changes to local repository           | `git commit -m 'MESSAGE'` |
 | Push local changes to remote repository      | `git push`                |
 | Pull changes from remote repository to local | `git pull`                |
+-->
 
-## 1. Checklist physical layer
+## TCP/IP
+
+## 1. Checklist network access (physical + data link) layer
 
 - Ben je op de juiste VM bezig?
-- Zitten alle kabels in (VirtualBox: Network -> Adapter x -> Cable Connected/ Enable Network Adapter checkboxes)
-- Juiste interfaces (NAT/Host-Only Adapter)
+- Zitten alle **kabels** in (VirtualBox: Network -> Adapter x -> Cable Connected/Enable Network Adapter checkboxes)?
+- Juiste interfaces (NAT & Host-Only Adapter)?
 
-## 2. Checklist data link layer
+## 2. Checklist internet layer
 
-- Draaien de services?
-- Draaien de services op de juiste poorten (80 in plaats van 8080 voor HTTP en 443 voor HTPPS)
-- Worden de services toegelaten door de firewall?
+#### `IP-adressering & Subnetmask`
 
-## 3. Checklist netwerk layer
+- Staan alle IP-adressen en subnetmasks correct (todo: aan te vullen met VirtualBox adapters: DG, IP-adressen etc.)?
 
-`IP-adressering & Subnetmask`, `DNS` en `Default gateway` -> `Routing`
+Virtualbox:
+* NAT: `10.0.2.15/8`
+* Host-Only: `192.168.56.101` - ` 192.168.56.254/24`
 
-- Staan alle IP-adressen en subnetmasks correct (todo: aan te vullen met VirtualBox adapters: DG, IP-adressen etc.)
-- Staat de default gateway voor de netwerkinterface juist? + pingen
+`/etc/sysconfig/network-scripts/ifcfg-IFACE`
+
+
+#### `Default gateway` -> `Routing`
+
+- Staat de default gateway voor de netwerkinterface juist? + pingen naar DG
+
+`ip r`
+
+Virtualbox: `10.0.2.2`
+
+#### `DNS`
+
 - Staat de DNS-server voor de netwerkinterface juist?
 
+`/etc/resolv.conf`
+
+Virtualbox: `10.0.2.3`
+
+### Extra:
+
+- Kan je de DG bereiken (via ping)?
+- Kan je de DNS-server bereiken?
+ ```
+ dig
+ nslookup
+ host
+ ```
+- Kan je andere hosts binnen het LAN bereiken?
+
+- enp0s3
+- enp0s8
+
+
+
+## 3. Checklist transport layer
+
+- Draaien de services?
+- Draaien de services op de juiste poorten (80 in plaats van 8080 voor HTTP en 443 voor HTPPS)?
+- Worden de services toegelaten door de firewall?
+
+
+
 ```
-
-ip a
-ip r
-/etc/resolv.conf
-
+sudo systemctl status SERVICE
+sudo ss -tulpn
+sudo ps -ef
 ```
 
 
 Configbestanden:
 
-`/etc/sysconfig/network-scripts/ifcfg-*interface*`
-- enp0s3
-- enp0s8
 
-## 4. Checklist transport layer
+
+## 4. Checklist application layer
 
 `Firewall`, `Poorten` en `Services op poorten`
 
 - Traceroute
 
 ```
-
 sudo systemctl status *service*
 sudo systemctl start *service*
 sudo systemctl enable *service*
@@ -73,7 +113,6 @@ sudo firewall-cmd --list-all
 sudo firewall-cmd --add-service=*service* --permanent
 sudo firewall-cmd --add-port=*port*/tcp --permanent
 sudo systemctl restart firewalld
-
 ```
 
 
@@ -128,7 +167,7 @@ dig www.hogent.be @a.b.c.d +short
 TODO: 
 - Aan te vullen met hoe op te lossen, welke commando's te controleren
 - Notities vrijdag 13/10/17 (les troubleshooting)
-
+- Connectie met hostsysteem
 
 
 ## Bereikbaarheid
