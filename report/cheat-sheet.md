@@ -109,8 +109,8 @@ sudo systemctl start httpd.service
 sudo systemctl enable httpd.service
 
 sudo firewall-cmd --list-all
-sudo firewall-cmd --add-service=httpd.service --permanent
-sudo firewall-cmd --add-port=80/tcp --permanent
+sudo firewall-cmd --add-service=httpd.service --permanent    enkel service OF poortnummer toevoegen
+sudo firewall-cmd --add-port=80/tcp --permanent              check later ook httpd.conf in applicatielaag
 sudo systemctl restart firewalld
 
 cat /var/log/messages    (hoofdlog)
@@ -146,6 +146,7 @@ sudo systemctl restart httpd.service
 sudo tail -f /var/log/httpd/error_log
 
 cat /etc/httpd/httpd.d
+sudo vi /etc/httpd/conf/httpd.conf          ::poortnummer om te zoeken
 ```
 
 - Web: `apachectl configtest`
@@ -199,8 +200,10 @@ cat /var/log/vsftpd/*
 ## NetworkManager
 
 ```
-
+dig www.hogent.be
 dig www.hogent.be @a.b.c.d +short
+dig -x 178.62.144.90 @193.190.173.1
+getent services domain
 
 ```
 
