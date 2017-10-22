@@ -28,6 +28,7 @@ Simple workflow for a personal project without other contributors:
 ## TCP/IP
 
 ## 1. Checklist network access (physical + data link) layer
+`Kabels`
 
 - Ben je op de juiste VM bezig?
 - Zitten alle **kabels** in (VirtualBox: Network -> Adapter x -> Cable Connected/Enable Network Adapter checkboxes)?
@@ -37,6 +38,8 @@ Simple workflow for a personal project without other contributors:
 ```
 ip link
 ```
+- `UP`: interface is verbonden
+- `NO-CARRIER`: geen signaal op interface
 
 
 ## 2. Checklist internet layer
@@ -50,15 +53,16 @@ ip link
 
 Virtualbox:
 * NAT: `10.0.2.15/8`
-* Host-Only: `192.168.56.101` - ` 192.168.56.254/24`
-
 * DG: `10.0.2.2`
 * DNS: `10.0.2.3`
+* Host-Only: `192.168.56.101` - ` 192.168.56.254/24`
+
+
+Pingen van hostsysteem naar `10.0.2.15` zal nooit lukken, de rest wel.
 
 ```
 ip address
-ip route
-route -n
+ip route         of route -n
 
 cat /etc/sysconfig/network-scripts/ifcfg-IFACE
 cat /etc/resolv.conf
@@ -71,17 +75,13 @@ cat /etc/resolv.conf
 - Kan je de DNS-server bereiken?
 
  ```
- dig
- nslookup
- host
+ dig www.google.com @10.0.2.3 +short
+ nslookup www.google.com
+ host www.google.com
+ 
+ traceroute www.google.com
  ```
  
-### Kan je andere hosts binnen het LAN bereiken?
-
-- enp0s3
-- enp0s8
-
-
 ## 3. Checklist transport layer
 
 `Firewall`, `Poorten` en `Services op poorten`
@@ -100,9 +100,10 @@ sudo ps -ef
 cat /etc/services
 ```
 
-<!-- - Traceroute -->
 
 ```
+sudo firewall-cmd --get-services | grep dns
+
 sudo systemctl status httpd.service
 sudo systemctl start httpd.service
 sudo systemctl enable httpd.service
@@ -116,6 +117,10 @@ cat /var/log/messages    (hoofdlog)
 
 sudo iptables -L -n -v
 ```
+
+### BIND (DNS)
+- `systemd`: `named.service`
+- `firewalld`: `dns`
 <!---
 #### Van buitenaf
 
@@ -172,6 +177,12 @@ cat /var/log/vsftpd/*
 - NAT-interface: `10.0.2.15/8`
 - Host-only interface: `192.168.56.X`
 
+ ### Interfaces (VM EL7)
+- enp0s3
+- enp0s8
+
+ ### Interfaces VirtualBox
+ - `VirtualBox Host-only Ethernet Interface #1`, `VirtualBox Host-only Ethernet Interface #2`, etc.
 
 ## NetworkManager
 
@@ -229,6 +240,6 @@ TODO:
 
 - [Zaken op te letten](https://everythingsysadmin.com/dumb-things-to-check.html)
 - [Screencast troubleshooting](https://www.youtube.com/watch?v=ciXpmDwJKOM&feature=youtu.be)
-
+- [Gebruik NAT-interface + Host-only interface](https://bertvv.github.io/notes-to-self/2015/09/29/virtualbox-networking-an-overview/)
 
 
