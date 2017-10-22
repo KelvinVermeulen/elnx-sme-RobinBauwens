@@ -156,12 +156,22 @@ cat /etc/httpd/httpd.d
 
 ## SELinux
 
-**Indien je een nieuw bestand aanmaakt in een andere directory (permissies worden niet aangepast bij `mv`)**
+**Indien je een nieuw bestand aanmaakt in een andere directory (permissies worden niet aangepast bij `mv` -> `resolvecon`)**
 
 ``` 
+sestatus
+getenforce
+setenforce Enforcing
+
+getsebool -a | grep httpd
+sudo setsebool can_network_connect_db 1
+sudo setsebool can_network_connect_db 1 -P
+
+ls -Z
 sudo resolvecon -R .
 
 cat /var/log/audit/audit.log
+cat /etc/sysconfig/selinux     (targeted is niet voor status zoals enforcing)
 ```
 
 ## Logfiles
@@ -194,7 +204,7 @@ dig www.hogent.be @a.b.c.d +short
 
 ```
 
-## Tips
+## Tips voor bekende errors
 
 ### No route to host:
 
@@ -224,7 +234,8 @@ TODO:
 - Aan te vullen met hoe op te lossen, welke commando's te controleren
 - Notities vrijdag 13/10/17 (les troubleshooting)
 - Connectie met hostsysteem
-
+- Bestandspermissies
+- Defaultwaarde voor adapters (IP-adressen, welke UP zijn etc.)
 
 ## Bereikbaarheid
 
