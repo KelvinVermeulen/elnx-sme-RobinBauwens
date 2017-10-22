@@ -259,5 +259,4 @@ TODO:
 - [Zaken op te letten](https://everythingsysadmin.com/dumb-things-to-check.html)
 - [Screencast troubleshooting](https://www.youtube.com/watch?v=ciXpmDwJKOM&feature=youtu.be)
 - [Gebruik NAT-interface + Host-only interface](https://bertvv.github.io/notes-to-self/2015/09/29/virtualbox-networking-an-overview/)
-- [Apache: could not reliable determine the server's FQDN, using 127.0.0.1.](https://askubuntu.com/questions/256013/apache-error-could-not-reliably-determine-the-servers-fully-qualified-domain-n] 
-
+- [Apache: could not reliable determine the server's FQDN, using 127.0.0.1.](https://askubuntu.com/questions/256013/apache-error-could-not-reliably-determine-the-servers-fully-qualified-domain-n])
