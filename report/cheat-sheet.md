@@ -85,6 +85,13 @@ cat /etc/resolv.conf
  traceroute www.google.com
  ```
  
+### BIND (DNS)
+- `systemd`: `named.service`
+- `firewalld`: `dns`
+
+- Role name: bind, service: named -> DNS   `/etc/named.conf`
+
+ 
 ## 3. Checklist transport layer
 
 `Firewall`, `Poorten` en `Services op poorten`
@@ -130,11 +137,6 @@ sudo iptables -L -n -v
 [`sudo firewall-cmd --get-active-zones`](img/cheat-sheet/getactivezones.PNG)
 
 
-### BIND (DNS)
-- `systemd`: `named.service`
-- `firewalld`: `dns`
-
-- Role name: bind, service: named -> DNS   `/etc/named.conf`
 
 <!---
 #### Van buitenaf
@@ -169,6 +171,7 @@ sudo vi /etc/httpd/conf/httpd.conf          ::poortnummer om te zoeken
 - DNS: `named-checkconf`
 - DNS: `named-checkzone`
 
+Locatie webserver bestanden: `var/www/html`
 
 ## SELinux
 
