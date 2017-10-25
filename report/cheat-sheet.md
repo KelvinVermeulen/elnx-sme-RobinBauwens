@@ -73,7 +73,13 @@ cat /etc/resolv.conf
 [`ip r`](img/cheat-sheet/ip_r.png)
 [`cat /etc/resolv.conf`](img/cheat-sheet/ifcfg-resolv.conf.PNG)
 [`enp0s3`](img/cheat-sheet/ifcfg-enp0s3.png)
-[`enp0s3`](img/cheat-sheet/ifcfg-enp0s8.png)
+[`enp0s8`](img/cheat-sheet/ifcfg-enp0s8.png)
+
+**`enp0s8` kan soms opstarten zonder IP-adres, is een bug.**
+
+**Herstart `network.service` na wijzigen.**
+
+**Bij Vagrant, check `vagrant-hosts.yml`
 
 
 ### Extra:
@@ -107,8 +113,8 @@ cat /etc/resolv.conf
 
 ```
 sudo systemctl status SERVICE
-sudo ss -tulpn
-sudo ps -ef
+sudo ss -tulpn                       sudo niet vergeten!
+sudo ps -ef                         
 
 
 cat /etc/services                    IANA
@@ -124,6 +130,11 @@ sudo firewall-cmd --get-services | grep dns
 sudo systemctl status httpd.service
 sudo systemctl start httpd.service
 sudo systemctl enable httpd.service
+
+sudo systemctl --type=service
+sudo systemctl --state=running
+sudo systemctl --failed
+
 
 sudo firewall-cmd --list-all
 sudo firewall-cmd --add-service=httpd.service --permanent    enkel service OF poortnummer toevoegen
@@ -217,7 +228,7 @@ ls -Z
 sudo resolvecon -R .
 
 sudo cat /var/log/audit/audit.log
-cat /etc/sysconfig/selinux     (targeted is niet voor status zoals enforcing)
+cat /etc/sysconfig/selinux          permanent maken + targeted is niet voor status zoals enforcing
 ```
 
 [`restorecon`](img/cheat-sheet/restorecon.PNG)
