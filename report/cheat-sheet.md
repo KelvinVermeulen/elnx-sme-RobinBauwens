@@ -33,7 +33,7 @@ Simple workflow for a personal project without other contributors:
 - Ben je op de juiste VM bezig?
 - Zitten alle **kabels** in (VirtualBox: Network -> Adapter x -> Cable Connected/Enable Network Adapter checkboxes)?
 - Juiste interfaces (NAT & Host-Only Adapter)?
-
+- Bij verbinding naar DB, staat VM van DB ook aan?
 
 ```
 ip link
@@ -70,7 +70,11 @@ cat /etc/resolv.conf
 ```
 
 [`ip a`](img/cheat-sheet/ip_a.PNG)
+[`ip r`](img/cheat-sheet/ip_r.png)
 [`cat /etc/resolv.conf`](img/cheat-sheet/ifcfg-resolv.conf.PNG)
+[`enp0s3`](img/cheat-sheet/ifcfg-enp0s3.png)
+[`enp0s3`](img/cheat-sheet/ifcfg-enp0s8.png)
+
 
 ### Extra:
 
@@ -134,7 +138,7 @@ sudo iptables -L -n -v
 ```
 
 [`sudo firewall-cmd --list-all`](img/cheat-sheet/firewallcmd.PNG)
-[`sudo firewall-cmd --get-active-zones`](img/cheat-sheet/getactivezones.PNG)
+[`sudo firewall-cmd --get-active-zones (kan ook enp0s8 bevatten)`](img/cheat-sheet/getactivezones.PNG)
 
 
 
@@ -162,8 +166,7 @@ sudo systemctl restart httpd.service
 
 sudo tail -f /var/log/httpd/error_log
 
-cat /etc/httpd/httpd.d
-sudo vi /etc/httpd/conf/httpd.conf          ::poortnummer om te zoeken
+sudo vi /etc/httpd/conf/httpd.conf          ::poortnummer om te zoeken (in vi)
 ```
 
 - Web: `apachectl configtest`
@@ -171,7 +174,31 @@ sudo vi /etc/httpd/conf/httpd.conf          ::poortnummer om te zoeken
 - DNS: `named-checkconf`
 - DNS: `named-checkzone`
 
-Locatie webserver bestanden: `var/www/html`
+
+**Op te letten bij `httpd.conf`:**
+- `ServerRoot "/etc/httpd"`
+- `Listen 80`
+- `Include conf.modules.d/*.conf`
+- `User apache` en `Group apache`
+- `ServerAdmin root@localhost` (mails)
+- Servername hoeft niet gedefineerd te zijn: `#ServerName www.example.com:80`
+
+``` 
+<Directory />
+    AllowOverride none
+    Require all denied
+</Directory>
+```
+
+- `DocumentRoot "/var/www/html"`
+
+
+Locatie webserver bestanden: `var/www/html/`
+
+
+[`httpd.conf`](img/cheat-sheet/httpd.conf.PNG)
+[`httpd.conf (2)`](img/cheat-sheet/httpd.conf2.PNG)
+
 
 ## SELinux
 
