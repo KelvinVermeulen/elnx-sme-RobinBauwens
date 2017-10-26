@@ -66,11 +66,18 @@ ip address
 ip route         of route -n
 
 cat /etc/sysconfig/network-scripts/ifcfg-IFACE
-sudo systemctl restart network.service
+sudo systemctl restart network.service   of     nmcli connection reload
 cat /etc/resolv.conf
 
 sudo named-checkconf /etc/named.conf     p34 pdf ELNX
 nslookup www.hogent.be
+
+
+sudo systemctl status NetworkManager            is meer transportlaag...
+
+cat /etc/hostname
+sudo hostnamectl status
+hostnamectl set-hostname <name>
 ```
 
 [`ip a`](img/cheat-sheet/ip_a.PNG)
@@ -85,6 +92,7 @@ nslookup www.hogent.be
 
 **Bij Vagrant, check `vagrant-hosts.yml`
 
+[Zeker nagaan of NetworkManager draait!](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/networking_guide/sec-installing_networkmanager)
 
 
 
@@ -229,6 +237,7 @@ Locatie webserver bestanden: `var/www/html/`
 sestatus
 getenforce
 setenforce Enforcing
+reboot
 
 getsebool -a | grep httpd
 sudo setsebool can_network_connect_db 1
