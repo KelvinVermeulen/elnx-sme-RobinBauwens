@@ -186,7 +186,7 @@ namp -sS -sU
 
 *Vergeet ook niet om service te herstarten!*
 
-**NGINGX:**
+**NGINX:**
 - `/var/log/nginx/error.log`
 
 ```
@@ -213,7 +213,7 @@ sudo vi /etc/httpd/conf/httpd.conf          ::poortnummer om te zoeken (in vi)
 Paden:
 
 - `/usr/share/nginx/html/`  `root root`
-- `/etc/ngingx/nginx.conf`  `root root`
+- `/etc/nginx/nginx.conf`  `root root`
 
 
 
