@@ -91,7 +91,7 @@ hostnamectl set-hostname <name>
 
 **Herstart `network.service` na wijzigen.**
 
-**Bij Vagrant, check `vagrant-hosts.yml`
+**Bij Vagrant, check `vagrant-hosts.yml`**
 
 [Zeker nagaan of NetworkManager draait!](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/networking_guide/sec-installing_networkmanager)
 
@@ -107,7 +107,7 @@ hostnamectl set-hostname <name>
  nslookup www.google.com
  host www.google.com
  
- traceroute www.google.com
+ traceroute www.google.com          (indien geïnstalleerd)
  ```
  
 ### BIND (DNS)
@@ -211,7 +211,7 @@ sudo vi /etc/httpd/conf/httpd.conf          ::poortnummer om te zoeken (in vi)
 
 Paden:
 `/usr/share/nginx/html/`  `root root`
-`/etc/ngingx/nginx.conf`  `root root`
+`/etc/nginx/nginx.conf`  `root root`
 
 
 
