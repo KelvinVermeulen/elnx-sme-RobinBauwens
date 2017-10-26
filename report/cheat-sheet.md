@@ -27,7 +27,7 @@ Simple workflow for a personal project without other contributors:
 
 ## TCP/IP
 
-## 1. Checklist network access (physical + data link) layer
+## 1. Checklist data link layer
 `Kabels`
 
 - Ben je op de juiste VM bezig?
@@ -67,6 +67,9 @@ ip route         of route -n
 
 cat /etc/sysconfig/network-scripts/ifcfg-IFACE
 cat /etc/resolv.conf
+
+sudo named-checkconf /etc/named.conf     p34 pdf ELNX
+nslookup www.hogent.be
 ```
 
 [`ip a`](img/cheat-sheet/ip_a.PNG)
@@ -80,6 +83,8 @@ cat /etc/resolv.conf
 **Herstart `network.service` na wijzigen.**
 
 **Bij Vagrant, check `vagrant-hosts.yml`
+
+
 
 
 ### Extra:
