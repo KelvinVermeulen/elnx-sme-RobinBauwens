@@ -56,7 +56,7 @@ Virtualbox:
 * NAT: `10.0.2.15/8`
 * DG: `10.0.2.2`
 * DNS: `10.0.2.3`
-* Host-Only: `192.168.56.101` - ` 192.168.56.254/24`
+* Host-Only: `192.168.56.101` - ` 192.168.56.254/24` Bij opdracht troubleshooting 1: `192.168.
 
 
 Pingen van hostsysteem naar `10.0.2.15` zal nooit lukken, de rest wel.
@@ -66,6 +66,7 @@ ip address
 ip route         of route -n
 
 cat /etc/sysconfig/network-scripts/ifcfg-IFACE
+sudo nmcli c reload                           bij wijzigingen
 cat /etc/resolv.conf
 
 sudo named-checkconf /etc/named.conf     p34 pdf ELNX
@@ -175,6 +176,9 @@ namp -sS -sU
 
 *Vergeet ook niet om service te herstarten!*
 
+**NGINGX:**
+- `/var/log/nginx/error.log`
+
 ```
 sudo journalctl -f -u httpd.service
 sudo systemctl restart httpd.service
@@ -189,6 +193,7 @@ sudo vi /etc/httpd/conf/httpd.conf          ::poortnummer om te zoeken (in vi)
 - Fileserver: `testparm`
 - DNS: `named-checkconf`
 - DNS: `named-checkzone`
+- NGINX: `sudo nginx -t`
 
 
 **Op te letten bij `httpd.conf`:**
