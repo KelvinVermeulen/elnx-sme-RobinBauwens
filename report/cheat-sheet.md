@@ -152,6 +152,7 @@ sudo systemctl --failed
 
 
 sudo firewall-cmd --list-all
+sudo firewall-cmd --add-service=httpd.service
 sudo firewall-cmd --add-service=httpd.service --permanent    enkel service OF poortnummer toevoegen
 sudo firewall-cmd --add-port=80/tcp --permanent              check later ook httpd.conf in applicatielaag
 sudo systemctl restart firewalld
