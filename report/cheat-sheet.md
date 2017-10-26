@@ -211,14 +211,9 @@ sudo vi /etc/httpd/conf/httpd.conf          ::poortnummer om te zoeken (in vi)
 ![Nginx](img/cheat-sheet/nginx2.PNG)
 
 Paden:
-<<<<<<< HEAD
-`/usr/share/nginx/html/`  `root root`
-`/etc/nginx/nginx.conf`  `root root`
-=======
-
 - `/usr/share/nginx/html/`  `root root`
 - `/etc/nginx/nginx.conf`  `root root`
->>>>>>> origin/solution
+
 
 
 
