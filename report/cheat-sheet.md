@@ -152,6 +152,7 @@ sudo systemctl --failed
 
 
 sudo firewall-cmd --list-all
+sudo firewall-cmd --add-service=httpd.service
 sudo firewall-cmd --add-service=httpd.service --permanent    enkel service OF poortnummer toevoegen
 sudo firewall-cmd --add-port=80/tcp --permanent              check later ook httpd.conf in applicatielaag
 sudo systemctl restart firewalld
@@ -185,7 +186,7 @@ namp -sS -sU
 
 *Vergeet ook niet om service te herstarten!*
 
-**NGINGX:**
+**NGINX:**
 - `/var/log/nginx/error.log`
 
 ```
@@ -210,8 +211,14 @@ sudo vi /etc/httpd/conf/httpd.conf          ::poortnummer om te zoeken (in vi)
 ![Nginx](img/cheat-sheet/nginx2.PNG)
 
 Paden:
+<<<<<<< HEAD
 `/usr/share/nginx/html/`  `root root`
 `/etc/nginx/nginx.conf`  `root root`
+=======
+
+- `/usr/share/nginx/html/`  `root root`
+- `/etc/nginx/nginx.conf`  `root root`
+>>>>>>> origin/solution
 
 
 
