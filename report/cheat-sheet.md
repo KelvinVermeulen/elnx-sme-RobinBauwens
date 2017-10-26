@@ -56,7 +56,8 @@ Virtualbox:
 * NAT: `10.0.2.15/8`
 * DG: `10.0.2.2`
 * DNS: `10.0.2.3`
-* Host-Only: `192.168.56.101` - ` 192.168.56.254/24` Bij opdracht troubleshooting 1: `192.168.
+* Host-Only: `192.168.56.101` - ` 192.168.56.254/24` 
+* Bij opdracht troubleshooting 1: `192.168.56.42`
 
 
 Pingen van hostsysteem naar `10.0.2.15` zal nooit lukken, de rest wel.
@@ -202,6 +203,16 @@ sudo vi /etc/httpd/conf/httpd.conf          ::poortnummer om te zoeken (in vi)
 - DNS: `named-checkconf`
 - DNS: `named-checkzone`
 - NGINX: `sudo nginx -t`
+
+**Op te letten bij `nginx`:**
+
+![Nginx](img/cheat-sheet/nginx.PNG)
+![Nginx](img/cheat-sheet/nginx2.PNG)
+
+Paden:
+`/usr/share/nginx/html/`  `root root`
+`/etc/ngingx/nginx.conf`  `root root`
+
 
 
 **Op te letten bij `httpd.conf`:**

@@ -56,7 +56,7 @@ Is niet nodig, gebeurt automatisch
     - Voer eerst volgende commando uit: `yum install mod_ssl openssl`
     ![Git Bash](img/01/1.png)
     - Voer vervolgens onderstaande commando's uit (adminrechten nodig):
-        + Geef ook enkele instellingen mee (zie afbeelding).
+        + Geef ook enkele instellingen mee (zie afbeelding). We gaan enkel de inhoud van deze bestanden gebruiken, dus niet de bestanden zelf.
 
 ```
 openssl genrsa -out ca.key 2048 
