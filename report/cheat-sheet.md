@@ -66,7 +66,7 @@ ip address
 ip route         of route -n
 
 cat /etc/sysconfig/network-scripts/ifcfg-IFACE
-sudo nmcli c reload                           bij wijzigingen
+sudo systemctl restart network.service
 cat /etc/resolv.conf
 
 sudo named-checkconf /etc/named.conf     p34 pdf ELNX
