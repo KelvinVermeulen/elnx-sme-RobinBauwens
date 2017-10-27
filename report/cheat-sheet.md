@@ -215,8 +215,6 @@ Paden:
 - `/etc/nginx/nginx.conf`  `root root`
 
 
-
-
 **Op te letten bij `httpd.conf`:**
 - `ServerRoot "/etc/httpd"`
 - `Listen 80`
@@ -322,6 +320,14 @@ dig -x 178.62.144.90 @193.190.173.1
 ###  httpd: Could not reliably determine the server's fully qualified domain name, using 127.0.0.1. Set the 'ServerName' directive globally to suppress this message
 
 - Is geen probleem (zie bronnen onderaan)
+
+
+## Let op volgende zaken
+
+- Certificaten
+- PHP-versie opvragen
+- Bestandspermissies
+- SELinux context
 
 TODO: 
 - Aan te vullen met hoe op te lossen, welke commando's te controleren

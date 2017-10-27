@@ -147,7 +147,53 @@ Vergeet ook niet om de firewall te herstarten met `sudo systemctl restart firewa
 
 
 ### Phase 4: Application Layer (TCP/IP)
+#### Configuratie (NGINX)
+In de applicatielaag checken we vooral de configuratie(bestanden van de services).
 
+TIP: open een nieuw terminalvenster en volg alle veranderingen van een service met `sudo journalctl -f -u <service>.service`.
+
+We gaan eerst de configuratie van NGINX na met volgend commando.
+We verwachten volgende uitvoer:
+```
+sudo nginx -t
+nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+```
+
+De paden waar de (configuratie)bestanden van NGINX zich bevinden zijn de volgende:
+
+Paden:
+- `/usr/share/nginx/html/`   (web files directory)
+- `/etc/nginx/nginx.conf`    (main config file)
+- `/var/log/nginx/error.log` (error log file)
+
+#### Cnofiguratie PHP
+
+We kunnen controleren of PHP geïnstalleerd is met volgende commando's:
+Verwacht uitvoer (ongeveer):
+
+```
+php -v
+PHP 5.4.16 (cli) (built: Nov  6 2016 00:29:02)
+Copyright (c) 1997-2013 The PHP Group
+Zend Engine v2.4.0, Copyright (c) 1998-2013 Zend Technologies
+
+which php
+/usr/bin/php
+```
+
+#### SELinux
+We voeren volgend commando uit om na te gaan of SELinux wel degelijk aanstaat (op `enforcing`).
+We verwachten deze uitvoer:
+
+```
+getenforce
+Enforcing
+```
+
+Indien deze niet op `enforcing` staat, kunnen we dit aanpassen met `setenforce Enforcing`. Om dit permanent te maken dienen we het bestand `/etc/sysconfig/selinux` aan te passen met een teksteditor naar keuze.
+
+Ook moeten we ervoor zorgen dat de context voor de (configuratie)bestanden wel degelijk juist is, we kunnen dit controleren met `ls -Z`. Dit kunnen we dan oplossen door `sudo resolvecon -R .` uit te voeren in de directory met de bestanden.
 
 ...
 
