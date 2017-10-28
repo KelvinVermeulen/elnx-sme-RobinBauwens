@@ -53,7 +53,7 @@ Is niet nodig, gebeurt automatisch
 4. We kunnen nu beginnen met de configuratie van Wordpress, geef o.a. de databanknaam, paswoord, gebruiker en server (host) mee. Ook geven we mee dat de scripting taal PHP is (voor httpd).
 5. Voeg ook de interfaces (enp0s3 en enp0s8) toe bij `rhbase_firewall_interfaces`.
 6. Hierna kunnen we beginnen aan de configuratie in `site.yml`:
-    - Voer eerst volgende commando uit: `yum install mod_ssl openssl`
+    - Voer eerst volgende commando uit: `sudo yum install mod_ssl openssl`
     ![Git Bash](img/01/1.png)
     - Voer vervolgens onderstaande commando's uit (adminrechten nodig):
         + Geef ook enkele instellingen mee (zie afbeelding). We gaan enkel de inhoud van deze bestanden gebruiken, dus niet de bestanden zelf.
@@ -62,13 +62,14 @@ Is niet nodig, gebeurt automatisch
 openssl genrsa -out ca.key 2048 
 openssl req -new -key ca.key -out ca.csr
 openssl x509 -req -days 365 -in ca.csr -signkey ca.key -out ca.crt
-
+```
+<!-- 
+manueel:
 sudo cp ca.crt /etc/pki/tls/certs
 sudo cp ca.key /etc/pki/tls/private/ca.key
 sudo cp ca.csr /etc/pki/tls/private/ca.csr
-
 sudo restorecon -RvF /etc/pki
-```
+-->
  ![Git Bash](img/01/2.PNG)
  ![Git Bash](img/01/3.PNG)
 
