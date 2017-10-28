@@ -1,0 +1,34 @@
+---
+
+# rh-base
+rhbase_user_groups:
+  - fileusers
+
+rhbase_users:
+  - name: alice
+    comment: 'Alice'
+    password: '$1$1$9r7dwD12SuyxP9p1L46w11'
+    shell: /sbin/nologin
+    groups:
+      - fileusers
+  - name: bob
+    comment: 'Bob'
+    password: '$1$1$StRVYKTEpypIa2lYbrCdw1'
+    shell: /sbin/nologin
+    groups:
+      - fileusers
+  - name: charlie
+    comment: 'Charlie'
+    password: '$1$1$QnWg3wSB/7eRvp0.DmAg5/'
+    shell: /sbin/nologin
+    groups:
+      - fileusers
+
+# samba
+samba_users:
+  - name: alice
+    password: ecila
+  - name: bob
+    password: bob
+  - name: charlie
+    password: eilrahc
