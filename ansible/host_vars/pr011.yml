@@ -9,30 +9,113 @@ rhbase_user_groups:
   - public
 
 rhbase_users:
-  - name: alice
-    comment: 'Alice'
-    password: '$1$1$9r7dwD12SuyxP9p1L46w11'
+  - name: stevenh
+    comment: 'Steven Hermans CEO'
+    password: $1$2$rYcEStgnXTgUgkw02dceg.
     shell: /sbin/nologin
     groups:
-      - fileusers
-  - name: bob
-    comment: 'Bob'
-    password: '$1$1$StRVYKTEpypIa2lYbrCdw1'
+      - management
+  - name: stevenv
+    comment: 'Steven Van Daele Software Engineer'
+    password: $1$2$U3b3OeV4KdKfJ/DfmOW5R.
     shell: /sbin/nologin
     groups:
-      - fileusers
-  - name: charlie
-    comment: 'Charlie'
-    password: '$1$1$QnWg3wSB/7eRvp0.DmAg5/'
+      - technical
+  - name: leend
+    comment: 'Leen De Meester Software Engineer'
+    password: $1$2$NDAUYwlsoHmQQDvEKrixm0
     shell: /sbin/nologin
     groups:
-      - fileusers
+      - technical
+  - name: svena
+    comment: 'Sven Aerens Account Manager'
+    password: $1$2$fT/qW.VPjnv8mXlPHp36J1
+    shell: /sbin/nologin
+    groups:
+      - sales
+  - name: nehirb
+    comment: 'Nehir Başar System Engineer'
+    password: $1$2$3UgFy9R0vzZb4LdSD1K4/1
+    shell: /sbin/nologin
+    groups:
+      - it
+  - name: alexanderd
+    comment: 'Alexander De Coninck Software Engineer'
+    password: $1$2$wcyMpqdNNH8l5q3js3wCk1
+    shell: /sbin/nologin
+    groups:
+      - technical
+  - name: krisv
+    comment: 'Kris Vanhaverbeke CFO'
+    password: $1$2$fT/qW.VPjnv8mXlPHp36J1
+    shell: /sbin/nologin
+    groups:
+      - management
+  - name: benoitp
+    comment: 'Benoit Pluquet Account Manager'
+    password: $1$2$fT/qW.VPjnv8mXlPHp36J1
+    shell: /sbin/nologin
+    groups:
+      - sales
+  - name: anc
+    comment: 'An Coppens Graphical Designer'
+    password: $1$2$3rtx7XCUz7cXCI5fSBrXo1
+    shell: /sbin/nologin
+    groups:
+      - technical
+  - name: elenaa
+    comment: 'Elena Andreev Office Manager'
+    password: $1$2$fT/qW.VPjnv8mXlPHp36J1
+    shell: /sbin/nologin
+    groups:
+      - management
+  - name: evyt
+    comment: 'Evy Tilleman Technical Writer'
+    password: $1$2$8PsTjXx/xuMlbFgmR6TRk.
+    shell: /sbin/nologin
+    groups:
+      - technical
+  - name: christophev
+    comment: 'Christophe Van der Meersche System Administrator'
+    password: $1$2$bHq3cNqMbil6vzxTGscN1/
+    shell: /sbin/nologin
+    groups:
+      - it
+  - name: stefaanv
+    comment: 'Stefaan Vernimmen Support Specialist'
+    password: $1$2$3TcfLp6JvlvTxrmFYRSk3.
+    shell: /sbin/nologin
+    groups:
+      - technical
+
 
 # samba
 samba_users:
-  - name: alice
-    password: ecila
-  - name: bob
-    password: bob
-  - name: charlie
-    password: eilrahc
+  - name: stevenh
+    password: hnevets
+  - name: stevenv
+    password: vnevets
+  - name: leend
+    password: dneel
+  - name: svena
+    password: anevs
+  - name: nehirb
+    password: brihen
+  - name: alexanderd
+    password: drednaxela
+  - name: krisv
+    password: vsirk
+  - name: benoitp
+    password: ptioneb
+  - name: anc
+    password: cna
+  - name: elenaa
+    password: aanele
+  - name: evyt
+    password: tyve
+  - name: christophev
+    password: vehpotsirhc
+  - name: stefaanv
+    password: vnaafets
+
+
