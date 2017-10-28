@@ -11,5 +11,6 @@ do
         echo "  shell: /sbin/nologin"
         echo "  groups:"
 	echo "    - $Unit"
+	echo "    - public"
 done < $INPUT
 IFS=$OLDIFS

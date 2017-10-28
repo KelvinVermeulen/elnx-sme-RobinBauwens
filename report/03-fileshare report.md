@@ -29,11 +29,12 @@ do
         echo "  shell: /sbin/nologin"
         echo "  groups:"
     echo "    - $Unit"
+    echo "    - public"
 done < $INPUT
 IFS=$OLDIFS
 ```
 
-Ook een kleine scriptje voor de gebruikersnamen en paswoorden eruit te halen:
+Ook een kleine scriptje om de gebruikersnamen en paswoorden eruit te halen:
 ```
 #!/bin/bash
 INPUT=../doc/avalon-employees.csv
@@ -46,10 +47,13 @@ do
     echo "    password: $(echo $Username | rev)"
 done < $INPUT
 IFS=$OLDIFS
-
+```
+4. Voeg dit allemaal toe in `pr011.yml` bij `rhbase_users` en `sambda_users`. Voeg bij `all.yml` ook zeker `it` toe als groep bij je eigen gebruikersnaam. Ook bij `pr011.yml` voegen we volgende toe:
+```
+  - name: robin
+    password: testpassword
 ```
 
-5
 Describe *in detail* how you completed the assignment, with main focus on the "manual" work. It is of course not necessary to copy/paste your code in this document, but you can refer to it with a hyperlink.
 
 Make sure to write clean Markdown code, so your report looks good and is clearly structured on Github.
