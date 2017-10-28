@@ -2,7 +2,11 @@
 
 # rh-base
 rhbase_user_groups:
-  - fileusers
+  - management
+  - technical
+  - sales
+  - it
+  - public
 
 rhbase_users:
   - name: alice
