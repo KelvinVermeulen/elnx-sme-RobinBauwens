@@ -1,18 +1,9 @@
 ---
 
-# rh-base
-rhbase_user_groups:
-  - management
-  - technical
-  - sales
-  - it
-  - public
-
 # Zet gewone users in all.yml
 
 
 # samba
-
 samba_netbios_name: FILES
 samba_workgroup: AVALON
 samba_wins_support: true

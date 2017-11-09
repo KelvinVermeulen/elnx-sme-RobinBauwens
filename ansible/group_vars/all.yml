@@ -6,7 +6,7 @@ rhbase_repositories:
 
 rhbase_firewall_allow_services:
 - samba
-- dns # zeer belangrijk voor NetBIOS (zie 02: DNS & 03: Samba)
+- dns   # zeer belangrijk voor NetBIOS (zie 02: DNS & 03: Samba); In orde na reboot
 
 rhbase_install_packages:
   - tree
@@ -17,18 +17,25 @@ rhbase_install_packages:
   - vim-enhanced
   - wget
 
-rhbase_motd: true
-rhbase_users:
-  - name: robin
-    password: '$1$1$I6mqx3WU1uVbUDOgIcxuk/'
-    groups:
-      - wheel
-      - it
 
 rhbase_ssh_user: robin
 rhbase_ssh_key: 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDTCIPkHvexVX1ag3PhWnEtxqj5qI49ofNEQ7BP2v+KQ81sXFWT/N7Y5P73Tnlbh96RwesKd991CgFYc/rFnoVgXPnK8xrSAjmUnFIC+X/I76KFrRrXtkcEXlxbzyg7HVN0bwelgpgM8vay0AnKBCPrYKu75Q2j9+z7Tc4+sQhVz9LM5sIbmuG4c8EMZ2xqwP78v5pMT9UeIvdh1uUlM6URABRkWEP2hZ7ssehep062+GEczMmZp40wZJ7+wtqSbKWjdAWt3agryEFYLT16RP82WbMb0/7+Q0O4dimo4R53a37TCeaB2FIeK5bEdWcHYiw7k3d/P4xg7nKS/KXl3EvH Robin Bauwens@RobinB'
 
-rhbase_users:
+rhbase_motd: true
+
+rhbase_user_groups: # zeer belangrijk voor Samba
+  - management
+  - technical
+  - sales
+  - it
+  - public
+
+rhbase_users: # Let op: moet samengevoegd zijn met nieuwe samba-gebruikers!
+- name: robin
+  password: '$1$1$I6mqx3WU1uVbUDOgIcxuk/'
+  groups:
+    - wheel
+    - it
 - name: stevenh
   comment: 'Steven Hermans CEO'
   password: $1$2$rYcEStgnXTgUgkw02dceg.
