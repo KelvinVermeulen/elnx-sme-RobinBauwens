@@ -8,101 +8,19 @@ rhbase_user_groups:
   - it
   - public
 
-rhbase_users:
-- name: stevenh
-  comment: 'Steven Hermans CEO'
-  password: $1$2$rYcEStgnXTgUgkw02dceg.
-  shell: /sbin/nologin
-  groups:
-    - management
-    - public
-- name: stevenv
-  comment: 'Steven Van Daele Software Engineer'
-  password: $1$2$U3b3OeV4KdKfJ/DfmOW5R.
-  shell: /sbin/nologin
-  groups:
-    - technical
-    - public
-- name: leend
-  comment: 'Leen De Meester Software Engineer'
-  password: $1$2$NDAUYwlsoHmQQDvEKrixm0
-  shell: /sbin/nologin
-  groups:
-    - technical
-    - public
-- name: svena
-  comment: 'Sven Aerens Account Manager'
-  password: $1$2$fT/qW.VPjnv8mXlPHp36J1
-  shell: /sbin/nologin
-  groups:
-    - sales
-    - public
-- name: nehirb
-  comment: 'Nehir Başar System Engineer'
-  password: $1$2$3UgFy9R0vzZb4LdSD1K4/1
-  shell: /sbin/nologin
-  groups:
-    - it
-    - public
-- name: alexanderd
-  comment: 'Alexander De Coninck Software Engineer'
-  password: $1$2$wcyMpqdNNH8l5q3js3wCk1
-  shell: /sbin/nologin
-  groups:
-    - technical
-    - public
-- name: krisv
-  comment: 'Kris Vanhaverbeke CFO'
-  password: $1$2$fT/qW.VPjnv8mXlPHp36J1
-  shell: /sbin/nologin
-  groups:
-    - management
-    - public
-- name: benoitp
-  comment: 'Benoit Pluquet Account Manager'
-  password: $1$2$fT/qW.VPjnv8mXlPHp36J1
-  shell: /sbin/nologin
-  groups:
-    - sales
-    - public
-- name: anc
-  comment: 'An Coppens Graphical Designer'
-  password: $1$2$3rtx7XCUz7cXCI5fSBrXo1
-  shell: /sbin/nologin
-  groups:
-    - technical
-    - public
-- name: elenaa
-  comment: 'Elena Andreev Office Manager'
-  password: $1$2$fT/qW.VPjnv8mXlPHp36J1
-  shell: /sbin/nologin
-  groups:
-    - management
-    - public
-- name: evyt
-  comment: 'Evy Tilleman Technical Writer'
-  password: $1$2$8PsTjXx/xuMlbFgmR6TRk.
-  shell: /sbin/nologin
-  groups:
-    - technical
-    - public
-- name: christophev
-  comment: 'Christophe Van der Meersche System Administrator'
-  password: $1$2$bHq3cNqMbil6vzxTGscN1/
-  shell: /sbin/nologin
-  groups:
-    - it
-    - public
-- name: stefaanv
-  comment: 'Stefaan Vernimmen Support Specialist'
-  password: $1$2$3TcfLp6JvlvTxrmFYRSk3.
-  shell: /sbin/nologin
-  groups:
-    - technical
-    - public
+# Zet gewone users in all.yml
 
 
 # samba
+
+samba_netbios_name: FILES
+samba_workgroup: AVALON
+samba_wins_support: true
+samba_load_homes: true
+samba_load_printers: false
+samba_create_varwww_symlinks: true
+samba_log: /var/log/samba.log
+
 samba_users:
   - name: stevenh
     password: hnevets
@@ -133,6 +51,9 @@ samba_users:
   - name: robin
     password: testpassword
 
+samba_shares_root: /srv/shares # pas naam aan adhv testscript
+
+
 samba_shares:
   - name: management
     group: management
@@ -142,4 +63,5 @@ samba_shares:
     group: public
     write_list: +public
     public: yes
+    setype: public_content_t
 
