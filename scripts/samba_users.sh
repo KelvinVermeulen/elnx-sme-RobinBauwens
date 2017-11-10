@@ -6,6 +6,7 @@ IFS=,
 sed 1d $INPUT | while read Number GivenName Surname Username Title Unit Gender StreetAddress Postcode City Country CountryFull TelephoneNumber Birthday
 do
 	echo "  - name: $Username"
-	echo "    password: $(echo $Username | rev)"
+	#echo "    password: $(echo $Username | rev)"
+	echo "    password: $(echo $Username)"
 done < $INPUT
 IFS=$OLDIFS

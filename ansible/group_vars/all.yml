@@ -38,91 +38,89 @@ rhbase_users: # Let op: moet samengevoegd zijn met nieuwe samba-gebruikers!
     - public
 - name: stevenh
   comment: 'Steven Hermans CEO'
-  password: $1$2$3Hknh3Zv5jXw2lQd0rB9C1
+  password: $1$2$Nqs/5wUDo1DeH1JIzFrqG0
   shell: /sbin/nologin
   groups:
     - management
     - public
 - name: stevenv
   comment: 'Steven Van Daele Software Engineer'
-  password: $1$2$XDDIk1b5qQ.qvRZRZVUUW.
+  password: $1$2$2344sFykEbh7ijTNavdpw1
   shell: /sbin/nologin
   groups:
     - technical
     - public
 - name: leend
   comment: 'Leen De Meester Software Engineer'
-  password: $1$2$IPms60oxG32Huvxg2T81/1
+  password: $1$2$VZKcJJrm6A0di9j/AjgV01
   shell: /sbin/nologin
   groups:
     - technical
     - public
 - name: svena
   comment: 'Sven Aerens Account Manager'
-  password: $1$2$WuI5zwbVxRyU72OcbXmY01
+  password: $1$2$geW8IVwcvzRwZEQwIqt13.
   shell: /sbin/nologin
   groups:
     - sales
     - public
 - name: nehirb
   comment: 'Nehir Başar System Engineer'
-  password: $1$2$xogByWWY8QmbhNXItvYmu1
-  shell: /sbin/nologin
+  password: $1$2$vujMYzQrzVl7uPvDqP9mD/
   groups:
     - it
     - public
 - name: alexanderd
   comment: 'Alexander De Coninck Software Engineer'
-  password: $1$2$OcARfrWsX6pkDAHwnuFWH0
+  password: $1$2$a2Vqee2QSKR3Iy6xjM/Gx1
   shell: /sbin/nologin
   groups:
     - technical
     - public
 - name: krisv
   comment: 'Kris Vanhaverbeke CFO'
-  password: $1$2$4YB4B9Y45VzzgoPuIRRr0/
+  password: $1$2$MTaRBA5jtdU5zdtUugj9a/
   shell: /sbin/nologin
   groups:
     - management
     - public
 - name: benoitp
   comment: 'Benoit Pluquet Account Manager'
-  password: $1$2$yZze9sY0NJeyM6aq6vhBH1
+  password: $1$2$XoTDU5bhIw4gMy6jcUnfX/
   shell: /sbin/nologin
   groups:
     - sales
     - public
 - name: anc
   comment: 'An Coppens Graphical Designer'
-  password: $1$2$5aOM.4SbVUZDRvAgTo85i/
+  password: $1$2$weu8RAIae3XZLeaeRPxhm/
   shell: /sbin/nologin
   groups:
     - technical
     - public
 - name: elenaa
   comment: 'Elena Andreev Office Manager'
-  password: $1$2$IH2L4bqaIS6xzMDhwvBvH0
+  password: $1$2$yh8paOlAqh88M4lIQsnT8.
   shell: /sbin/nologin
   groups:
     - management
     - public
 - name: evyt
   comment: 'Evy Tilleman Technical Writer'
-  password: $1$2$JNExxZYabPqA104yz5kjK/
+  password: $1$2$emDlgTj6nh7qxuhCnVJqC1
   shell: /sbin/nologin
   groups:
     - technical
     - public
 - name: christophev
   comment: 'Christophe Van der Meersche System Administrator'
-  password: $1$2$/KBaOATS3EmS/MyDLkrE4/
-  shell: /sbin/nologin
+  password: $1$2$qHnRZmB9Qj/Zg5QJhyl7p0
   groups:
     - it
     - public
 - name: stefaanv
   comment: 'Stefaan Vernimmen Support Specialist'
-  password: $1$2$SXsNS87mEcx5B2nICAfp9.
+  password: $1$2$ZizXJ500tUJ1obsYNYhe51
   shell: /sbin/nologin
   groups:
     - technical

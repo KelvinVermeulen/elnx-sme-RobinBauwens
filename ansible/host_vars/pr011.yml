@@ -11,33 +11,33 @@ samba_load_printers: false
 samba_create_varwww_symlinks: true
 samba_log: /var/log/samba.log
 
-samba_users:
+samba_users: # paswoorden moeten identiek zijn als naam zelf, niet reverse (zie testscript)
   - name: stevenh
-    password: hnevets
+    password: stevenh
   - name: stevenv
-    password: vnevets
+    password: stevenv
   - name: leend
-    password: dneel
+    password: leend
   - name: svena
-    password: anevs
+    password: svena
   - name: nehirb
-    password: brihen
+    password: nehirb
   - name: alexanderd
-    password: drednaxela
+    password: alexanderd
   - name: krisv
-    password: vsirk
+    password: krisv
   - name: benoitp
-    password: ptioneb
+    password: benoitp
   - name: anc
-    password: cna
+    password: anc
   - name: elenaa
-    password: aanele
+    password: elenaa
   - name: evyt
-    password: tyve
+    password: evyt
   - name: christophev
-    password: vehpotsirhc
+    password: christophev
   - name: stefaanv
-    password: vnaafets
+    password: stefaanv
   - name: robin
     password: testpassword
 
@@ -73,6 +73,7 @@ samba_shares:
     group: public
     write_list: +public
     public: yes
+    #guest_ok: yes
     setype: public_content_t
 
 
