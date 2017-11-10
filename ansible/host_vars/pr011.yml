@@ -42,11 +42,11 @@ samba_shares:
     write_list: +it
     valid_users: +it, +management
     #setype: public_content_rw_t
-
   - name: public
     group: public
     write_list: +public
-    #public: yes -> Moet op "no" staan, enkel public voor bestaande gebruikers
+    #valid_users: +public
+    #public: yes #-> Moet op "no" staan, enkel public voor bestaande gebruikers
     #setype: public_content_t
 
 
@@ -55,12 +55,13 @@ samba_shares:
     # smbclient //FILES/technical -Ualexanderd%drednaxela
 
 # eventueel verwijderen?
-rhbase_users: # Ansible neemt meest specifieke, dus zet deze hierin, als enkel `robin` erinstaat gaat hij alleen maar deze nemen en de anderen die bij `all.yml` zouden zitten worden er niet bijgenomen.
+rhbase_users: # Ansible neemt meest specifieke, dus zet deze hierin, als enkel `robin` er in staat gaat hij alleen maar deze nemen en de anderen die bij `all.yml` zouden zitten worden er niet bijgenomen.
 - name: robin
   password: '$1$1$I6mqx3WU1uVbUDOgIcxuk/'
   groups:
     - wheel
     - it
+    - public # Niet vergeten!
 - name: stevenh
   comment: 'Steven Hermans CEO'
   password: $1$2$Nqs/5wUDo1DeH1JIzFrqG0
@@ -153,8 +154,6 @@ rhbase_users: # Ansible neemt meest specifieke, dus zet deze hierin, als enkel `
     - technical
     - public
 
-
-
 samba_users: # paswoorden moeten identiek zijn als naam zelf, niet reverse (zie testscript)
   - name: stevenh
     password: stevenh
@@ -184,3 +183,13 @@ samba_users: # paswoorden moeten identiek zijn als naam zelf, niet reverse (zie 
     password: stefaanv
   - name: robin
     password: testpassword
+
+
+    # VSFTPD
+rhbase_install_packages:
+  - vsftpd
+  - ftp
+rhbase_start_services:
+  - vsftpd
+rhbase_firewall_allow_services:
+  - ftp
