@@ -67,6 +67,7 @@ rhbase_users: # Let op: moet samengevoegd zijn met nieuwe samba-gebruikers!
 - name: nehirb
   comment: 'Nehir Başar System Engineer'
   password: $1$2$vujMYzQrzVl7uPvDqP9mD/
+  shell: /bin/bash
   groups:
     - it
     - public
@@ -115,6 +116,7 @@ rhbase_users: # Let op: moet samengevoegd zijn met nieuwe samba-gebruikers!
 - name: christophev
   comment: 'Christophe Van der Meersche System Administrator'
   password: $1$2$qHnRZmB9Qj/Zg5QJhyl7p0
+  shell: /bin/bash
   groups:
     - it
     - public

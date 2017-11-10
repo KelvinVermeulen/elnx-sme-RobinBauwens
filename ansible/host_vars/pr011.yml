@@ -11,36 +11,6 @@ samba_load_printers: false
 samba_create_varwww_symlinks: true
 samba_log: /var/log/samba.log
 
-samba_users: # paswoorden moeten identiek zijn als naam zelf, niet reverse (zie testscript)
-  - name: stevenh
-    password: stevenh
-  - name: stevenv
-    password: stevenv
-  - name: leend
-    password: leend
-  - name: svena
-    password: svena
-  - name: nehirb
-    password: nehirb
-  - name: alexanderd
-    password: alexanderd
-  - name: krisv
-    password: krisv
-  - name: benoitp
-    password: benoitp
-  - name: anc
-    password: anc
-  - name: elenaa
-    password: elenaa
-  - name: evyt
-    password: evyt
-  - name: christophev
-    password: christophev
-  - name: stefaanv
-    password: stefaanv
-  - name: robin
-    password: testpassword
-
 samba_shares_root: /srv/shares # pas naam aan adhv testscript
 
 samba_shares:
@@ -78,12 +48,136 @@ samba_shares:
 
 
 
-    # smbclient -L localhost
+    # smbclient -L //FILES/
     # smbclient //FILES/technical -Ualexanderd%drednaxela
 
-rhbase_users: # Ansible neemt meest specifieke, dus zet deze hierin
+
+rhbase_users: # Ansible neemt meest specifieke, dus zet deze hierin, als enkel `robin` erinstaat gaat hij alleen maar deze nemen en de anderen die bij `all.yml` zouden zitten worden er niet bijgenomen.
 - name: robin
   password: '$1$1$I6mqx3WU1uVbUDOgIcxuk/'
   groups:
     - wheel
     - it
+- name: stevenh
+  comment: 'Steven Hermans CEO'
+  password: $1$2$Nqs/5wUDo1DeH1JIzFrqG0
+  shell: /sbin/nologin
+  groups:
+    - management
+    - public
+- name: stevenv
+  comment: 'Steven Van Daele Software Engineer'
+  password: $1$2$2344sFykEbh7ijTNavdpw1
+  shell: /sbin/nologin
+  groups:
+    - technical
+    - public
+- name: leend
+  comment: 'Leen De Meester Software Engineer'
+  password: $1$2$VZKcJJrm6A0di9j/AjgV01
+  shell: /sbin/nologin
+  groups:
+    - technical
+    - public
+- name: svena
+  comment: 'Sven Aerens Account Manager'
+  password: $1$2$geW8IVwcvzRwZEQwIqt13.
+  shell: /sbin/nologin
+  groups:
+    - sales
+    - public
+- name: nehirb
+  comment: 'Nehir Başar System Engineer'
+  password: $1$2$vujMYzQrzVl7uPvDqP9mD/
+  shell: /bin/bash
+  groups:
+    - it
+    - public
+- name: alexanderd
+  comment: 'Alexander De Coninck Software Engineer'
+  password: $1$2$a2Vqee2QSKR3Iy6xjM/Gx1
+  shell: /sbin/nologin
+  groups:
+    - technical
+    - public
+- name: krisv
+  comment: 'Kris Vanhaverbeke CFO'
+  password: $1$2$MTaRBA5jtdU5zdtUugj9a/
+  shell: /sbin/nologin
+  groups:
+    - management
+    - public
+- name: benoitp
+  comment: 'Benoit Pluquet Account Manager'
+  password: $1$2$XoTDU5bhIw4gMy6jcUnfX/
+  shell: /sbin/nologin
+  groups:
+    - sales
+    - public
+- name: anc
+  comment: 'An Coppens Graphical Designer'
+  password: $1$2$weu8RAIae3XZLeaeRPxhm/
+  shell: /sbin/nologin
+  groups:
+    - technical
+    - public
+- name: elenaa
+  comment: 'Elena Andreev Office Manager'
+  password: $1$2$yh8paOlAqh88M4lIQsnT8.
+  shell: /sbin/nologin
+  groups:
+    - management
+    - public
+- name: evyt
+  comment: 'Evy Tilleman Technical Writer'
+  password: $1$2$emDlgTj6nh7qxuhCnVJqC1
+  shell: /sbin/nologin
+  groups:
+    - technical
+    - public
+- name: christophev
+  comment: 'Christophe Van der Meersche System Administrator'
+  password: $1$2$qHnRZmB9Qj/Zg5QJhyl7p0
+  shell: /bin/bash
+  groups:
+    - it
+    - public
+- name: stefaanv
+  comment: 'Stefaan Vernimmen Support Specialist'
+  password: $1$2$ZizXJ500tUJ1obsYNYhe51
+  shell: /sbin/nologin
+  groups:
+    - technical
+    - public
+
+
+
+samba_users: # paswoorden moeten identiek zijn als naam zelf, niet reverse (zie testscript)
+  - name: stevenh
+    password: stevenh
+  - name: stevenv
+    password: stevenv
+  - name: leend
+    password: leend
+  - name: svena
+    password: svena
+  - name: nehirb
+    password: nehirb
+  - name: alexanderd
+    password: alexanderd
+  - name: krisv
+    password: krisv
+  - name: benoitp
+    password: benoitp
+  - name: anc
+    password: anc
+  - name: elenaa
+    password: elenaa
+  - name: evyt
+    password: evyt
+  - name: christophev
+    password: christophev
+  - name: stefaanv
+    password: stefaanv
+  - name: robin
+    password: testpassword
