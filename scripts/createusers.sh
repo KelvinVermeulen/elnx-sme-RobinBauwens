@@ -8,7 +8,7 @@ do
 	pass=$(echo $Username | rev)
         echo "- name: $Username"
         echo "  comment: '$GivenName $Surname $Title'"
-        echo "  password: $(openssl passwd -salt 2 -1 $City)"
+        echo "  password: $(openssl passwd -salt 2 -1 $pass)"
         echo "  shell: /sbin/nologin"
         echo "  groups:"
 	echo "    - $Unit"

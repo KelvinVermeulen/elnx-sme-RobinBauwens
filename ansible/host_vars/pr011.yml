@@ -50,9 +50,39 @@ samba_shares:
     valid_users: +management
     group: management
     setype: public_content_rw_t
+  - name: technical
+    group: technical
+    write_list: +technical
+    valid_users: +technical
+    group: technical
+    setype: public_content_rw_t
+  - name: sales
+    group: sales
+    write_list: +sales
+    valid_users: +sales
+    group: sales
+    setype: public_content_rw_t
+  - name: it
+    group: it
+    write_list: +it
+    valid_users: +it
+    group: it
+    setype: public_content_rw_t
 
   - name: public
     group: public
     write_list: +public
     public: yes
     setype: public_content_t
+
+
+
+    # smbclient -L localhost
+    # smbclient //FILES/technical -Ualexanderd%drednaxela
+
+rhbase_users: # Ansible neemt meest specifieke, dus zet deze hierin
+- name: robin
+  password: '$1$1$I6mqx3WU1uVbUDOgIcxuk/'
+  groups:
+    - wheel
+    - it
