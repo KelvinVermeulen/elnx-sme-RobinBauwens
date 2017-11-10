@@ -8,8 +8,8 @@
 # Variables
 #
 sut_ip=172.16.0.11   # IP of the System Under Test
-admin_user=bert      # User with admin privileges
-admin_password=bert
+admin_user=robin      # User with admin privileges
+admin_password=testpassword
 testfile="tst${RANDOM}"
 
 # Useful return codes
@@ -117,7 +117,7 @@ assert_no_write_access() {
 # Configuration
 
 @test 'VSFTPD configuration should be syntactically correct' {
-  # skip # slow test
+  skip # slow test
   run sudo vsftpd -olisten=NO /etc/vsftpd/vsftpd.conf
   [ -z "${output}" ]
 }

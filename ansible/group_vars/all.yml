@@ -35,7 +35,7 @@ rhbase_users: # Let op: moet samengevoegd zijn met nieuwe samba-gebruikers!
   groups:
     - wheel
     - it
-    - public
+    - public # niet vergeten!
 - name: stevenh
   comment: 'Steven Hermans CEO'
   password: $1$2$Nqs/5wUDo1DeH1JIzFrqG0
@@ -127,5 +127,3 @@ rhbase_users: # Let op: moet samengevoegd zijn met nieuwe samba-gebruikers!
   groups:
     - technical
     - public
-
-# TODO: toevoegen 'public' voor iedere gebruiker
