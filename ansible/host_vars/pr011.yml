@@ -2,7 +2,6 @@
 
 # Zet gewone users in all.yml
 
-
 # samba
 samba_netbios_name: FILES
 samba_workgroup: AVALON
@@ -44,15 +43,16 @@ samba_users:
 
 samba_shares_root: /srv/shares # pas naam aan adhv testscript
 
-
 samba_shares:
   - name: management
     group: management
     write_list: +management
+    valid_users: +management
+    group: management
+    setype: public_content_rw_t
 
   - name: public
     group: public
     write_list: +public
     public: yes
     setype: public_content_t
-
