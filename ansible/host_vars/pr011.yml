@@ -1,6 +1,7 @@
 ---
 
 # Zet gewone users in all.yml
+# Opmerking: het kan zijn dat je eens vagrant halt en up van pr011 moet doen zodat de firewall (samba-regel) effectief toegevoegd wordt
 
 # samba
 samba_netbios_name: FILES
@@ -13,45 +14,47 @@ samba_log: /var/log/samba.log
 
 samba_shares_root: /srv/shares # pas naam aan adhv testscript
 
+
+# valid_users = read
+# write_list = write
 samba_shares:
   - name: management
     group: management
     write_list: +management
-    valid_users: +management
+    valid_users: +management, 
     group: management
-    setype: public_content_rw_t
+    #setype: public_content_rw_t   -> Hoeft niet gespecifieerd te zijn
   - name: technical
     group: technical
     write_list: +technical
-    valid_users: +technical
+    #valid_users: +technical, +public #eventueel alle andere groepen expliciet refereren
+    # valid users mag hier niet bij staan!
     group: technical
-    setype: public_content_rw_t
+    #setype: public_content_rw_t
   - name: sales
     group: sales
     write_list: +sales
-    valid_users: +sales
+    valid_users: +sales, +management
     group: sales
-    setype: public_content_rw_t
+    #setype: public_content_rw_t
   - name: it
     group: it
     write_list: +it
-    valid_users: +it
-    group: it
-    setype: public_content_rw_t
+    valid_users: +it, +management
+    #setype: public_content_rw_t
 
   - name: public
     group: public
     write_list: +public
-    public: yes
-    #guest_ok: yes
-    setype: public_content_t
+    #public: yes -> Moet op "no" staan, enkel public voor bestaande gebruikers
+    #setype: public_content_t
 
 
 
     # smbclient -L //FILES/
     # smbclient //FILES/technical -Ualexanderd%drednaxela
 
-
+# eventueel verwijderen?
 rhbase_users: # Ansible neemt meest specifieke, dus zet deze hierin, als enkel `robin` erinstaat gaat hij alleen maar deze nemen en de anderen die bij `all.yml` zouden zitten worden er niet bijgenomen.
 - name: robin
   password: '$1$1$I6mqx3WU1uVbUDOgIcxuk/'
