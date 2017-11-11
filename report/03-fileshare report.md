@@ -26,6 +26,9 @@ Installeren van Samba voor de (publieke) fileserver met Vagrant en Ansible.
 
 ## Procedure/Documentation
 
+**Opmerking**: pas eerst het testscript `samba.bats` aan adhv (o.a.) het gebruikte adminaccount (`robin` met paswoord `testpassword`) en eventuele aanpassingen zoals servernaam en workgroup.
+![samba.bats](img/03/test.PNG)
+
 ### Samba
 1. We voegen `pr011` toe bij `site.yml`, we geven deze de rollen van `rh-base` en `samba`. ![Git Bash](img/03/1.PNG)
 2. Hierna voegen we `pr011` ook toe bij `vagrant-hosts.yml`, we geven de server `172.16.0.11` als IP-adres. ![Git Bash](img/03/2.PNG)
