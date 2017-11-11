@@ -48,12 +48,8 @@ samba_shares:
     #public: yes #-> Moet op "no" staan, enkel public voor bestaande gebruikers
     #setype: public_content_t
 
-
-
     # smbclient -L //FILES/
     # smbclient //FILES/technical -Ualexanderd%drednaxela
-
-
 
 samba_users: # paswoorden moeten identiek zijn als naam zelf, niet reverse (zie testscript)
   - name: stevenh

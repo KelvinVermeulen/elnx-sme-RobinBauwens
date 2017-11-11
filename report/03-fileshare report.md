@@ -7,23 +7,26 @@ Installeren van Samba voor de (publieke) fileserver met Vagrant en Ansible.
 
 ## Test plan
 
-How are you going to verify that the requirements are met? The test plan is a detailed checklist of actions to take, including the expected result for each action, in order to prove your system meets the requirements. Part of this is running the automated tests, but it is not always possible to validate *all* requirements throught these tests.
+**We testen telkens adhv 1 gebruiker (hier: meestal `alexanderd`)**
 
-**We testen telkens adhv 1 gebruiker (hier `alexanderd`)**
+- Alle gebruikers die niet tot `it`  behoren mogen geen shell-toegang krijgen en alle `it`-gebruikers moeten wel toegang hebben tot de shell.
 - De gebruikers moeten toegang hebben tot de shares waarop ze effectief lees- en/of schrijfrechten hebben.
-    + We loggen in als `alexanderd` (met paswoord `alexanderd`) en met `smbclient //FILES/technical -Ualexanderd%alexanderd` moeten we leesrechten krijgen, hierna maken we een map aan (binnen de Samba-omgeving) om de schrijfrechten te testen met `mkdir testpermissies`.
-- We loggen in als een andere gebruiker en we moeten kunnen zien wat er allemaal in de homedirectory zit van de andere gebruiker (via `smbclient`).
-    + We loggen in als `alexanderd` en met `smbclient //files/robin -Urobin%testpassword` moeten we de inhoud kunnen zien van admingebruiker `robin` (aanpassen is niet mogelijk).
+    + We loggen in (in Samba) als `alexanderd` (met paswoord `alexanderd`) en met `smbclient //FILES/technical -Ualexanderd%alexanderd` moeten we leesrechten krijgen, hierna maken we een map aan (binnen de Samba-omgeving) om de schrijfrechten te testen met `mkdir testpermissies`.
+- Homedirectories van andere gebruikers moeten zichtbaar zijn (via `smbclient`).
+    + We loggen in als `nehirb` en met `smbclient //files/robin -Urobin%testpassword` moeten we de inhoud kunnen zien van admingebruiker `robin` (aanpassen is niet mogelijk).
 - De gebruikers dienen lid te zijn van de groepen/business units waartoe ze behoren.
     + We kunnen dit testen door `groups alexanderd` in te voeren en kijken of deze o.a. lid is van `technical` en `public`.
-- Alle testscripts dienen te slagen (zie afbeelding).
 - Een willekeurige gebruiker kan bestanden van andere gebruikers (binnen die business unit) aanpassen.
     + We loggen in als `alexanderd` en met `smbclient //FILES/technical -Ualexanderd%alexanderd` maken we een mapje aan met `mkdir testBusUnit`, vervolgens loggen we in als `anc` (paswoord `anc`) en we loggen ook in op de samba-server met `smbclient //FILES/technical -Uanc%anc`. Hierna kan gebruiker `anc` de mapnaam wijzigen en toegang krijgen binnen deze directory/map.
 - Iedere gebruiker kan zijn eigen homefolder aanpassen op de fileserver.
-    + We loggen in als `robin` en we kunnen onze eigen homedirectory aanpassen, te testen via `su - robin` (paswoord:testpaswoord) en vervolgens `smbclient //FILES/robin -Urobin%testpaswoord`, hierna kunnen we bestanden toevoegen.
+    + We loggen in als `robin` en we kunnen onze eigen homedirectory aanpassen, te testen via `su - robin` (paswoord:testpaswoord) en vervolgens `smbclient //FILES/robin -Urobin%testpassword`, hierna kunnen we bestanden toevoegen.
+- Alle shares moeten aanwezig zijn (incl. eigen homedir).
+    + We geven volgend commando in: `smbclient -L //FILES/`.
+- Alle testscripts dienen te slagen (zie afbeelding).
 
 ## Procedure/Documentation
 
+### Samba
 1. We voegen `pr011` toe bij `site.yml`, we geven deze de rollen van `rh-base` en `samba`. ![Git Bash](img/03/1.PNG)
 2. Hierna voegen we `pr011` ook toe bij `vagrant-hosts.yml`, we geven de server `172.16.0.11` als IP-adres. ![Git Bash](img/03/2.PNG)
 3. Voor deze role hebben we enkele gebruikers en groepen nodig, deze voegen we toe bij de `rh-base`-role. Ook moeten de paswoorden geëncrypteerd zijn, dit doen we op dezelfde manier als in de eerste opdracht. Om het werk te vergemakkelijken heb ik een script geschreven om automatisch de gebruikers te genereren door het uitlezen van het .csv-bestand. De uitvoer van het script kan je direct kopiëren en plakken naar `pr011.yml` (behalve `shell` bij `it`). Het paswoord van de gebruikers is telkens de gebruikersnaam van de persoon.
@@ -75,12 +78,26 @@ IFS=$OLDIFS
 
 ## Test report
 
-The test report is a transcript of the execution of the test plan, with the actual results. Significant problems you encountered should also be mentioned here, as well as any solutions you found. The test report should clearly prove that you have met the requirements.
+### Samba
+- Alle gebruikers die niet tot `it`  behoren mogen geen shell-toegang krijgen.
+![Non-it gebruikers geen toegang tot shell](img/03/11.PNG)
+- De gebruikers moeten toegang hebben tot de shares waarop ze effectief lees- en/of schrijfrechten hebben.
+![Toegang shares](img/03/12.PNG)
+- Homedirectories van andere gebruikers moeten zichtbaar zijn (via `smbclient`).![Toegang homedir](img/03/13.PNG)
+- De gebruikers dienen lid te zijn van de groepen/business units waartoe ze behoren.![Lid groepen/BU](img/03/14.PNG)
+- Een willekeurige gebruiker kan bestanden van andere gebruikers (binnen die business unit) aanpassen.![Aanpassen directories andere gebruikers binnen dezelfde groep/BU](img/03/15.PNG)
+- Iedere gebruiker kan zijn eigen homefolder aanpassen op de fileserver.
+![Aanpassen homedirectory](img/03/16.PNG)
+- Alle shares moeten aanwezig zijn (incl. eigen homedir).
+![Alle shares](img/03/17.PNG)
+- Alle testscripts dienen te slagen (zie afbeelding).
+![Testscript success](img/03/18.PNG)
+
+### FTP
 
 
-
-    # smbclient -L //FILES/
-    # smbclient //FILES/technical -Ualexanderd%drednaxela
+- Pas op met het herhalen van variabelen, de meest specifieke worden telkens genomen, alle "algemeen gedefineerde variabelen (zie `all.yml`)" worden dan genegeerd!
+- Alle gebruikers dienen aangemaakt te worden in `all.yml`.
 
 ## Resources
 
