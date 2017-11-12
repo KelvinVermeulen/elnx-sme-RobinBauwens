@@ -26,8 +26,9 @@ Installeren van Samba voor de (publieke) fileserver met Vagrant en Ansible.
 
 ## Procedure/Documentation
 
-**Opmerking**: pas eerst het testscript `samba.bats` aan adhv (o.a.) het gebruikte adminaccount (`robin` met paswoord `testpassword`) en eventuele aanpassingen zoals servernaam en workgroup.
+**Opmerking**: pas eerst het testscript `samba.bats` en `vsftp.bats` aan adhv (o.a.) het gebruikte adminaccount (`robin` met paswoord `testpassword`) en eventuele aanpassingen zoals servernaam en workgroup.
 ![samba.bats](img/03/test.PNG)
+![samba.bats](img/03/test2.PNG)
 
 ### Samba
 1. We voegen `pr011` toe bij `site.yml`, we geven deze de rollen van `rh-base` en `samba`. ![Git Bash](img/03/1.PNG)
@@ -79,6 +80,17 @@ IFS=$OLDIFS
 9. Hierna voegen we de samba shares toe van alle business units met alle rechten die hierbij horen. ![Samba shares pr011.yml](img/03/9.PNG)
 10. Ten slotte kunnen we ook de samba gebruikers aanmaken: voeg telkens de `name` en `password` toe (paswoord is telkens de gebruikersnaam): ![Samba users pr011.yml](img/03/10.PNG)
 
+### FTP
+Voeg eerst de role `vsftpd` toe aan `site.yml` en voer daarna het script `role-deps.sh` uit in Git Bash.
+```
+- hosts: pr011
+  roles:
+    - bertvv.rh-base
+    - bertvv.samba
+    - bertvv.vsftpd
+```
+
+
 ## Test report
 
 ### Samba
@@ -98,7 +110,7 @@ IFS=$OLDIFS
 
 ### FTP
 
-
+### Extra
 - Pas op met het herhalen van variabelen, de meest specifieke worden telkens genomen, alle "algemeen gedefineerde variabelen (zie `all.yml`)" worden dan genegeerd!
 - Alle gebruikers dienen aangemaakt te worden in `all.yml`.
 
@@ -112,3 +124,6 @@ List all sources of useful information that you encountered while completing thi
 - [Config SMB](https://www.samba.org/samba/docs/man/manpages-3/smb.conf.5.html)
 - [Role SMB](https://github.com/bertvv/ansible-role-samba)
 - [Role VSFTPD](https://github.com/bertvv/ansible-role-vsftpd)
+- [Manpage config VSFTPD.CONF](http://vsftpd.beasts.org/vsftpd_conf.html)
+- [VSFTPD example](https://askubuntu.com/questions/575523/how-to-setup-virtual-users-for-vsftpd-with-access-to-a-specific-sub-directory)
+- [VSFTPD example 2](https://github.com/samvera-deprecated/hydradam/wiki/Sample-vsftpd.conf)

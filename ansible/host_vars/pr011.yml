@@ -100,3 +100,12 @@ rhbase_firewall_allow_services:
   - ftp
   - dns
   - samba
+
+vsftpd_anonymous_enable: no
+vsftpd_options:
+  - key: delete_failed_uploads
+    value: 'YES'
+
+
+
+# sudo cat /etc/vsftpd/vsftpd.conf

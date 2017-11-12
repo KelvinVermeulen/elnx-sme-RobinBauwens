@@ -38,5 +38,6 @@
   roles:
     - bertvv.rh-base
     - bertvv.samba
+    - bertvv.vsftpd
 
 
