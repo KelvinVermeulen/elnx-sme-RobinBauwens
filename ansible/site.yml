@@ -17,7 +17,6 @@
         #  dest: "/etc/pki/tls/private/ca.csr" # Niet nodig
 
   become: true
-
   roles:
     - bertvv.rh-base
     - bertvv.mariadb
@@ -39,5 +38,27 @@
     - bertvv.rh-base
     - bertvv.samba
     - bertvv.vsftpd
+
+ # management moet toegang krijgen (rx) tot IT en Sales
+  post_tasks: # zet post tasks bij de juiste host
+  - name: ACL IT
+    acl:
+      path: /srv/shares/it
+      entity: management
+      etype: group
+      permissions: rx
+      state: present
+  - name: ACL Sales
+    acl: 
+      path: /srv/shares/sales
+      entity: management
+      etype: group
+      permissions: rx
+      state: present
+
+
+
+  # https://docs.ansible.com/ansible/latest/acl_module.html
+
 
 

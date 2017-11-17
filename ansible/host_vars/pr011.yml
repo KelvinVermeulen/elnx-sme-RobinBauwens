@@ -102,7 +102,7 @@ rhbase_start_services:
   - vsftpd
 rhbase_firewall_allow_services:
   - ftp
-  - dns
+  - dns # kan eventueel weggelaten worden
   - samba
 
 
@@ -115,7 +115,13 @@ vsftpd_options:
   - key: delete_failed_uploads
     value: 'YES'
 
+
+
+
 # Zie ook directory_mode in samba (voor VSFTP)
+
+
+
 
 
 # sudo cat /etc/vsftpd/vsftpd.conf
