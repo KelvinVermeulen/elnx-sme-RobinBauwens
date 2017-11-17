@@ -90,7 +90,7 @@ samba_users: # paswoorden moeten identiek zijn als naam zelf, niet reverse (zie 
     # VSFTPD
 rhbase_install_packages:
   - vsftpd
-  - ftp
+#  - ftp
   - tree
   - bash-completion
   - git
@@ -102,7 +102,7 @@ rhbase_start_services:
   - vsftpd
 rhbase_firewall_allow_services:
   - ftp
-  - dns # kan eventueel weggelaten worden
+#  - dns # kan eventueel weggelaten worden
   - samba
 
 vsftpd_local_root: /srv/shares # niet vergeten een plaats te geven (zelfde map als samba)! Geen anon_users

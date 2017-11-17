@@ -55,3 +55,5 @@
       etype: group
       permissions: rx
       state: present
+- hosts: pr001
+  roles: bertvv.dhcp

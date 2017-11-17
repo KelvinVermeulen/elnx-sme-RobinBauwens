@@ -180,3 +180,4 @@ vsftpd_options:
 - [VSFTPD example](https://askubuntu.com/questions/575523/how-to-setup-virtual-users-for-vsftpd-with-access-to-a-specific-sub-directory)
 - [VSFTPD example 2](https://github.com/samvera-deprecated/hydradam/wiki/Sample-vsftpd.conf)
 - [ACL Ansible](https://docs.ansible.com/ansible/latest/acl_module.html)
+- Boek Jeff Geerling p312 (permissies)
