@@ -205,7 +205,7 @@ assert_group_write_dir() {
 # Read / write access to shares
 @test 'read access for share ‘public’' {
   #                      Share      User          Password
-  skip
+  
   assert_read_access     public     alexanderd    alexanderd
   assert_read_access     public     anc           anc
   assert_read_access     public     benoitp       benoitp
@@ -223,7 +223,7 @@ assert_group_write_dir() {
 }
 
 @test 'write access for share ‘public’' {
-  skip
+  
   #                      Share      User          Password
   assert_write_access    public     alexanderd    alexanderd
   assert_write_access    public     anc           anc
@@ -242,7 +242,7 @@ assert_group_write_dir() {
 }
 
 @test 'read access for share ‘management’' {
-  skip
+  
   #                      Share      User          Password
   assert_no_read_access  management alexanderd    alexanderd
   assert_no_read_access  management anc           anc
@@ -261,7 +261,7 @@ assert_group_write_dir() {
 }
 
 @test 'write access for share ‘management’' {
-  skip
+  
   #                      Share      User          Password
   assert_no_write_access management alexanderd    alexanderd
   assert_no_write_access management anc           anc
@@ -280,7 +280,7 @@ assert_group_write_dir() {
 }
 
 @test 'read access for share ‘technical’' {
-  skip
+  
   #                      Share      User          Password
   assert_read_access     technical  alexanderd    alexanderd
   assert_read_access     technical  anc           anc
@@ -299,7 +299,7 @@ assert_group_write_dir() {
 }
 
 @test 'write access for share ‘technical’' {
-  skip
+  
   #                      Share      User          Password
   assert_write_access    technical  alexanderd    alexanderd
   assert_write_access    technical  anc           anc
@@ -318,7 +318,7 @@ assert_group_write_dir() {
 }
 
 @test 'read access for share ‘sales’' {
-  skip
+  
   #                      Share      User          Password
   assert_no_read_access  sales      alexanderd    alexanderd
   assert_no_read_access  sales      anc           anc
@@ -337,7 +337,7 @@ assert_group_write_dir() {
 }
 
 @test 'write access for share ‘sales’' {
-  skip
+  
   #                      Share      User          Password
   assert_no_write_access sales      alexanderd    alexanderd
   assert_no_write_access sales      anc           anc
@@ -356,7 +356,7 @@ assert_group_write_dir() {
 }
 
 @test 'read access for share ‘it’' {
-  skip
+  
   #                      Share      User          Password
   assert_no_read_access  it         alexanderd    alexanderd
   assert_no_read_access  it         anc           anc
@@ -375,7 +375,7 @@ assert_group_write_dir() {
 }
 
 @test 'write access for share ‘it’' {
-  skip
+  
   #                      Share      User          Password
   assert_no_write_access it         alexanderd    alexanderd
   assert_no_write_access it         anc           anc
