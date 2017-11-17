@@ -35,6 +35,7 @@
 
 - hosts: pr001
   roles: 
+    - bertvv.rh-base
     - bertvv.dhcp
 
 - hosts: pr011

@@ -11,6 +11,19 @@ How are you going to verify that the requirements are met? The test plan is a de
 
 ## Procedure/Documentation
 
+1. Voeg de role `bertvv.dhcp` toe in `site.yml`:
+```
+- hosts: pr001
+  roles:
+    - bertvv.rh-base
+    - bertvv.dhcp
+```
+2. Voer dan script `role-deps.sh` uit op je hostmachine. Voeg ook volgende code toe bij `vagrant-hosts.yml`:
+```
+- name: pr001
+  ip: 172.16.0.2
+```
+
 Describe *in detail* how you completed the assignment, with main focus on the "manual" work. It is of course not necessary to copy/paste your code in this document, but you can refer to it with a hyperlink.
 
 Make sure to write clean Markdown code, so your report looks good and is clearly structured on Github.
