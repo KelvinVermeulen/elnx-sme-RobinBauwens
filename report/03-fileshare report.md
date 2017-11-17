@@ -205,17 +205,22 @@ vsftpd_options:
  *Afbeelding 6 en 7 zijn zelfde maar met andere gebruikers.*
 
 - Alle shares moeten aanwezig zijn (incl. eigen homedir).
-    + We loggen in via FileZilla en bekijken de inhoud van `/home` en `/shares`
+    + We loggen in via FileZilla en bekijken de inhoud van `/home` en `/srv/shares`
     ![FileZilla](img/03/ftp4.PNG)
     ![FileZilla](img/03/ftp8.PNG)
 
 - Alle testscripts dienen te slagen (zie afbeelding).
+![FileZilla](img/03/testscript-ftp.PNG)
 
+**Opmerking:** je kan FTP ook testen vanuit Windows Explorer met `ftp://username@server`. Je kan wel `srv/shares` niet bereiken op deze manier.
+![FileZilla](img/03/ftp9.PNG)
+![FileZilla](img/03/ftp10.PNG)
 
 ### Extra
 - Pas op met het herhalen van variabelen, de meest specifieke worden telkens genomen, alle "algemeen gedefineerde variabelen (zie `all.yml`)" worden dan genegeerd!
 - Alle gebruikers dienen aangemaakt te worden in `all.yml`.
 - Vergeet niet om de share ook te specifiëren bij VSFTP, dit moet dezelfde directory zijn als bij Samba.
+
 
 ## Resources
 
