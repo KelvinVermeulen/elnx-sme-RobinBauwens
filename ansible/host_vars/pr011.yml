@@ -105,6 +105,10 @@ rhbase_firewall_allow_services:
   - dns
   - samba
 
+
+vsftpd_local_root: /srv/shares # niet vergeten een plaats te geven (zelfde map als samba)! Geen anon_users
+
+
 vsftpd_anonymous_enable: no
 vsftpd_local_enable: true
 vsftpd_options:
