@@ -24,6 +24,10 @@ How are you going to verify that the requirements are met? The test plan is a de
   ip: 172.16.0.2
 ```
 
+Gebruik Adapter 6 2 keer
+
+
+
 Describe *in detail* how you completed the assignment, with main focus on the "manual" work. It is of course not necessary to copy/paste your code in this document, but you can refer to it with a hyperlink.
 
 Make sure to write clean Markdown code, so your report looks good and is clearly structured on Github.

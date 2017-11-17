@@ -108,7 +108,7 @@ rhbase_firewall_allow_services:
 vsftpd_local_root: /srv/shares # niet vergeten een plaats te geven (zelfde map als samba)! Geen anon_users
 
 vsftpd_anonymous_enable: no
-vsftpd_local_enable: true
+vsftpd_local_enable: yes
 vsftpd_options:
   - key: delete_failed_uploads
     value: 'YES'
