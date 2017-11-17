@@ -36,7 +36,7 @@ samba_shares:
     write_list: +sales
     valid_users: +sales, +management
     group: sales
-    directory_mode: '0770' # niet 750
+    directory_mode: '0770' # niet 750, is default
     #setype: public_content_rw_t
   - name: it
     group: it
@@ -105,9 +105,7 @@ rhbase_firewall_allow_services:
   - dns # kan eventueel weggelaten worden
   - samba
 
-
 vsftpd_local_root: /srv/shares # niet vergeten een plaats te geven (zelfde map als samba)! Geen anon_users
-
 
 vsftpd_anonymous_enable: no
 vsftpd_local_enable: true
@@ -115,13 +113,6 @@ vsftpd_options:
   - key: delete_failed_uploads
     value: 'YES'
 
-
-
-
 # Zie ook directory_mode in samba (voor VSFTP)
-
-
-
-
 
 # sudo cat /etc/vsftpd/vsftpd.conf

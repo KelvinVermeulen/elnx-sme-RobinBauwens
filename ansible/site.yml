@@ -55,10 +55,3 @@
       etype: group
       permissions: rx
       state: present
-
-
-
-  # https://docs.ansible.com/ansible/latest/acl_module.html
-
-
-

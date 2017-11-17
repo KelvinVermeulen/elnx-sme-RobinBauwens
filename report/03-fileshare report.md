@@ -7,6 +7,8 @@ Installeren van Samba voor de (publieke) fileserver met Vagrant en Ansible.
 
 ## Test plan
 
+### Samba
+
 **We testen telkens adhv 1 gebruiker (hier: meestal `alexanderd`)**
 
 - Alle gebruikers die niet tot `it`  behoren mogen geen shell-toegang krijgen en alle `it`-gebruikers moeten wel toegang hebben tot de shell.
@@ -23,6 +25,10 @@ Installeren van Samba voor de (publieke) fileserver met Vagrant en Ansible.
 - Alle shares moeten aanwezig zijn (incl. eigen homedir).
     + We geven volgend commando in: `smbclient -L //FILES/`.
 - Alle testscripts dienen te slagen (zie afbeelding).
+
+### VSFTP
+
+Binnen Windows Explorer: `ftp 172.16.0.11`
 
 ## Procedure/Documentation
 
@@ -109,14 +115,60 @@ Voeg eerst de role `vsftpd` toe aan `site.yml` en voer daarna het script `role-d
 ![Testscript success](img/03/18.PNG)
 
 ### FTP
+1. Voeg bij `pr011.yml` ook volgende code toe (om packages te installeren (o.a. `vsftpd`, om de service te starten en toe te laten op de firewall, om een share toe te wijzen (zelfde locatie als bij samba), om anonieme gebruikers te weigeren, om geregistreerde gebruikers toegang te geven en om gefaalde uploads te verwijderen).
+```
+rhbase_install_packages:
+  - vsftpd
+  - ftp
+  - tree
+  - bash-completion
+  - git
+  - nano
+  - bind-utils
+  - vim-enhanced
+  - wget
+rhbase_start_services:
+  - vsftpd
+rhbase_firewall_allow_services:
+  - ftp
+  - dns # kan eventueel weggelaten worden
+  - samba
+
+vsftpd_local_root: /srv/shares # niet vergeten een plaats te geven (zelfde map als samba)! Geen anon_users
+
+vsftpd_anonymous_enable: no
+vsftpd_local_enable: true
+vsftpd_options:
+  - key: delete_failed_uploads
+    value: 'YES'
+```
+
+2. De configuratie van Samba zal ook gebruikt worden voor FTP. We moeten enkel nog `directory_mode` toevoegen aangezien we de bestandspermissies nog moeten veranderen. Voeg bij `management`, `sales` en `it` volgende code toe: `directory_mode: 770` (`770` ofwel `'0770'`). Er mogen geen andere gebruikers toegang krijgen tot `management`, `sales` en `it`, en de defaultwaarde staat op `0775`. Met `770` geven we alle `other` gebruikers geen toegang.
+3. `management` heeft toegang nodig tot `it` en `sales` en we hebben dit ook gespecifieerd in `pr011.yml` bij `valid_users`, maar we dienen dit ook te specifiëren in `site.yml` voor VSFTP. Dit gebeurt via ACL's. Voeg volgende code toe (onder `hosts: pr011`, als `post_tasks` en niet als `pre_tasks`):
+```
+  post_tasks:
+  - name: ACL IT
+    acl:
+      path: /srv/shares/it
+      entity: management
+      etype: group
+      permissions: rx
+      state: present
+  - name: ACL Sales
+    acl: 
+      path: /srv/shares/sales
+      entity: management
+      etype: group
+      permissions: rx
+      state: present
+```
 
 ### Extra
 - Pas op met het herhalen van variabelen, de meest specifieke worden telkens genomen, alle "algemeen gedefineerde variabelen (zie `all.yml`)" worden dan genegeerd!
 - Alle gebruikers dienen aangemaakt te worden in `all.yml`.
+- Vergeet niet om de share ook te specifiëren bij VSFTP, dit moet dezelfde directory zijn als bij Samba.
 
 ## Resources
-
-List all sources of useful information that you encountered while completing this assignment: books, manuals, HOWTO's, blog posts, etc.
 
 - [Lezen .csv BASH](https://www.cyberciti.biz/faq/unix-linux-bash-read-comma-separated-cvsfile/)
 - [Delete first line while reading](https://stackoverflow.com/questions/9633114/unix-script-to-remove-the-first-line-of-a-csv-file)
@@ -127,3 +179,4 @@ List all sources of useful information that you encountered while completing thi
 - [Manpage config VSFTPD.CONF](http://vsftpd.beasts.org/vsftpd_conf.html)
 - [VSFTPD example](https://askubuntu.com/questions/575523/how-to-setup-virtual-users-for-vsftpd-with-access-to-a-specific-sub-directory)
 - [VSFTPD example 2](https://github.com/samvera-deprecated/hydradam/wiki/Sample-vsftpd.conf)
+- [ACL Ansible](https://docs.ansible.com/ansible/latest/acl_module.html)
