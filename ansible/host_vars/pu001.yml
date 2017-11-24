@@ -12,7 +12,7 @@ bind_zone_networks:
   - '172.16'
 bind_zone_name: 'avalon.lan'
 bind_zone_master_server_ip: 192.0.2.10
-bind_zone_name_servers:
+bind_zone_name_servers: # moet met hostnames zijn, en niet met IP-adressen
   - pu001
   - pu002
 bind_zone_hosts:

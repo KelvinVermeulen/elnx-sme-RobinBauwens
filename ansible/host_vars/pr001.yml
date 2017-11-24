@@ -1,21 +1,23 @@
 ---
 # pr001
 
-#dhcp_global_max_lease_time: 43200
+# dhcp_global_max_lease_time: 43200
 
 dhcp_global_classes:
   - name: vbox
     match: 'match if binary-to-ascii(16,8,":",substring(hardware, 1, 3)) = "8:0:27"'
+
 dhcp_global_domain_name: avalon.lan
 dhcp_global_default_lease_time: 43200
-domain_name_servers: 
+dhcp_domain_name_servers: 
   - 192.0.2.10 # todo
   - 192.0.2.11
 
 dhcp_hosts: # moet niet per se onder dhcp_subnets staan; moet wel met "dhcp_" zijn!
   - name: Werkstation_b_enp0s3
-    mac: '08:00:27:7d:fc:ee'
-    ip: 172.16.0.1
+    mac: '08:00:27:7D:FC:EE'
+    ip: 172.16.128.1
+   # andere wordt gedistribueerd door VBox
 
 dhcp_subnets: # met dhcp
   - ip: 172.16.0.0
@@ -24,7 +26,7 @@ dhcp_subnets: # met dhcp
     pools:
       - range_begin: 172.16.128.1
         range_end: 172.16.191.254
-        allow: 'members of "vbox"'
+        deny: 'members of "vbox"'
       - range_begin: 172.16.192.1
         range_end: 172.16.255.253
         allow: 'members of "vbox"'
@@ -34,6 +36,8 @@ dhcp_subnets: # met dhcp
 
  # membersvbox
 
-
+# zet interface op juiste netwerk: interface 6 (host-onl)
+# geen 2 IPs verdelen door zelfde pool -> ook een deny: als MAC gespecifieerd is, geef dan IP-adres uit eerste pool
+# Fout van 10.0.2.15 komt omdat foute interace stond op interface 3 ofzo ipv 6 (172.16.0.1) netwerk, kan anders niet bereiken
 
 
