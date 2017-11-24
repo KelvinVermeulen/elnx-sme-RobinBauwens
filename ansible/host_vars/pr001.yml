@@ -10,11 +10,11 @@ dhcp_global_classes:
 dhcp_global_domain_name: avalon.lan
 dhcp_global_default_lease_time: 43200
 dhcp_domain_name_servers: 
-  - 192.0.2.10 # todo
+  - 192.0.2.10
   - 192.0.2.11
 
 dhcp_hosts: # moet niet per se onder dhcp_subnets staan; moet wel met "dhcp_" zijn!
-  - name: Werkstation_b_enp0s3
+  - name: ws0001 # enp0s3
     mac: '08:00:27:7D:FC:EE'
     ip: 172.16.128.1
    # andere wordt gedistribueerd door VBox
@@ -24,20 +24,16 @@ dhcp_subnets: # met dhcp
     netmask: 255.255.0.0
     routers: 172.16.255.254
     pools:
-      - range_begin: 172.16.128.1
+      - range_begin: 172.16.128.1 # Dynamisch adhv MAC
         range_end: 172.16.191.254
         deny: 'members of "vbox"'
-      - range_begin: 172.16.192.1
+      - range_begin: 172.16.192.1 # Dynamisch
         range_end: 172.16.255.253
         allow: 'members of "vbox"'
 
-        
-      # er staat ergens een fout bij hosts blijkbaar
 
- # membersvbox
+# Zet interface op juiste netwerk: interface 6 (host-only)
+# Geen 2 IPs verdelen door zelfde pool -> ook een deny: als MAC gespecifieerd is, geef dan IP-adres uit eerste pool
+# Fout van 10.0.2.15 (in DHCP-config) komt omdat VBox preferences op interface 3 stond ipv 6 (172.16.0.1) netwerk
 
-# zet interface op juiste netwerk: interface 6 (host-onl)
-# geen 2 IPs verdelen door zelfde pool -> ook een deny: als MAC gespecifieerd is, geef dan IP-adres uit eerste pool
-# Fout van 10.0.2.15 komt omdat foute interace stond op interface 3 ofzo ipv 6 (172.16.0.1) netwerk, kan anders niet bereiken
-
-
+# Niet verwarren met host-systeem, die werkt via VBox!
