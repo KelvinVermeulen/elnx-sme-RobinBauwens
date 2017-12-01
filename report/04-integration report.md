@@ -20,6 +20,8 @@ How are you going to verify that the requirements are met? The test plan is a de
 
 ## Procedure/Documentation
 
+### DHCP
+
 1. Voeg de role `bertvv.dhcp` toe in `site.yml`:
 ```
 - hosts: pr001
@@ -39,7 +41,9 @@ How are you going to verify that the requirements are met? The test plan is a de
 
 4. Om de DHCP-configuratie te testen, maken we een VM met Fedora (adhv LiveCD ISO) en 2 host-only interfaces. We kiezen voor host-only adapter #6 (kan verschillen), dit is voor `172.16.0.1/16`. Hier staat de global class dan op `allow`.
 
+### Router (VyOS)
 
+1. Voer eerst `vagrant plugin install vagrant-vyos` uit in Git Bash.
 
 Describe *in detail* how you completed the assignment, with main focus on the "manual" work. It is of course not necessary to copy/paste your code in this document, but you can refer to it with a hyperlink.
 
