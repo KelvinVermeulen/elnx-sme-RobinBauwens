@@ -3,12 +3,9 @@
 - Student name: Robin Bauwens
 - Github repo: <https://github.com/HoGentTIN/elnx-sme-RobinBauwens/tree/solution>
 
-Het opzetten van een server met DHCP en een router via Ansible.
+Het opzetten van een server met DHCP en een router (VyOS) via Ansible.
 
 ## Test plan
-
-How are you going to verify that the requirements are met? The test plan is a detailed checklist of actions to take, including the expected result for each action, in order to prove your system meets the requirements. Part of this is running the automated tests, but it is not always possible to validate *all* requirements throught these tests.
-
 
 - De DHCP-service moet correct geconfigureerd zijn.
   - Maak een VM met 2 host-only interfaces (van het netwerk `172.16.0.0/16`). 1 interface moet een IP-adres hebben tussen `172.16.128.1-172.16.191.254`, het ander een IP-adres tussen `172.16.192.1-172.16.255.253`. Ook moeten de DNS-instellingen en default gateway-instellingen meegegeven worden. Dit kan je allemaal controleren in de netwerkinstellingen. Opgelet: voor de implementatie van de routering, zullen de DNS-instellingen nog niet volledig controleerbaar zijn, aangezien de DNS-servers zich in een ander netwerk bevinden.
@@ -76,13 +73,13 @@ How are you going to verify that the requirements are met? The test plan is a de
 ## Test report
 
 - De DHCP-service moet correct geconfigureerd zijn:
-  - We kunnen bij de netwerkinstellingen van de VM zien dat we telkens het eerste IP-adres van beide ranges gekregen hebben, namelijk `172.16.128.1` en `172.16.192.1`.
+  - We kunnen bij de netwerkinstellingen van de VM zien dat we telkens IP-adressen van beide ranges gekregen hebben, namelijk `172.16.128.1` en `172.16.192.3` (met subnetmasks, default gateway en DNS-servers).
   ![Netwerkinstellingen](img/04/1.PNG)
   ![Netwerkinstellingen](img/04/2.PNG)
 
 - Verbinding met andere systemen:
   - Het moet mogelijk zijn om de servers (in een ander netwerk) te bereiken. Pingen naar `172.16.0.11` en `192.0.2.10` zou dus geen problemen mogen geven.
-   ![Ping](img/04/5.PNG)
+   ![Ping](img/04/ping.PNG)
   
 - Vanaf het werkstation moeten we `www.avalon.lan` kunnen bereiken, hiernaast zouden we ook `files.avalon.lan` moeten kunnen bereiken (dit toont ook aan dat DNS lukt).
   - Open Firefox (of een andere webbrowser) en surf naar `www.avalon.lan` en `ftp://files.avalon.lan` (je kan de fileserver bereiken via FTP). 
