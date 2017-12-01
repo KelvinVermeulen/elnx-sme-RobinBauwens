@@ -33,5 +33,7 @@
   ip: 192.0.2.11
 - name: pr011
   ip: 172.16.0.11
+  netmask: 255.255.0.0 # Ook meegeven!
 - name: pr001
   ip: 172.16.0.2
+  netmask: 255.255.0.0 # Ook meegeven!

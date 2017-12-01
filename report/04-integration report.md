@@ -59,6 +59,7 @@ The test report is a transcript of the execution of the test plan, with the actu
 
 - Host-only adapters van nieuwe VM niet verwarren met adapters van hostmachine! Is adhv host-only adapter #6.
 - Bij de pool die de machines voorziet van een IP-adres adhv het (volledig) meegegeven MAC-adres, moet je ook een `deny` zetten op de global class!
+- Opmerking: we hebben bij `vagrant-hosts.yml` een IP-adres gegeven maar zonder een /16 als subnetmask. Bij standaard zal Vagrant een /24-adres uitdelen en hierdoor kon de DHCP-role ook een IP-adres uitdelen aan de Fedora-VM (aangezien deze binnen hetzelfde netwerk lagen). Om dit op te lossen moeten we `dhcp_global_domain_name_servers` gebruiken ipv `dhcp_domain_name_servers`. Hier geven we het IP-adres van de DG van het `172.16.0.0/16`-netwerk mee (de router weet, adhv het script, waar de DNS-servers staan en zal dit zelf afhandelen).
 
 ## Resources
 - [DHCP-role](https://github.com/bertvv/ansible-role-dhcp/tree/tests)

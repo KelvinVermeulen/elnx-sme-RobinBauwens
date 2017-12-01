@@ -9,9 +9,8 @@ dhcp_global_classes:
 
 dhcp_global_domain_name: avalon.lan
 dhcp_global_default_lease_time: 43200
-dhcp_domain_name_servers: 
-  - 192.0.2.10
-  - 192.0.2.11
+dhcp_global_domain_name_servers: 172.16.255.254 # naar global omzetten, moet IP-adres naar DG van router zijn (deze zal dan de DHCP-requests verder doorsturen)
+# Geef hier dus niet de 192.0.2.10 en 192.0.2.11-adressen mee!
 
 dhcp_hosts: # moet niet per se onder dhcp_subnets staan; moet wel met "dhcp_" zijn!
   - name: ws0001 # enp0s3

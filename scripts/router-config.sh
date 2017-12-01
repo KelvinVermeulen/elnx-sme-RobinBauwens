@@ -38,12 +38,20 @@ set nat source rule 100 translation address masquerade
 set nat source rule 200 outbound-interface 'eth1'
 set nat source rule 200 source address '172.16.0.0/16' # INTERNAL network
 set nat source rule 200 translation address masquerade
+
 #
 # Time
 #
 
 set system time-zone Europe/Brussels
 set sytem ntp server be.pool.ntp.org
+
+     # server 0.be.pool.ntp.org
+	 #   server 1.be.pool.ntp.org
+	 #   server 2.be.pool.ntp.org
+	 #   server 3.be.pool.ntp.org
+
+
 #
 # Domain Name Service
 #
@@ -53,7 +61,7 @@ set service dns forwarding system # staat niet in guide...
 set service dns forwarding domain avalon.lan server 192.0.2.10 
 # set service dns forwarding domain avalon.lan server 192.0.2.11 -> Geen slave-DNS server meegeven
 
-set service dns forwarding name-server 10.0.2.3 # Gebruik DNS-interface NAT-adapter ipv Google DNS
+set service dns forwarding name-server 10.0.2.3 # Gebruik DNS-interface NAT-adapter ipv Google DNS; niet .15 want dat is zijn eigen router-interface
 
 set service dns forwarding listen-on 'eth1' # DMZ
 set service dns forwarding listen-on 'eth2' # INTERNAL
