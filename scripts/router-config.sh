@@ -31,13 +31,13 @@ set interfaces ethernet eth2 description 'INTERNAL'
 # Network Address Translation
 #
 
-set nat source rule 100 outbound-interface 'eth0'
+set nat source rule 100 outbound-interface 'eth0' # Moet naar Internet kunnen (via WAN link)
 set nat source rule 100 source address '172.16.0.0/16' # INTERNAL network
 set nat source rule 100 translation address masquerade
 
 set nat source rule 200 outbound-interface 'eth1'
 set nat source rule 200 source address '172.16.0.0/16' # INTERNAL network
-set nat source rule 200 translation address masquerade
+set nat source rule 200 translation address masquerade # Moet naar DMZ kunnen
 
 #
 # Time
@@ -58,17 +58,17 @@ set system time-zone Europe/Brussels
 # Domain Name Service
 #
 
-set service dns forwarding system # staat niet in guide...
+set service dns forwarding system # staat niet in guide... -> eerst aanzetten
 
-set service dns forwarding domain avalon.lan server 192.0.2.10 
+set service dns forwarding domain avalon.lan server 192.0.2.10 	# Alles van het domein avalon.lan moet door deze DNS-server afgehandeld worden
 # set service dns forwarding domain avalon.lan server 192.0.2.11 -> Geen slave-DNS server meegeven
 
-set service dns forwarding name-server 10.0.2.3 # Gebruik DNS-interface NAT-adapter ipv Google DNS; niet .15 want dat is zijn eigen router-interface
+set service dns forwarding name-server 10.0.2.3 		# Alles buiten het domein avalon.lan wordt hier verder doorgestuurd
+# Gebruik DNS-interface NAT-adapter ipv Google DNS; niet .15 want dat is zijn eigen router-interface
 
 set service dns forwarding listen-on 'eth1' # DMZ
 set service dns forwarding listen-on 'eth2' # INTERNAL
-
-
+						
 
 # Make configuration changes persistent
 commit
