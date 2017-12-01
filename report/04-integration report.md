@@ -14,8 +14,35 @@ How are you going to verify that the requirements are met? The test plan is a de
   - Maak een VM met 2 host-only interfaces (van het netwerk `172.16.0.0/16`). 1 interface moet een IP-adres hebben tussen `172.16.128.1-172.16.191.254`, het ander een IP-adres tussen `172.16.192.1-172.16.255.253`. Ook moeten de DNS-instellingen en default gateway-instellingen meegegeven worden. Dit kan je allemaal controleren in de netwerkinstellingen. Opgelet: voor de implementatie van de routering, zullen de DNS-instellingen nog niet volledig controleerbaar zijn, aangezien de DNS-servers zich in een ander netwerk bevinden.
  
 - Verbinding met andere systemen:
-  - Het moet mogelijk zijn om de servers te bereiken. Pingen naar `172.16.0.10` zou dus geen problemen mogen geven.
+  - Het moet mogelijk zijn om de servers (in een ander netwerk) te bereiken. Pingen naar `172.16.0.10` en `192.0.2.10` zou dus geen problemen mogen geven.
   
+- Vanaf het werkstation moeten we `avalon.lan` kunnen bereiken, hiernaast zouden we ook `files.avalon.lan` moeten kunnen bereiken (dit toont ook aan dat DNS lukt).
+  - Open Firefox (of een andere webbrowser) en surf naar `avalon.lan` en `files.avalon.lan`.
+
+- We kunnen ook het internet bereiken vanaf het werkstation.
+  - Open Firefox (of een andere webbrowser) en surf naar `www.hogent.be`.
+  
+- Als we (vanaf het werkstation) de naam van de webserver opvragen (adhv domeinnaam) dan krijgen we de juiste informatie te zien.
+  - Voer `nslookup www.avalon.lan` uit. De uitvoer moet meegeven dat de nameserver `172.16.255.254` is, en dat het adres van `pu004.avalon.lan` `192.0.2.50` is.
+  
+- De client moet de DNS-server zien als de router-interface.
+  - Voer `cat /etc/resolv.conf` uit, hierin moet er staan `nameserver 172.16.255.254`.
+  
+- De NTP-servers van de router moeten verwijzen naar de Belgische servers, ook moet de timezone op `Europe/Brussels` staan.
+  - Voer `show configuration` uit op de router: hierin moet er staan dat de 4 NTP-servers (van 0 t.e.m. 3) gebruikt worden: bvb `3.be.pool.ntp.org`. Voor de tijd op te vragen kan je `show date` gebruiken.
+  
+- De interfaces van de router zijn correct geconfigureerd (zie tabel):
+
+| Interface | VBox adapter | IP address          | Remarks  |
+| :---      | :---         | :---                | :---     |
+| `eth0`    | NAT          | 10.0.2.15/24 (DHCP) | WAN link |
+| `eth1`    | Host-only    | 192.0.2.254/24      | DMZ      |
+| `eth2`    | Host-only    | 172.16.255.254/16   | internal |
+  - Dit kan je testen door de configuratie te tonen op de router adhv `show configuration`.
+
+- De routering naar de webserver en het internet verloopt zoals het hoort:
+  - Dit kan je testen door `traceroute` uit te voeren naar `www.avalon.lan` en `www.hogent.be`
+
   
 
 ## Procedure/Documentation
@@ -44,6 +71,9 @@ How are you going to verify that the requirements are met? The test plan is a de
 ### Router (VyOS)
 
 1. Voer eerst `vagrant plugin install vagrant-vyos` uit in Git Bash.
+2. Hierna gaan we [de code](https://github.com/HoGentTIN/elnx-sme-RobinBauwens/blob/solution/scripts/router-config.sh) toevoegen voor de routerconfiguratie.
+
+
 
 Describe *in detail* how you completed the assignment, with main focus on the "manual" work. It is of course not necessary to copy/paste your code in this document, but you can refer to it with a hyperlink.
 
@@ -67,3 +97,4 @@ The test report is a transcript of the execution of the test plan, with the actu
 - [Cheat-sheet VyOS](https://github.com/bertvv/cheat-sheets/blob/master/print/VyOS.pdf)
 - [Configure NTP-server VyOS](https://rbgeek.wordpress.com/2013/05/14/how-to-configure-ntp-server-and-timezone-on-vyatta/)
 - [VyOS User Guide](https://wiki.vyos.net/wiki/User_Guide)
+- [DNS Forwarding](https://wiki.vyos.net/wiki/DNS_forwarding)
