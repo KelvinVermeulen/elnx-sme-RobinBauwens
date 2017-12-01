@@ -50,13 +50,15 @@ set sytem ntp server be.pool.ntp.org
 
 set service dns forwarding system # staat niet in guide...
 
+set service dns forwarding domain avalon.lan server 192.0.2.10 
+# set service dns forwarding domain avalon.lan server 192.0.2.11 -> Geen slave-DNS server meegeven
+
+set service dns forwarding name-server 10.0.2.3 # Gebruik DNS-interface NAT-adapter ipv Google DNS
+
 set service dns forwarding listen-on 'eth1' # DMZ
 set service dns forwarding listen-on 'eth2' # INTERNAL
 
-set service dns forwarding domain avalon.lan server 192.0.2.10 
-set service dns forwarding domain avalon.lan server 192.0.2.11
 
-set service dns forwarding name-server '10.0.2.15' # Gebruik NAT-interface ipv Google DNS
 
 # Make configuration changes persistent
 commit
@@ -72,3 +74,4 @@ sudo chown -R root:vyattacfg /opt/vyatta/config/active
 
 # https://wiki.vyos.net/wiki/User_Guide
 # https://rbgeek.wordpress.com/2013/05/14/how-to-configure-ntp-server-and-timezone-on-vyatta/
+# https://github.com/bertvv/cheat-sheets/blob/master/print/VyOS.pdf
