@@ -63,3 +63,7 @@ The test report is a transcript of the execution of the test plan, with the actu
 
 ## Resources
 - [DHCP-role](https://github.com/bertvv/ansible-role-dhcp/tree/tests)
+- [BE NTP Pools](http://www.pool.ntp.org/zone/be)
+- [Cheat-sheet VyOS](https://github.com/bertvv/cheat-sheets/blob/master/print/VyOS.pdf)
+- [Configure NTP-server VyOS](https://rbgeek.wordpress.com/2013/05/14/how-to-configure-ntp-server-and-timezone-on-vyatta/)
+- [VyOS User Guide](https://wiki.vyos.net/wiki/User_Guide)

@@ -43,14 +43,16 @@ set nat source rule 200 translation address masquerade
 # Time
 #
 
+delete system ntp server 0.pool.ntp.org
+delete system ntp server 1.pool.ntp.org
+delete system ntp server 2.pool.ntp.org
+
+set system ntp server 0.be.pool.ntp.org prefer # vergeet prefer niet!
+set system ntp server 1.be.pool.ntp.org
+set system ntp server 2.be.pool.ntp.org
+set system ntp server 3.be.pool.ntp.org
+
 set system time-zone Europe/Brussels
-set sytem ntp server be.pool.ntp.org
-
-     # server 0.be.pool.ntp.org
-	 #   server 1.be.pool.ntp.org
-	 #   server 2.be.pool.ntp.org
-	 #   server 3.be.pool.ntp.org
-
 
 #
 # Domain Name Service
@@ -76,10 +78,3 @@ save
 sudo chown -R root:vyattacfg /opt/vyatta/config/active
 
 # vim: set ft=sh
-
-
-
-
-# https://wiki.vyos.net/wiki/User_Guide
-# https://rbgeek.wordpress.com/2013/05/14/how-to-configure-ntp-server-and-timezone-on-vyatta/
-# https://github.com/bertvv/cheat-sheets/blob/master/print/VyOS.pdf
