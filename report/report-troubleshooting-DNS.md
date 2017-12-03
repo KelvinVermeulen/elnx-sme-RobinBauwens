@@ -22,6 +22,156 @@ Om problemen met het toetsenbord te vermijden gebruik dan één van volgende com
 -  `vagrant ssh <machinenaam>`
 -  `ssh <ip-adres> -l vagrant`
 
+`BIND`: DNS Server in Red Hat ELNX
+`named`: DNS-service
+`DNS`: aka `nameserver`
+
+
+### Belangrijke locaties voor DNS
+- `/etc/named.conf`: hoofdconfiguratie (adminrechten!)
+
+```
+[vagrant@DNSMaster etc]$ sudo cat /etc/named.conf
+//
+// named.conf
+//
+// Ansible managed
+//
+options {
+  listen-on port 53 { any; };
+  listen-on-v6 port 53 { ::1; };
+  directory   "/var/named";
+  dump-file   "/var/named/data/cache_dump.db";
+  statistics-file "/var/named/data/named_stats.txt";
+  memstatistics-file "/var/named/data/named_mem_stats.txt";
+  allow-query     { any; };
+
+  recursion no;
+
+  rrset-order { order random; };
+
+  dnssec-enable yes;
+  dnssec-validation yes;
+  dnssec-lookaside auto;
+
+  /* Path to ISC DLV key */
+  bindkeys-file "/etc/named.iscdlv.key";
+
+  managed-keys-directory "/var/named/dynamic";
+
+  pid-file "/run/named/named.pid";
+  session-keyfile "/run/named/session.key";
+};
+
+logging {
+  channel default_debug {
+    file "data/named.run";
+    severity dynamic;
+    print-time yes;
+  };
+};
+
+include "/etc/named.root.key";
+include "/etc/named.rfc1912.zones";
+
+zone "avalon.lan" IN {
+  type master;
+  file "avalon.lan";
+  notify yes;
+  allow-update { none; };
+};
+
+zone "2.0.192.in-addr.arpa" IN {
+  type master;
+  file "2.0.192.in-addr.arpa";
+  notify yes;
+  allow-update { none; };
+};
+zone "16.172.in-addr.arpa" IN {
+  type master;
+  file "16.172.in-addr.arpa";
+  notify yes;
+  allow-update { none; };
+};
+```
+
+```
+[vagrant@DNSSlave etc]$ sudo cat /etc/named.conf
+//
+// named.conf
+//
+// Ansible managed
+//
+options {
+  listen-on port 53 { any; };
+  listen-on-v6 port 53 { ::1; };
+  directory   "/var/named";
+  dump-file   "/var/named/data/cache_dump.db";
+  statistics-file "/var/named/data/named_stats.txt";
+  memstatistics-file "/var/named/data/named_mem_stats.txt";
+  allow-query     { any; };
+
+  recursion no;
+
+  rrset-order { order random; };
+
+  dnssec-enable yes;
+  dnssec-validation yes;
+  dnssec-lookaside auto;
+
+  /* Path to ISC DLV key */
+  bindkeys-file "/etc/named.iscdlv.key";
+
+  managed-keys-directory "/var/named/dynamic";
+
+  pid-file "/run/named/named.pid";
+  session-keyfile "/run/named/session.key";
+};
+
+logging {
+  channel default_debug {
+    file "data/named.run";
+    severity dynamic;
+    print-time yes;
+  };
+};
+
+include "/etc/named.root.key";
+include "/etc/named.rfc1912.zones";
+
+zone "avalon.lan" IN {
+  type slave;
+  masters { 192.0.2.10; };
+  file "slaves/avalon.lan";
+};
+
+zone "2.0.192.in-addr.arpa" IN {
+  type slave;
+  masters { 192.0.2.10; };
+  file "slaves/2.0.192.in-addr.arpa";
+};
+zone "16.172.in-addr.arpa" IN {
+  type slave;
+  masters { 192.0.2.10; };
+  file "slaves/16.172.in-addr.arpa";
+};
+```
+
+- `/var/named` (enkel als `root` bereikbaar)
+
+```
+[root@DNSMaster named]# ls
+16.172.in-addr.arpa   avalon.lan  dynamic   named.empty      named.loopback
+2.0.192.in-addr.arpa  data        named.ca  named.localhost  slaves
+```
+
+```
+[root@DNSSlave named]# ls
+data  dynamic  named.ca  named.empty  named.localhost  named.loopback  slaves
+```
+
+[Klik hier om de inhoud van deze bestanden te zien](https://github.com/HoGentTIN/elnx-sme-RobinBauwens/blob/solution/report/named.md)
+
 ## Report
 
 ### Phase 1: Link Layer (TCP/IP)
@@ -204,13 +354,22 @@ In deze laag controleren we volgende zaken:
 We verwachten volgende uitvoer (dit wijkt sowieso af van de werkelijkheid, wat belangrijk is, is dat de state op active-running staat):
 
 ```
-sudo systemctl status nginx
-● nginx.service - The nginx HTTP and reverse proxy server
-   Loaded: loaded (/usr/lib/systemd/system/nginx.service; disabled; vendor preset: disabled)
-   Active: active (running) since Thu 2017-10-26 20:07:28 UTC; 5s ago
+[vagrant@DNSServer etc]$ sudo systemctl status named
+● named.service - Berkeley Internet Name Domain (DNS)
+   Loaded: loaded (/usr/lib/systemd/system/named.service; enabled; vendor preset: disabled)
+   Active: active (running) since Sun 2017-12-03 20:01:43 UTC; 24min ago
+  Process: 1145 ExecStart=/usr/sbin/named -u named -c ${NAMEDCONF} $OPTIONS (code=exited, sta
+tus=0/SUCCESS)
+  Process: 1131 ExecStartPre=/bin/bash -c if [ ! "$DISABLE_ZONE_CHECKING" == "yes" ]; then /u
+sr/sbin/named-checkconf -z "$NAMEDCONF"; else echo "Checking of zone files is disabled"; fi (
+code=exited, status=0/SUCCESS)
+ Main PID: 1152 (named)
+   CGroup: /system.slice/named.service
+           └─1152 /usr/sbin/named -u named -c /etc/named.conf
+
 ```
 
-Indien hier de service niet draait, kunnen we dit aanpassen met `sudo systemctl start <service>` en `sudo systemctl enable <service>` (met `<service>` natuurlijk vervangen met een service (zoals `nginx`).
+Indien hier de service niet draait, kunnen we dit aanpassen met `sudo systemctl start <service>` en `sudo systemctl enable <service>` (met `<service>` natuurlijk vervangen met een service (zoals `named`).
 
 <!--
 We stellen vast dat de service niet draait op de VM, we corrigeren dit met volgende commando's:
@@ -241,16 +400,26 @@ Er zijn blijkbaar fouten in de configuratiebestanden van nginx. Dit wordt pas la
 -->
 
 
-#### Draaien de services op de juiste poorten (e.g. 80 voor HTTP en 443 voor HTTPS)?
-We verwachten (ongeveer) volgende uitvoer (enkel HTTP):
+#### Draaien de services op de juiste poorten (e.g. 53 of 953 voor DNS)?
+We verwachten (ongeveer) volgende uitvoer (gefilterd op `named`):
 
 ```
-sudo ss -tulpn
-tcp   LISTEN     0      128             :::80                          :::*                   users:(("nginx",pid=3737,fd=7),("nginx",pid=3736
+[vagrant@DNSServer etc]$ sudo ss -tulpn | grep named
+udp    UNCONN     0      0      192.0.2.10:53                    *:*                   users:(("named",pid=1152,fd=514))
+udp    UNCONN     0      0      10.0.2.15:53                    *:*                   users:(("named",pid=1152,fd=513))
+udp    UNCONN     0      0      127.0.0.1:53                    *:*                   users:(("named",pid=1152,fd=512))
+udp    UNCONN     0      0       ::1:53                   :::*                   users:(("named",pid=1152,fd=515))
+tcp    LISTEN     0      10     192.0.2.10:53                    *:*                   users:(("named",pid=1152,fd=23))
+tcp    LISTEN     0      10     10.0.2.15:53                    *:*                   users:(("named",pid=1152,fd=22))
+tcp    LISTEN     0      10     127.0.0.1:53                    *:*                   users:(("named",pid=1152,fd=21))
+tcp    LISTEN     0      128    127.0.0.1:953                   *:*                   users:(("named",pid=1152,fd=25))
+tcp    LISTEN     0      10      ::1:53                   :::*                   users:(("named",pid=1152,fd=24))
+tcp    LISTEN     0      128     ::1:953                  :::*                   users:(("named",pid=1152,fd=26))
 ```
 
-(Ook zou er een entry moeten zijn voor `:::443` voor nginx.)
 <!--
+(Ook zou er een entry moeten zijn voor `:::443` voor nginx.)
+
 **Opmerking: om ook HTTPS toe te laten, zetten we dit uit commentaar in `/etc/nginx/nginx.conf`.**
 
 
@@ -266,13 +435,20 @@ Dit is nog niet het geval, simpelweg omdat nginx nog niet draait omwille van con
 We verwachten (ongeveer) volgende uitvoer:
 
 ```
-sudo firewall-cmd --list-all
+[vagrant@DNSServer etc]$ sudo firewall-cmd --list-all
 public (active)
   target: default
   icmp-block-inversion: no
   interfaces: enp0s3 enp0s8
   sources:
-  services: ssh dhcpv6-client https http
+  services: ssh dhcpv6-client dns
+  ports:
+  protocols:
+  masquerade: no
+  forward-ports:
+  source-ports:
+  icmp-blocks:
+  rich rules:
 ```
 
 <!--
@@ -557,6 +733,10 @@ Uitvoer controle poorten etc.:
 ## Resources
 
 List all sources of useful information that you encountered while completing this assignment: books, manuals, HOWTO's, blog posts, etc.
+
+- [DNS Red Hat ELNX](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/6/html/deployment_guide/ch-dns_servers)
+
+
 
 - [DNS-server](https://unix.stackexchange.com/questions/28941/what-dns-servers-am-i-using)
 [Aanpassen `ip route`](https://www.cyberciti.biz/faq/howto-linux-configuring-default-route-with-ipcommand/)
