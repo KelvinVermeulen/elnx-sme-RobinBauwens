@@ -214,11 +214,23 @@ dig +short NS hogent.be                         Authorative name server voor hog
 dig +short AAAA download.fedoraproject.org      IPv6 adres van download.fedoraproject.org
 
 dig +short -x 195.130.131.1                     Reverse lookup
+
+
+$ nslookup www.hogent.be
+
+Server: 195.130.131.1                           Server die antwoordt
+Address: 195.130.131.1\#53
+
+Non-authoritative answer:                       Non-authorative: deze server is niet verantwoordelijk voor hogent.be-domein
+Name: www.hogent.be                             Server die overeenkomt met www.hogent.be
+Address: 178.62.144.90                          
+
+```
 ----
 
 We verwachten volgende uitvoer (dit wijkt sowieso af van de werkelijkheid, wat belangrijk is, is dat de state op active-running staat):
 
-```
+
 [vagrant@DNSServer etc]$ sudo systemctl status named
 ● named.service - Berkeley Internet Name Domain (DNS)
    Loaded: loaded (/usr/lib/systemd/system/named.service; enabled; vendor preset: disabled)
