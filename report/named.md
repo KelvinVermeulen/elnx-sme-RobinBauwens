@@ -20,6 +20,8 @@ data  dynamic  named.ca  named.empty  named.localhost  named.loopback  slaves
 
 **Deze bestanden bevinden zich ook op de slave-server op `/var/named/slaves/` maar deze zijn niet bedoeld om zichtbaar te zijn.**
 
+**AFSLUITEN MET EEN `.`!**
+
 ```
 [root@DNSMaster named]# cat 16.172.in-addr.arpa
 ; Hash: 31217c7a0fe868de8f30262f91a30b24 17102010
