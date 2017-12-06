@@ -177,6 +177,45 @@ Ook dit lukt naar de andere kant (Host naar VM):
 In deze laag controleren we volgende zaken:
 
 #### Draaien de services?
+
+----
+**Opmerking: alvorens de service op te starten:**
+
+Het kan zijn dat er configuratieproblemen zijn, dit dienen we te controleren in de applicatielaag alhoewel er ook nu al naar verwezen kan worden (zie p34 `syllabus-elnx.pdf`: 3.7.2 DNS troubleshooting).
+
+- Gebruik `sudo named-checkconf /etc/named.conf` om de configuratie van de DNS-server na te gaan.
+
+- Gebruik volgende commando's om de zonebestanden te controleren:
+
+```
+$ sudo named-checkzone linuxlab.lan /var/named/linuxlab.lan
+$ sudo named-checkzone 15.168.192.in-addr.arpa \
+/var/named/15.168.192.in-addr.arpa
+```
+
+- Foutboodschappen bekijken:
+
+```
+$ sudo rndc querylog on
+$ sudo journalctl -l -f -u named.service
+```
+
+Hiernaast is het ook handig om `bind-tools` te installeren: `sudo yum install bind-tools` Enkele commando's om de DNS-server te testen:
+
+```
+nslookup www.hogent.be                          IP-adres van www.hogent.be
+nslookup www.hogent.be 8.8.8.8                  Met specifieke DNS-server
+
+dig www.hogent.be                               Zoals nslookup, met meer informatie
+dig +short www.hogent.be                        Samengevat
+dig +short @8.8.8.8 www.hogent.be               Samengevat, met specifieke DNS-server
+
+dig +short NS hogent.be                         Authorative name server voor hogent.be
+dig +short AAAA download.fedoraproject.org      IPv6 adres van download.fedoraproject.org
+
+dig +short -x 195.130.131.1                     Reverse lookup
+----
+
 We verwachten volgende uitvoer (dit wijkt sowieso af van de werkelijkheid, wat belangrijk is, is dat de state op active-running staat):
 
 ```
@@ -193,6 +232,7 @@ code=exited, status=0/SUCCESS)
    CGroup: /system.slice/named.service
            └─1152 /usr/sbin/named -u named -c /etc/named.conf
 ```
+
 
 ```
 
@@ -496,7 +536,6 @@ We corrigeren `nigxn.pem` naar `nginx.pem` en voeren de syntax checker uit.
 nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
 nginx: configuration file /etc/nginx/nginx.conf test is successful
 ```
--->
 
 We moeten ook PHP hebben om deze server te laten werken, we controleren dit en zien dat PHP niet geïnstalleerd is, we lossen dit op met volgende commando's:
 ```
