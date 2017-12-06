@@ -497,7 +497,7 @@ zone "16.172.in-addr.arpa" IN {
 ```
 </details>
 
-- `/etc/named.conf`
+- `/etc/named.conf` als je `bind-chroot` hebt geïnstalleerd
 
 <details> 
   <summary>Andere configuratie (adminrechten!) </summary>
