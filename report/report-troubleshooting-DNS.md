@@ -18,13 +18,13 @@
     - describe the result of accessing the service from the host system
     - describe any error messages that still remain
 
-Om problemen met het toetsenbord te vermijden gebruik dan één van volgende commando's:
+Om "problemen" met de toetsenbordindeling te vermijden gebruik dan één van volgende commando's:
 -  `vagrant ssh <machinenaam>`
 -  `ssh <ip-adres> -l vagrant`
 
-`BIND`: DNS Server in Red Hat ELNX
-`named`: DNS-service
-`DNS`: aka `nameserver`
+- `BIND`: DNS Server in Red Hat ELNX
+- `named`: DNS-service
+- `DNS`: aka `nameserver`
 
 ## Report
 
@@ -53,8 +53,7 @@ De output die gegenereerd wordt is als volgt:
 
 De instellingen zijn ..., alle interfaces hebben state UP.
 
-
-Hiernaast controleren we ook of de instellingen in VirtualBox correct zijn: het IP-adres moet `xxx.xxx.xxx.xxx` zijn. Ook dit is het geval (dit controleren we manueel in VirtualBox zelf).
+Hiernaast controleren we ook of de instellingen in VirtualBox correct zijn: het IP-adres moet `xxx.xxx.xxx.xxx` zijn. Ook dit is het geval (dit controleren we manueel in VirtualBox zelf bij `Preferences` -> `Network`).
 
 
 ### Phase 2: Internet/Network Layer (TCP/IP)
@@ -67,7 +66,7 @@ In deze laag controleren we volgende zaken:
 
 #### IP-adressen en subnetmasks 
 Via `ip address` testen we de configuratie (ook hier zijn delen weggelaten).
-We verwachten volgende uitvoer:
+We verwachten volgende uitvoer (de IP-instellingen hangen af van de opgave):
 
 ```
 ip address
@@ -109,8 +108,6 @@ Indien hier zaken ontbreken/afwijken, kunnen we dit toevoegen met `ip route add 
 <!--
 We stellen vast dat er een entry teveel in de config van `ip route` staat, we verwijderen deze met volgend commando:
 
-
-
 ```
 [vagrant@nginx network-scripts]$ ip r
 default via 10.0.2.2 dev enp0s3  proto static  metric 100
@@ -141,7 +138,7 @@ nameserver 10.0.2.3
 options single-request-reopen
 ```
 
-We kunnen ook direct aanpassingen maken in dit bestand. Vergeet ook hier `network.service` niet eens te restarten!
+We kunnen ook direct aanpassingen maken in dit bestand. Vergeet ook hier `network.service` niet eens te herstarten!
 
 We gaan dit na op de VM van de webserver:
 ```
@@ -175,7 +172,6 @@ Ook dit lukt naar de andere kant (Host naar VM):
 
 ```
 
-
 ### Phase 3: Transport Layer (TCP/IP)
 
 In deze laag controleren we volgende zaken:
@@ -196,6 +192,9 @@ code=exited, status=0/SUCCESS)
  Main PID: 1152 (named)
    CGroup: /system.slice/named.service
            └─1152 /usr/sbin/named -u named -c /etc/named.conf
+```
+
+```
 
 ```
 
@@ -466,8 +465,6 @@ data  dynamic  named.ca  named.empty  named.localhost  named.loopback  slaves
 
 - `/var/named` (enkel als `root` bereikbaar)
 
-
-
 [Klik hier om de inhoud van deze bestanden te zien](https://github.com/HoGentTIN/elnx-sme-RobinBauwens/blob/solution/report/named.md)
 
 We gaan dus enkele zaken veranderen in `/etc/named.conf` met een teksteditor zoals vi, vergeet ook niet om adminrechten mee te geven!
@@ -486,9 +483,6 @@ We kunnen de syntax nogmaals checken via volgend commando:
 
 ```
 sudo named-checkconf
-
-
-
 ```
 
 <!--
@@ -594,7 +588,6 @@ Als we de booleans van SELinux opvragen, stellen we vast dat `httpd_can_network_
 [vagrant@nginx ~]$ sudo setsebool httpd_can_network_connect 1
 [vagrant@nginx ~]$ sudo setsebool httpd_can_network_connect 1 -P
 ```
-
 
 Ook moeten we ervoor zorgen dat de context voor de (configuratie)bestanden (en keys) wel degelijk juist is, we kunnen dit controleren met `ls -Z`. Dit kunnen we dan oplossen door `sudo resolvecon -R .` uit te voeren in `/etc/pki/tls`.
 
