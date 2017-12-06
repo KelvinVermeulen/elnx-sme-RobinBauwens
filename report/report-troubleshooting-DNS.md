@@ -355,7 +355,14 @@ In de applicatielaag checken we vooral de configuratie(bestanden van de services
 
 TIP: open een nieuw terminalvenster en volg alle veranderingen van een service met `sudo journalctl -f -u SERVICE.service`.
 
-We gaan eerst de configuratie van BIND na met volgend commando.
+We controleren eerst of`bind` en `bind-utils` geïnstalleerd zijn, `lwresd` hoeft niet geïnstalleerd te zijn:
+
+```
+yum list installed bind
+yum info bind
+```
+
+We gaan de configuratie van BIND na met volgend commando.
 We verwachten geen uitvoer bij dit commando:
 
 ```
@@ -742,6 +749,12 @@ List all sources of useful information that you encountered while completing thi
 [Aanpassen `ip route`](https://www.cyberciti.biz/faq/howto-linux-configuring-default-route-with-ipcommand/)
 
 - Bert Van Vreckem: ELNX Syllabus
+
+- [Installed packages](https://serverfault.com/questions/558936/how-to-accurately-check-if-package-is-installed-in-yum)
+
+- [Configuring BIND](https://www.digitalocean.com/community/tutorials/how-to-configure-bind-as-a-private-network-dns-server-on-centos-7)
+
+- [BIND Configuration Files](https://www.centos.org/docs/2/rhl-rg-en-7.2/s1-bind-configuration.html)
 
 - [Check whether package is installed](https://unix.stackexchange.com/questions/122681/how-can-i-tell-whether-a-package-is-installed-via-yum-in-a-bash-script)
 
