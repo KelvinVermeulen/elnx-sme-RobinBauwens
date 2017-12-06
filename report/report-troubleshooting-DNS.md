@@ -22,6 +22,7 @@ Om "problemen" met de toetsenbordindeling te vermijden gebruik dan één van vol
 -  `vagrant ssh <machinenaam>`
 -  `ssh <ip-adres> -l vagrant`
 
+Naamgeving:
 - `BIND`: DNS Server in Red Hat ELNX
 - `named`: DNS-service
 - `DNS`: aka `nameserver`
@@ -215,9 +216,8 @@ dig +short AAAA download.fedoraproject.org      IPv6 adres van download.fedorapr
 
 dig +short -x 195.130.131.1                     Reverse lookup
 
-
+---
 $ nslookup www.hogent.be
-
 Server: 195.130.131.1                           Server die antwoordt
 Address: 195.130.131.1\#53
 
@@ -230,7 +230,7 @@ Address: 178.62.144.90
 
 We verwachten volgende uitvoer (dit wijkt sowieso af van de werkelijkheid, wat belangrijk is, is dat de state op active-running staat):
 
-
+```
 [vagrant@DNSServer etc]$ sudo systemctl status named
 ● named.service - Berkeley Internet Name Domain (DNS)
    Loaded: loaded (/usr/lib/systemd/system/named.service; enabled; vendor preset: disabled)
@@ -244,7 +244,6 @@ code=exited, status=0/SUCCESS)
    CGroup: /system.slice/named.service
            └─1152 /usr/sbin/named -u named -c /etc/named.conf
 ```
-
 
 ```
 
@@ -742,12 +741,8 @@ List all sources of useful information that you encountered while completing thi
 - [DNS-server](https://unix.stackexchange.com/questions/28941/what-dns-servers-am-i-using)
 [Aanpassen `ip route`](https://www.cyberciti.biz/faq/howto-linux-configuring-default-route-with-ipcommand/)
 
-
+- Bert Van Vreckem: ELNX Syllabus
 
 - [Check whether package is installed](https://unix.stackexchange.com/questions/122681/how-can-i-tell-whether-a-package-is-installed-via-yum-in-a-bash-script)
 
 - [Remove package yum](https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/6/html/Deployment_Guide/sec-Removing.html)
-
-- [Locatie PHP-bestanden](https://serverfault.com/questions/237695/where-is-my-php-installation-path)
-
-- [SELinux preventing NGINX-PHP](https://unix.stackexchange.com/questions/337704/selinux-is-preventing-nginx-from-writing-via-php-fpm)
