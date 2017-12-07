@@ -66,6 +66,9 @@ In deze laag controleren we volgende zaken:
 - DNS-server
 
 #### IP-adressen en subnetmasks 
+
+Zorg er eerst voor dat het IP-adres van je hostmachine in hetzelfde subnet ligt als die van de VM. Zorg er ook voor dat de firewall van je systeem (hier: Windows Firewall) Echoaanvragen (ICMP) toelaat.
+
 Via `ip address` testen we de configuratie (ook hier zijn delen weggelaten).
 We verwachten volgende uitvoer (de IP-instellingen hangen af van de opgave):
 
@@ -226,6 +229,18 @@ Name: www.hogent.be                             Server die overeenkomt met www.h
 Address: 178.62.144.90                          
 
 ```
+
+Indien `bind-utils` niet geïnstalleerd is, gebruik dan onderstaand commando:
+
+```
+$ getent ahosts www.google.com
+216.58.208.228  STREAM www.google.com
+216.58.208.228  DGRAM
+216.58.208.228  RAW
+2a00:1450:4007:80e::2004 STREAM
+2a00:1450:4007:80e::2004 DGRAM
+2a00:1450:4007:80e::2004 RAW
+```
 ----
 
 We verwachten volgende uitvoer (dit wijkt sowieso af van de werkelijkheid, wat belangrijk is, is dat de state op active-running staat):
@@ -350,10 +365,12 @@ Vergeet ook niet om de firewall te herstarten met `sudo systemctl restart firewa
 
 
 ### Phase 4: Application Layer (TCP/IP)
-#### Configuratie (NGINX)
+#### Configuratie (BIND)
 In de applicatielaag checken we vooral de configuratie(bestanden van de services).
 
-TIP: open een nieuw terminalvenster en volg alle veranderingen van een service met `sudo journalctl -f -u SERVICE.service`.
+TIP: open een nieuw terminalvenster en volg alle veranderingen van een service met `sudo journalctl -f -u SERVICE.service` of `sudo tail -f /var/log/httpd/error_log` voor `httpd`.
+
+De logging van BIND gaat naar `var/log/messages`.
 
 We controleren eerst of`bind` en `bind-utils` geïnstalleerd zijn, `lwresd` hoeft niet geïnstalleerd te zijn:
 
@@ -369,7 +386,7 @@ We verwachten geen uitvoer bij dit commando:
 sudo named-checkconf
 ```
 
-TIP: De paden waar de (configuratie)bestanden van NGINX zich bevinden zijn de volgende:
+TIP: De paden waar de (configuratie)bestanden van BIND zich bevinden zijn de volgende:
 
 ##### Paden:
 
@@ -623,6 +640,14 @@ which php
 ```
 -->
 
+Om de bereikbaarheid te testen (vanaf een andere host kan je volgende commando's gebruiken):
+
+```
+sudo nmap -sS -p 80,443 HOST
+wget http://HOST/, wget https://HOST/
+curl http://HOST/, curl https://HOST/
+```
+
 #### SELinux
 We voeren volgend commando uit om na te gaan of SELinux wel degelijk aanstaat (op `enforcing`).
 We verwachten deze uitvoer:
@@ -730,7 +755,7 @@ restorecon reset /usr/share/nginx/html/index.php context system_u:object_r:user_
 ```
 
 ### Extra:
-Uitvoer controle poorten etc.:
+Uitvoer controle poorten, draaiende service, etc.:
 
 ```
 
@@ -755,6 +780,10 @@ List all sources of useful information that you encountered while completing thi
 - [Configuring BIND](https://www.digitalocean.com/community/tutorials/how-to-configure-bind-as-a-private-network-dns-server-on-centos-7)
 
 - [BIND Configuration Files](https://www.centos.org/docs/2/rhl-rg-en-7.2/s1-bind-configuration.html)
+
+- [Troubleshooting guide](https://bertvv.github.io/linux-network-troubleshooting/)
+
+- [BIND logging](http://www.zytrax.com/books/dns/ch7/logging.html)
 
 - [Check whether package is installed](https://unix.stackexchange.com/questions/122681/how-can-i-tell-whether-a-package-is-installed-via-yum-in-a-bash-script)
 
