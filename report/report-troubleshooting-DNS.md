@@ -177,10 +177,10 @@ We zien dat de nameserver correct ingesteld is, hier hoeven we dus niets aan te 
 
 Indien vorige stappen opgelost/correct geconfigureerd zijn, dan kunnen we de default gateway en een andere host op het LAN pingen. Hiernaast zou DNS name resolution ook geen problemen mogen geven.
 
-Volgende commando's zouden dus probleemloze uitvoer moeten geven (indien pings toegelaten zijn en dig geïnstalleerd is op de VM):
+Volgende commando's zouden dus probleemloze uitvoer moeten geven (indien pings toegelaten zijn en `dig` geïnstalleerd is op de VM):
 
 ```
-dig www.google.com @10.0.2.3 +short
+dig www.google.com @10.0.2.3 +short             Gebruik DNS-server van VirtualBox
 ping www.google.com
 ```
 
@@ -190,12 +190,12 @@ ping www.google.com
 sudo yum install bind-utils
 ```
 
-We pingen eens naar de hostmachine (bekijk IP-adres in Windows via `ipconfig`) vanuit `cmd` van Windows:
+We pingen eens naar de hostmachine (bekijk IP-adres in Windows via `ipconfig`):
 ```
 
 ```
 
-Ook dit lukt naar de andere kant (Host naar VM):
+Ook dit lukt naar de andere kant (Host naar VM; vanuit `cmd` van Windows):
 ```
 ping 192.168.56.42
 ```
@@ -211,15 +211,36 @@ In deze laag controleren we volgende zaken:
 
 Het kan zijn dat er configuratieproblemen zijn, dit dienen we te controleren in de applicatielaag alhoewel er ook nu al naar verwezen kan worden (zie p34 `syllabus-elnx.pdf`: 3.7.2 DNS troubleshooting).
 
-- Gebruik `sudo named-checkconf /etc/named.conf` om de configuratie van de DNS-server na te gaan.
+- Gebruik `sudo named-checkconf /etc/named.conf` om de configuratie van de DNS-server na te gaan. Als er geen fouten zijn in de configuratie, dan zal de uitvoer leeg zijn.
 
-- Gebruik volgende commando's (met andere argumenten natuurlijk) om de zonebestanden te controleren:
+De output die gegenereerd wordt is als volgt:
 
 ```
-$ sudo named-checkzone linuxlab.lan /var/named/linuxlab.lan
-$ sudo named-checkzone 15.168.192.in-addr.arpa \
-/var/named/15.168.192.in-addr.arpa
+
 ```
+
+*Resultaat*:
+
+- Gebruik volgende commando's (met andere argumenten; op de master DNS-server) om de zonebestanden te controleren. We verwachten volgende uitvoer (voor andere configuratie):
+
+```
+$ sudo named-checkzone avalon.lan /var/named/avalon.lan
+zone avalon.lan/IN: loaded serial 17102010
+OK
+
+[vagrant@pu001 ~]$ sudo named-checkzone 16.172.in-addr.arpa /var/named/16.172.in-addr.arpa
+zone 16.172.in-addr.arpa/IN: loaded serial 17102010
+OK
+```
+
+De output die gegenereerd wordt is als volgt:
+
+```
+
+```
+
+*Resultaat*:
+
 
 - Foutboodschappen bekijken:
 
@@ -391,8 +412,25 @@ De output die gegenereerd wordt is als volgt:
 
 *Resultaat*:
 
-Vergeet ook niet om de firewall eens te herstarten met `sudo systemctl restart firewalld`.
 
+De zone dient ook `public` te zijn voor beide interfaces:
+
+```
+[vagrant@pu001 ~]$ sudo firewall-cmd --get-active-zones
+public
+  interfaces: enp0s3 enp0s8
+```
+
+De output die gegenereerd wordt is als volgt:
+
+```
+
+```
+
+*Resultaat*:
+
+
+Vergeet ook niet om de firewall eens te herstarten met `sudo systemctl restart firewalld`.
 
 #### Bereikbaarheid via `nmap`
 Om de bereikbaarheid te testen (vanaf een andere host) kan je volgende commando's gebruiken:
@@ -409,6 +447,14 @@ PORT    STATE  SERVICE
 
 Nmap done: 1 IP address (1 host up) scanned in 0.06 seconds
 ```
+
+De output die gegenereerd wordt is als volgt:
+
+```
+
+```
+
+*Resultaat*:
 
 ### Phase 4: Application Layer (TCP/IP)
 #### Configuratie (BIND)
@@ -827,12 +873,15 @@ Uitvoer controle poorten, draaiende service, etc.:
 
 List all sources of useful information that you encountered while completing this assignment: books, manuals, HOWTO's, blog posts, etc.
 
+- [Basic troubleshooting commands EL](https://bertvv.github.io/presentation-el7-basics/)
+
 - [DNS Red Hat ELNX](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/6/html/deployment_guide/ch-dns_servers)
 
 - [named conf](https://www.cyberciti.biz/tips/howto-linux-unix-check-dns-file-errors.html)
 
 - [DNS-server](https://unix.stackexchange.com/questions/28941/what-dns-servers-am-i-using)
-[Aanpassen `ip route`](https://www.cyberciti.biz/faq/howto-linux-configuring-default-route-with-ipcommand/)
+
+- [Aanpassen `ip route`](https://www.cyberciti.biz/faq/howto-linux-configuring-default-route-with-ipcommand/)
 
 - Bert Van Vreckem: ELNX Syllabus
 
@@ -849,6 +898,8 @@ List all sources of useful information that you encountered while completing thi
 - [DNS extra info](http://www.tldp.org/HOWTO/DNS-HOWTO-5.html)
 
 - [Port scanner nmap layer](https://stackoverflow.com/questions/47210759/which-layer-in-the-osi-model-does-a-network-scan-work-on)
+
+- [Configuratie firewall](https://www.digitalocean.com/community/tutorials/how-to-set-up-a-firewall-using-firewalld-on-centos-7)
 
 - [Check whether package is installed](https://unix.stackexchange.com/questions/122681/how-can-i-tell-whether-a-package-is-installed-via-yum-in-a-bash-script)
 
