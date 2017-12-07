@@ -20,7 +20,7 @@
 
 Om "problemen" met de toetsenbordindeling te vermijden gebruik dan één van volgende commando's:
 -  `vagrant ssh <machinenaam>`
--  `ssh <ip-adres> -l vagrant`
+-  `ssh -l <ip-adres> vagrant`
 
 Naamgeving:
 - `BIND`: DNS Server in Red Hat ELNX
@@ -648,6 +648,9 @@ wget http://HOST/, wget https://HOST/
 curl http://HOST/, curl https://HOST/
 ```
 
+#### Bestandspermissies
+We bekijken of alle bestandspermissies kloppen adhv van [dit voorbeeld](https://github.com/HoGentTIN/elnx-sme-RobinBauwens/blob/solution/report/named.md).
+
 #### SELinux
 We voeren volgend commando uit om na te gaan of SELinux wel degelijk aanstaat (op `enforcing`).
 We verwachten deze uitvoer:
@@ -784,6 +787,8 @@ List all sources of useful information that you encountered while completing thi
 - [Troubleshooting guide](https://bertvv.github.io/linux-network-troubleshooting/)
 
 - [BIND logging](http://www.zytrax.com/books/dns/ch7/logging.html)
+
+- [DNS extra info](http://www.tldp.org/HOWTO/DNS-HOWTO-5.html)
 
 - [Check whether package is installed](https://unix.stackexchange.com/questions/122681/how-can-i-tell-whether-a-package-is-installed-via-yum-in-a-bash-script)
 
