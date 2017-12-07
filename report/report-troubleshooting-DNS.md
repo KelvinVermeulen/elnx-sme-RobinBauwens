@@ -190,9 +190,11 @@ ping www.google.com
 sudo yum install bind-utils
 ```
 
-We pingen eens naar de hostmachine (bekijk IP-adres in Windows via `ipconfig`):
+We pingen eens naar de hostmachine (bekijk IP-adres in Windows via `ipconfig`) en naar de DG/DNS-server (van VirtualBox):
 ```
-
+ping xxx.xxx.xxx.xxx
+ping 10.0.2.2
+ping 10.0.2.3
 ```
 
 Ook dit lukt naar de andere kant (Host naar VM; vanuit `cmd` van Windows):
