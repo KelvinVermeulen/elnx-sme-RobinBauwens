@@ -38,7 +38,7 @@ Met volgend commando controleren we of de kabels insteken en werken (verbonden i
 
 `ip link`
 
-We verwachten dat `enp0s3` en `enp0s8` (en `lo`) aanstaan (niet exacte output, minder relevante informatie weggelaten):
+We verwachten dat `enp0s3` (NAT) en `enp0s8` (Host-Only adapter) (en `lo`) aanstaan (niet exacte output, minder relevante informatie weggelaten):
 
 ```
 1: lo: <LOOPBACK,UP,LOWER_UP> ...
@@ -52,10 +52,12 @@ De output die gegenereerd wordt is als volgt:
 
 ```
 
-De instellingen zijn ..., alle interfaces hebben state UP.
+*Resultaat*: De instellingen zijn ..., alle interfaces hebben state UP.
 
-Hiernaast controleren we ook of de instellingen in VirtualBox correct zijn: het IP-adres moet `xxx.xxx.xxx.xxx` zijn. Ook dit is het geval (dit controleren we manueel in VirtualBox zelf bij `Preferences` -> `Network`).
 
+Hiernaast controleren we ook of de instellingen in VirtualBox correct zijn:. Dit controleren we manueel in VirtualBox zelf bij `Preferences` -> `Network`.
+
+*Resultaat:* Alles OK/NOK.
 
 ### Phase 2: Internet/Network Layer (TCP/IP)
 
@@ -67,10 +69,13 @@ In deze laag controleren we volgende zaken:
 
 #### IP-adressen en subnetmasks 
 
-Zorg er eerst voor dat het IP-adres van je hostmachine in hetzelfde subnet ligt als die van de VM. Zorg er ook voor dat de firewall van je systeem (hier: Windows Firewall) Echoaanvragen (ICMP) toelaat.
+Zorg er eerst voor dat het IP-adres van je hostmachine in hetzelfde subnet ligt als die van de VM.
+Het IP-adres van `enp0s8` dient `192.168.56.42` te zijn (dit is VirtualBox Host-Only Ethernet Adapter #3 bij mijn instellingen).
+
+Zorg er ook voor dat de firewall van je systeem (hier: Windows Firewall) Echoaanvragen (ICMP) toelaat.
 
 Via `ip address` testen we de configuratie (ook hier zijn delen weggelaten).
-We verwachten volgende uitvoer (de IP-instellingen hangen af van de opgave):
+We verwachten volgende uitvoer:
 
 ```
 ip address
@@ -84,15 +89,15 @@ ip address
 
 Indien hier zaken ontbreken/afwijken, kunnen we deze wijzigen in `/etc/sysconfig/network-scripts/ifcfg-IFACE` (met IFACE: `enp0s3` of `enp0s8`) met een teksteditor zoals `vi`. Vergeet ook niet om `network.service` te herstarten met `sudo systemctl restart network.service`.
 
-<!--
-Dit hoeft niet aangezien we de juiste instellingen toegekregen krijgen.
--->
+De output die gegenereerd wordt is als volgt:
 
 ```
 
 ```
+*Resultaat:* 
 
 <!--
+Het aanpassen van de netwerkconfiguratie hoeft niet aangezien we de juiste instellingen toegekregen krijgen.
 -> `enp0s8` heeft als IP-adres `192.168.56.42/24` (via Vagrant) en `enp0s3` heeft `10.0.2.15/24`. Dit is in orde.
 -->
 
@@ -108,6 +113,14 @@ default via 10.0.2.2 dev enp0s3 proto static metric 100
 ```
 
 Indien hier zaken ontbreken/afwijken, kunnen we dit toevoegen met `ip route add default via 10.0.2.2` en verwijderen met `ip route delete 192.168.56.0/24 dev enp0s8`.
+
+De output die gegenereerd wordt is als volgt:
+
+```
+
+```
+
+*Resultaat*:
 
 <!--
 We stellen vast dat er een entry teveel in de config van `ip route` staat, we verwijderen deze met volgend commando:
