@@ -57,7 +57,7 @@ De output die gegenereerd wordt is als volgt:
 
 Hiernaast controleren we ook of de instellingen in VirtualBox correct zijn:. Dit controleren we manueel in VirtualBox zelf bij `Preferences` -> `Network`.
 
-*Resultaat:* Alles OK/NOK.
+*Resultaat:*
 
 ### Phase 2: Internet/Network Layer (TCP/IP)
 
@@ -190,14 +190,14 @@ ping www.google.com
 sudo yum install bind-utils
 ```
 
-We pingen eens naar de hostmachine (bekijk IP-adres in Windows via `ipconfig`):
+We pingen eens naar de hostmachine (bekijk IP-adres in Windows via `ipconfig`) vanuit `cmd` van Windows:
 ```
 
 ```
 
 Ook dit lukt naar de andere kant (Host naar VM):
 ```
-
+ping 192.168.56.42
 ```
 
 ### Phase 3: Transport Layer (TCP/IP)
@@ -207,7 +207,7 @@ In deze laag controleren we volgende zaken:
 #### Draaien de services?
 
 ----
-**Opmerking: alvorens de service op te starten:**
+**Opmerking: Alvorens de service op te starten:**
 
 Het kan zijn dat er configuratieproblemen zijn, dit dienen we te controleren in de applicatielaag alhoewel er ook nu al naar verwezen kan worden (zie p34 `syllabus-elnx.pdf`: 3.7.2 DNS troubleshooting).
 
@@ -242,7 +242,6 @@ dig +short NS hogent.be                         Authorative name server voor hog
 dig +short AAAA download.fedoraproject.org      IPv6 adres van download.fedoraproject.org
 
 dig +short -x 195.130.131.1                     Reverse lookup
-
 ---
 $ nslookup www.hogent.be
 Server: 195.130.131.1                           Server die antwoordt
@@ -267,7 +266,7 @@ $ getent ahosts www.google.com
 ```
 ----
 
-We verwachten volgende uitvoer (dit wijkt sowieso af van de werkelijkheid, wat belangrijk is, is dat de state op active-running staat):
+We verwachten volgende uitvoer (dit wijkt sowieso deels af van de werkelijkheid, wat belangrijk is, is dat de state op active-running staat):
 
 ```
 [vagrant@DNSServer etc]$ sudo systemctl status named
@@ -395,6 +394,22 @@ De output die gegenereerd wordt is als volgt:
 Vergeet ook niet om de firewall eens te herstarten met `sudo systemctl restart firewalld`.
 
 
+#### Bereikbaarheid via `nmap`
+Om de bereikbaarheid te testen (vanaf een andere host) kan je volgende commando's gebruiken:
+
+```
+[vagrant@DNSSlave ~]$ sudo nmap -sS -p 53,953 192.168.56.42
+
+Starting Nmap 6.40 ( http://nmap.org ) at 2017-12-07 18:55 UTC
+Nmap scan report for 192.168.56.42
+Host is up (-1500s latency).
+PORT    STATE  SERVICE
+53/tcp  open   domain
+953/tcp closed rndc
+
+Nmap done: 1 IP address (1 host up) scanned in 0.06 seconds
+```
+
 ### Phase 4: Application Layer (TCP/IP)
 #### Configuratie (BIND)
 In de applicatielaag checken we vooral de configuratie(bestanden van de services).
@@ -419,6 +434,15 @@ We verwachten geen uitvoer bij dit commando:
 ```
 sudo named-checkconf
 ```
+
+De output die gegenereerd wordt is als volgt:
+
+```
+
+```
+
+*Resultaat*:
+
 
 TIP: De paden waar de (configuratie)bestanden van BIND zich bevinden zijn de volgende:
 
@@ -574,9 +598,10 @@ data  dynamic  named.ca  named.empty  named.localhost  named.loopback  slaves
 
 - `/var/named` (enkel als `root` bereikbaar)
 
-[Klik hier om de inhoud van deze bestanden te zien](https://github.com/HoGentTIN/elnx-sme-RobinBauwens/blob/solution/report/named.md)
+[Klik hier](https://github.com/HoGentTIN/elnx-sme-RobinBauwens/blob/solution/report/named.md) om de inhoud van deze bestanden te zien.
 
-We gaan dus enkele zaken veranderen in `/etc/named.conf` met een teksteditor zoals vi, vergeet ook niet om adminrechten mee te geven!
+We gaan dus enkele zaken veranderen in `/etc/named.conf` met een teksteditor zoals `vi`, vergeet ook niet om adminrechten mee te geven!
+
 
 <!--
 We merken hier op dat HTTPS verkeer niet zal lukken aangezien de poort hiervoor op 8443 staat ipv 443.
@@ -586,15 +611,12 @@ We merken hier op dat HTTPS verkeer niet zal lukken aangezien de poort hiervoor 
 
 ```
 
-
-
 We kunnen de syntax nogmaals checken via volgend commando:
 
 ```
 sudo named-checkconf
 ```
 
-<!--
 Blijkbaar bestaat `/etc/pki/tls/certs/nigxn.pem` niet of kan nginx hier niet aan. Dit is ook logisch, want nginx werd verkeerd geschreven.
 
 We corrigeren `nigxn.pem` naar `nginx.pem` en voeren de syntax checker uit.
@@ -674,13 +696,6 @@ which php
 ```
 -->
 
-Om de bereikbaarheid te testen (vanaf een andere host kan je volgende commando's gebruiken):
-
-```
-sudo nmap -sS -p 80,443 HOST
-wget http://HOST/, wget https://HOST/
-curl http://HOST/, curl https://HOST/
-```
 
 #### Bestandspermissies
 We bekijken of alle bestandspermissies kloppen adhv van [dit voorbeeld](https://github.com/HoGentTIN/elnx-sme-RobinBauwens/blob/solution/report/named.md).
@@ -699,6 +714,15 @@ Als we dit uitvoeren, krijgen we ook effectief deze uitvoer.
 <!--
 Indien deze niet op `enforcing` staat, kunnen we dit aanpassen met `setenforce Enforcing`. Om dit permanent te maken dienen we het bestand `/etc/sysconfig/selinux` aan te passen met een teksteditor naar keuze.
 -->
+
+
+Voor `named` hebben we 2 SELinux-booleans (deze mogen op `off` staan):
+
+```
+[vagrant@pu001 ~]$ getsebool -a | grep named
+named_tcp_bind_http_port --> off
+named_write_master_zones --> off
+```
 
 <!--
 Als we de booleans van SELinux opvragen, stellen we vast dat `httpd_can_network_connect -- off` op "off" staat. Dit corrigeren we door volgende commando's in te geven:
@@ -823,6 +847,8 @@ List all sources of useful information that you encountered while completing thi
 - [BIND logging](http://www.zytrax.com/books/dns/ch7/logging.html)
 
 - [DNS extra info](http://www.tldp.org/HOWTO/DNS-HOWTO-5.html)
+
+- [Port scanner nmap layer](https://stackoverflow.com/questions/47210759/which-layer-in-the-osi-model-does-a-network-scan-work-on)
 
 - [Check whether package is installed](https://unix.stackexchange.com/questions/122681/how-can-i-tell-whether-a-package-is-installed-via-yum-in-a-bash-script)
 
