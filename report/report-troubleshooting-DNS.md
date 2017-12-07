@@ -22,6 +22,8 @@ Om "problemen" met de toetsenbordindeling te vermijden gebruik dan één van vol
 -  `vagrant ssh <machinenaam>`
 -  `ssh <ip-adres> -l vagrant`
 
+**Opmerking:** `dig` werd ook geïnstalleerd op het hostsysteem om DNS-queries te kunnen sturen naar de VM (om de DNS-functionaliteit te testen).
+
 Naamgeving:
 - `BIND`: DNS Server in Red Hat ELNX
 - `named`: DNS-service
@@ -864,7 +866,7 @@ restorecon reset /usr/share/nginx/html/index.php context system_u:object_r:user_
 ```
 
 ### Extra:
-Uitvoer controle poorten, draaiende service, etc.:
+Uitvoer controle poorten, draaiende service, uitvoeren van `dig` op hostsysteem met verwijzing `@192.168.56.42` naar domein/zone etc.:
 
 ```
 
