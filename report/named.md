@@ -9,11 +9,32 @@
 [root@DNSMaster named]# ls
 16.172.in-addr.arpa   avalon.lan  dynamic   named.empty      named.loopback
 2.0.192.in-addr.arpa  data        named.ca  named.localhost  slaves
+
+[root@DNSMaster named]# ls -Z
+-rw-r-----. root  named system_u:object_r:named_zone_t:s0 16.172.in-addr.arpa
+-rw-r-----. root  named system_u:object_r:named_zone_t:s0 2.0.192.in-addr.arpa
+-rw-r-----. root  named system_u:object_r:named_zone_t:s0 avalon.lan
+drwxrwx---. root  named system_u:object_r:named_cache_t:s0 data
+drwxrwx---. root  named system_u:object_r:named_cache_t:s0 dynamic
+-rw-r-----. root  named system_u:object_r:named_conf_t:s0 named.ca
+-rw-r-----. root  named system_u:object_r:named_zone_t:s0 named.empty
+-rw-r-----. root  named system_u:object_r:named_zone_t:s0 named.localhost
+-rw-r-----. root  named system_u:object_r:named_zone_t:s0 named.loopback
+drwxrwx---. named named system_u:object_r:named_cache_t:s0 slaves
 ```
 
 ```
 [root@DNSSlave named]# ls
 data  dynamic  named.ca  named.empty  named.localhost  named.loopback  slaves
+
+[root@DNSSlave named]# ls -Z
+drwxrwx---. root  named system_u:object_r:named_cache_t:s0 data
+drwxrwx---. root  named system_u:object_r:named_cache_t:s0 dynamic
+-rw-r-----. root  named system_u:object_r:named_conf_t:s0 named.ca
+-rw-r-----. root  named system_u:object_r:named_zone_t:s0 named.empty
+-rw-r-----. root  named system_u:object_r:named_zone_t:s0 named.localhost
+-rw-r-----. root  named system_u:object_r:named_zone_t:s0 named.loopback
+drwxrwx---. named named system_u:object_r:named_cache_t:s0 slaves
 ```
 
 ## Reverse DNS (enkel op master-server) & domein record
@@ -114,5 +135,28 @@ pr010                IN  A      172.16.0.10
 inside               IN  CNAME  pr010
 pr011                IN  A      172.16.0.11
 files                IN  CNAME  pr011
+```
+
+
+# Inhoud `/etc/` voor DNS
+
+```
+[root@pu001 etc]# ls -Z | grep named
+drwxr-x---. root named  system_u:object_r:etc_t:s0       named
+-rw-r-----. root named  system_u:object_r:named_conf_t:s0 named.conf
+-rw-r--r--. root named  system_u:object_r:etc_t:s0       named.iscdlv.key
+-rw-r-----. root named  system_u:object_r:named_conf_t:s0 named.rfc1912.zones
+-rw-r--r--. root named  system_u:object_r:etc_t:s0       named.root.key
+-rw-r-----. root named  system_u:object_r:dnssec_t:s0    rndc.key
+
+
+[root@pu002 ~]# ls -Z /etc | grep named
+drwxr-x---. root named  system_u:object_r:etc_t:s0       named
+-rw-r-----. root named  system_u:object_r:named_conf_t:s0 named.conf
+-rw-r--r--. root named  system_u:object_r:etc_t:s0       named.iscdlv.key
+-rw-r-----. root named  system_u:object_r:named_conf_t:s0 named.rfc1912.zones
+-rw-r--r--. root named  system_u:object_r:etc_t:s0       named.root.key
+-rw-r-----. root named  system_u:object_r:dnssec_t:s0    rndc.key
+
 ```
 
