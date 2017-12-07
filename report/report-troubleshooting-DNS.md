@@ -462,7 +462,7 @@ In de applicatielaag checken we vooral de configuratie(bestanden van de services
 
 TIP: open een nieuw terminalvenster en volg alle veranderingen van een service met `sudo journalctl -f -u SERVICE.service` of `sudo tail -f /var/log/httpd/error_log` voor `httpd`.
 
-De logging van BIND gaat naar `var/log/messages`.
+De logging van BIND gaat naar `var/log/messages` (verdwenen in Fedora).
 
 We controleren eerst of`bind` en `bind-utils` geïnstalleerd zijn, `lwresd` hoeft niet geïnstalleerd te zijn:
 
