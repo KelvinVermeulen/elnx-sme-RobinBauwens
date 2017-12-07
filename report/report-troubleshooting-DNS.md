@@ -869,8 +869,18 @@ restorecon reset /usr/share/nginx/html/index.php context system_u:object_r:user_
 Uitvoer controle poorten, draaiende service, uitvoeren van `dig` op hostsysteem met verwijzing `@192.168.56.42` naar domein/zone etc.:
 
 ```
-
+$ dig @192.168.56.42 ns1.example.com +short
+testbindmaster.example.com.
+192.168.56.53
+$ dig @192.168.56.42 example.com www.example.com +short
+web.example.com.
+192.168.56.20
+192.168.56.21
+$ dig @192.168.56.42 MX example.com +short
+10 mail.example.com.
 ```
+
+**Opmerking**: Het is mogelijk dat `+short` niet ondersteund wordt voor Windows dig.
 
 
 ## Resources
@@ -888,6 +898,8 @@ List all sources of useful information that you encountered while completing thi
 - [Aanpassen `ip route`](https://www.cyberciti.biz/faq/howto-linux-configuring-default-route-with-ipcommand/)
 
 - Bert Van Vreckem: ELNX Syllabus
+
+- [Ansible bind role bertvv](https://github.com/bertvv/ansible-role-bind)
 
 - [Installed packages](https://serverfault.com/questions/558936/how-to-accurately-check-if-package-is-installed-in-yum)
 
