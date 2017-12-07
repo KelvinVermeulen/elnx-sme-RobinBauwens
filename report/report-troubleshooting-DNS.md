@@ -18,9 +18,9 @@
     - describe the result of accessing the service from the host system
     - describe any error messages that still remain
 
-Om "problemen" met de toetsenbordindeling te vermijden gebruik dan één van volgende commando's:
+Om "problemen" met de toetsenbordindeling te vermijden gebruik dan één van volgende commando's (werkt enkel indien `ssh` toegelaten wordt op poort 22):
 -  `vagrant ssh <machinenaam>`
--  `ssh -l <ip-adres> vagrant`
+-  `ssh <ip-adres> -l vagrant`
 
 Naamgeving:
 - `BIND`: DNS Server in Red Hat ELNX
@@ -145,7 +145,7 @@ De routeringsinstellingen zijn nu correct.
 
 #### DNS-server
 Via `cat /etc/resolv.conf` kunnen we dit nagaan.
-We verwachten (ongeveer) volgende uitvoer: `nameserver xxx.xxx.xxx.xxx` moet zeker aanwezig zijn:
+We verwachten (ongeveer) volgende uitvoer: `nameserver 10.0.2.3` moet zeker aanwezig zijn aangezien dit een VM is met VirtualBox (met NAT):
 
 ```
 cat /etc/resolv.conf
@@ -155,12 +155,19 @@ nameserver 10.0.2.3
 options single-request-reopen
 ```
 
-We kunnen ook direct aanpassingen maken in dit bestand. Vergeet ook hier `network.service` niet eens te herstarten!
+We gaan in dit bestand geen aanpassingen maken.
 
-We gaan dit na op de VM van de webserver:
+<!--
+Vergeet ook hier `network.service` niet eens te herstarten! 
+-->
+
+De output die gegenereerd wordt is als volgt:
+
 ```
 
 ```
+
+*Resultaat*:
 
 <!--
 We zien dat de nameserver correct ingesteld is, hier hoeven we dus niets aan te passen.
@@ -177,7 +184,11 @@ dig www.google.com @10.0.2.3 +short
 ping www.google.com
 ```
 
-**Opmerking:** `dig` staat niet geïnstalleerd en pings worden niet doorgelaten op het schoolnetwerk. Het testen van de internetconnectie gebeurt later impliciet door packages te downloaden (zie PHP).
+**Opmerking:** `dig` staat niet geïnstalleerd en pings worden niet doorgelaten op het schoolnetwerk. We zullen de internetconnectie testen door `bind-utils` te installeren.
+
+```
+sudo yum install bind-utils
+```
 
 We pingen eens naar de hostmachine (bekijk IP-adres in Windows via `ipconfig`):
 ```
@@ -202,7 +213,7 @@ Het kan zijn dat er configuratieproblemen zijn, dit dienen we te controleren in 
 
 - Gebruik `sudo named-checkconf /etc/named.conf` om de configuratie van de DNS-server na te gaan.
 
-- Gebruik volgende commando's om de zonebestanden te controleren:
+- Gebruik volgende commando's (met andere argumenten natuurlijk) om de zonebestanden te controleren:
 
 ```
 $ sudo named-checkzone linuxlab.lan /var/named/linuxlab.lan
@@ -217,7 +228,7 @@ $ sudo rndc querylog on
 $ sudo journalctl -l -f -u named.service
 ```
 
-Hiernaast is het ook handig om `bind-tools` te installeren: `sudo yum install bind-tools` Enkele commando's om de DNS-server te testen:
+Hiernaast is het ook handig om `bind-tools` te installeren (dit vond normaal al plaats in de vorige laag): `sudo yum install bind-tools` Enkele commando's om de DNS-server te testen:
 
 ```
 nslookup www.hogent.be                          IP-adres van www.hogent.be
@@ -273,11 +284,18 @@ code=exited, status=0/SUCCESS)
            └─1152 /usr/sbin/named -u named -c /etc/named.conf
 ```
 
-```
-
-```
-
 Indien hier de service niet draait, kunnen we dit aanpassen met `sudo systemctl start <service>` en `sudo systemctl enable <service>` (met `<service>` natuurlijk vervangen met een service (zoals `named`).
+
+
+De output die gegenereerd wordt is als volgt:
+
+```
+
+```
+
+*Resultaat*:
+
+
 
 <!--
 We stellen vast dat de service niet draait op de VM, we corrigeren dit met volgende commando's:
@@ -304,7 +322,7 @@ okt 27 07:51:17 nginx systemd[1]: Unit nginx.service entered failed state.
 okt 27 07:51:17 nginx systemd[1]: nginx.service failed.
 ```
 
-Er zijn blijkbaar fouten in de configuratiebestanden van xxxxx. Dit wordt pas later behandeld op de applicatielaag.
+Er zijn blijkbaar fouten in de configuratiebestanden van de DNS-service `named`. Dit wordt pas later behandeld op de applicatielaag.
 -->
 
 
@@ -334,10 +352,14 @@ tcp    LISTEN     0      128     ::1:953                  :::*                  
 Dit is nog niet het geval, simpelweg omdat nginx nog niet draait omwille van configuratiefouten:
 -->
 
-```
+
+De output die gegenereerd wordt is als volgt:
 
 ```
 
+```
+
+*Resultaat*:
 
 #### Worden de services toegelaten door de firewall?
 We verwachten (ongeveer) volgende uitvoer:
@@ -358,23 +380,19 @@ public (active)
   icmp-blocks:
   rich rules:
 ```
-Als we dit uitvoeren krijgen we volgende uitvoer:
-
-```
-
-```
 
 Indien hier een service niet toegelaten is door de firewall, kunnen we volgende commando's gebruiken:
 `sudo firewall-cmd --add-service=<service>.service --permanent`  en `sudo firewall-cmd --add-service=<service>.service`.
 
-Dit voeren we dan ook uit:
-
-
-```
+De output die gegenereerd wordt is als volgt:
 
 ```
 
-Vergeet ook niet om de firewall te herstarten met `sudo systemctl restart firewalld`.
+```
+
+*Resultaat*:
+
+Vergeet ook niet om de firewall eens te herstarten met `sudo systemctl restart firewalld`.
 
 
 ### Phase 4: Application Layer (TCP/IP)
@@ -390,6 +408,9 @@ We controleren eerst of`bind` en `bind-utils` geïnstalleerd zijn, `lwresd` hoef
 ```
 yum list installed bind
 yum info bind
+
+yum list installed bind-utils
+yum info bind-utils
 ```
 
 We gaan de configuratie van BIND na met volgend commando.
