@@ -157,7 +157,7 @@ nameserver 10.0.2.3
 options single-request-reopen
 ```
 
-We gaan in dit bestand geen aanpassingen maken.
+We gaan in dit bestand geen aanpassingen maken (is wel mogelijk).
 
 <!--
 Vergeet ook hier `network.service` niet eens te herstarten! 
@@ -866,7 +866,7 @@ restorecon reset /usr/share/nginx/html/index.php context system_u:object_r:user_
 ```
 
 ### Extra:
-Uitvoer controle poorten, draaiende service, uitvoeren van `dig` op hostsysteem met verwijzing `@192.168.56.42` naar domein/zone etc.:
+Uitvoer controle poorten, draaiende service, uitvoeren van `dig` op hostsysteem met verwijzing `@192.168.56.42` naar domein/zone, reverse lookup eventueel etc.:
 
 ```
 $ dig @192.168.56.42 ns1.example.com +short
