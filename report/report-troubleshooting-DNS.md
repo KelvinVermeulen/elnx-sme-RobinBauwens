@@ -1186,7 +1186,7 @@ tcp    LISTEN     0      128                  ::1:953                  :::*     
 ```
 
 
-Als we het testscript uitvoeren krijgen we nog altijd fouten, dit komt doordat er in `cynalco.com` nog fouten zitten: `butterfree` heeft nog IP-adres .13 ipv .12 en (omgekeerd hetzelfde bij `deeble`). Ook heeft `mankey` nog geen `CNAME`, voeg dit dus toe (zie `files`).
+Als we het testscript uitvoeren krijgen we nog altijd fouten, dit komt doordat er in `cynalco.com` nog fouten zitten: `butterfree` heeft nog IP-adres .13 ipv .12 en (omgekeerd hetzelfde bij `beedle`). Ook heeft `mankey` nog geen `CNAME`, voeg dit dus toe (zie `files`).
 
 ```
 butterfree           IN  A      192.168.56.13 -> naar 192.168.56.12
@@ -1231,7 +1231,7 @@ Specifieer ook welke secundaire DNS-server er is (bij `/var/named/cynalco.com`):
 @                    IN  MX     10  sawamular.cynalco.com.
 ```
 
-Herstart hierna de service met `sudo systemctl restart named` (voor de zekerheid).
+Herstart hierna de service met `sudo systemctl restart named` (voor de zekerheid). Doe hetzelfde voor `firewalld`.
 
 ## End result
 
