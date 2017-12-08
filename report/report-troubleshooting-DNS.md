@@ -749,7 +749,7 @@ De output die gegenereerd wordt is als volgt:
 *Resultaat*:
 -->
 
-Vergeet ook niet om de firewall eens te herstarten met `sudo systemctl restart firewalld`.
+Vergeet ook niet om de firewall eens te herstarten met `sudo systemctl restart firewalld`, indien je intellingen hebt gewijzigd.
 
 <!--
 #### Bereikbaarheid via `nmap`
@@ -795,6 +795,8 @@ yum list installed bind-utils
 yum info bind-utils
 ```
 
+*Resultaat:* Beide packages zijn geïnstalleerd.
+
 We gaan de configuratie van BIND na met volgend commando.
 We verwachten geen uitvoer bij dit commando:
 
@@ -805,10 +807,11 @@ sudo named-checkconf
 De output die gegenereerd wordt is als volgt:
 
 ```
-
+[vagrant@golbat ~]$ sudo named-checkconf
+[vagrant@golbat ~]$
 ```
 
-*Resultaat*:
+*Resultaat*: Dit betekent dat er geen (syntax)fouten in `/etc/named.conf` zitten.
 
 
 TIP: De paden waar de (configuratie)bestanden van BIND zich bevinden zijn de volgende:
@@ -883,6 +886,7 @@ zone "16.172.in-addr.arpa" IN {
 };
 ```
 
+<!--
 ```
 [vagrant@DNSSlave etc]$ sudo cat /etc/named.conf
 //
@@ -944,6 +948,8 @@ zone "16.172.in-addr.arpa" IN {
   file "slaves/16.172.in-addr.arpa";
 };
 ```
+-->
+
 </details>
 
 - `/etc/named.conf` als je `bind-chroot` hebt geïnstalleerd
@@ -969,13 +975,34 @@ data  dynamic  named.ca  named.empty  named.localhost  named.loopback  slaves
 
 We gaan dus enkele zaken veranderen in `/etc/named.conf` met een teksteditor zoals `vi`, vergeet ook niet om adminrechten mee te geven!
 
+We merken volgende op in `/etc/named.conf`:
+```
+zone "cynalco.com" IN {
+  type master;
+  file "cynalco.com";
+  notify yes;
+  allow-update { none; };
+};
 
-<!--
-We merken hier op dat HTTPS verkeer niet zal lukken aangezien de poort hiervoor op 8443 staat ipv 443.
-
-
+zone "192.168.56.in-addr.arpa" IN {
+  type master;
+  file "192.168.56.in-addr.arpa";
+  notify yes;
+  allow-update { none; };
+};
+zone "2.0.192.in-addr.arpa" IN {
+  type master;
+  file "2.0.192.in-addr.arpa";
+  notify yes;
+  allow-update { none; };
+};
 ```
 
+We veranderen telkens de config (zie hieronder: `192.168.56 moet 56.168.192` zijn) met `sudo vi /etc/named.conf`.
+```
+zone "192.168.56.in-addr.arpa" IN {  -> naar:  zone "56.168.192.in-addr.arpa" IN {
+
+file "192.168.56.in-addr.arpa"; -> naar: file "56.168.192.in-addr.arpa";
 ```
 
 We kunnen de syntax nogmaals checken via volgend commando:
@@ -984,88 +1011,80 @@ We kunnen de syntax nogmaals checken via volgend commando:
 sudo named-checkconf
 ```
 
-Blijkbaar bestaat `/etc/pki/tls/certs/nigxn.pem` niet of kan nginx hier niet aan. Dit is ook logisch, want nginx werd verkeerd geschreven.
-
-We corrigeren `nigxn.pem` naar `nginx.pem` en voeren de syntax checker uit.
+*Resultaat:* We zien dat we geen (syntax)fouten gemaakt hebben in `/etc/named.conf`.
 
 ```
-[vagrant@nginx private]$ sudo vi /etc/nginx/nginx.conf
-[vagrant@nginx private]$ sudo nginx -t
-nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
-nginx: configuration file /etc/nginx/nginx.conf test is successful
+[vagrant@golbat ~]$ sudo vi /etc/named.conf
+[vagrant@golbat ~]$ sudo named-checkconf
 ```
 
-We moeten ook PHP hebben om deze server te laten werken, we controleren dit en zien dat PHP niet geïnstalleerd is, we lossen dit op met volgende commando's:
-```
-[vagrant@nginx certs]$ php -v
--bash: php: opdracht niet gevonden
-[vagrant@nginx certs]$ which php
-/usr/bin/which: no php in (/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/home/vagrant/.local/bin:/home/vagrant/bin)
-[vagrant@nginx certs]$ sudo yum install php
-...
-(Na de installatie)
-[vagrant@nginx certs]$ php -v
-PHP 5.4.16 (cli) (built: Nov  6 2016 00:29:02)
-Copyright (c) 1997-2013 The PHP Group
-Zend Engine v2.4.0, Copyright (c) 1998-2013 Zend Technologies
-[vagrant@nginx certs]$ which php
-/usr/bin/php
-```
-Hier wordt er ook impliciet getest op internetverbinding.
--->
-
-<!--
-#### Verwijderen Apache
-
-We merken op dat Apache geïnstalleerd is, dit mag niet het geval zijn dus verwijderen we deze.
--->
-<!--
-```
-[vagrant@nginx ~]$ sudo yum list installed httpd
-Geïnstalleerde pakketten
-httpd.x86_64                          2.4.6-67.el7.centos.6                          @updates
-[vagrant@nginx ~]$ sudo yum remove httpd
-Oplossen van afhankelijkheden
--- Transactiecontrole uitvoeren
-
-...
-
-Verwijderd:
-  httpd.x86_64 0:2.4.6-67.el7.centos.6
-
-Afhankelijkheid verwijderd:
-  apr.x86_64 0:1.4.8-3.el7                            apr-util.x86_64 0:1.5.2-6.el7
-  httpd-tools.x86_64 0:2.4.6-67.el7.centos.6          mailcap.noarch 0:2.1.41-2.el7
-  php.x86_64 0:5.4.16-42.el7                          php-cli.x86_64 0:5.4.16-42.el7
-
-Compleet!
-```
-
--->
-
-
-<!--
+De hoofdconfiguratie is nu in orde, nu gaan we naar `/var/named/`.
+We zien dat `192.168.56.in-addr.arpa` eigenlijk `56.168.192.in-addr.arpa` moet zijn. Verander dit:
 
 ```
-#### Configuratie PHP
+[vagrant@golbat ~]$ sudo mv /var/named/192.168.56.in-addr.arpa /var/named/56.168.192.in-addr.arpa
+```
 
-We kunnen controleren of PHP geïnstalleerd is met volgende commando's:
-Verwacht uitvoer (ongeveer):
+Open nu het bestand `56.168.192.in-addr.arpa` en verander telkens `192.168.56` naar `56.168.192` met `vi` (met adminrechten). Verander ook de IP-adressen van 12 en 13, deze staan omgewisseld (`beedle` en `butterfree`).
 
 ```
-php -v
-PHP 5.4.16 (cli) (built: Nov  6 2016 00:29:02)
-Copyright (c) 1997-2013 The PHP Group
-Zend Engine v2.4.0, Copyright (c) 1998-2013 Zend Technologies
+$ORIGIN 192.168.56.in-addr.arpa. -> naar: $ORIGIN 56.168.192.in-addr.arpa.
 
-which php
-/usr/bin/php
+13       IN  PTR  butterfree.cynalco.com. -> naar 12 (stonden omgewisseld)
+12       IN  PTR  beedle.cynalco.com.     -> naar 13 (stonden omgewisseld)
 ```
--->
+
+Open nu het bestand `2.0.192.in-addr.arpa` met `vi` (met adminrechten).
+
+Merk op dat op het einde van `tamatama.cynalco.com` er geen `.` meegegeven werd, dit mag niet! Voeg dus telkens een `.` toe achter iedere server en achter `golbat.cynalco.com` (tweemaal) en `hostmaster.cynalco.com`.
+Voeg zeker ook `IN  NS     tamatama.cynalco.com.` toe! `tamatama` is de tweede DNS-server.
+
+*Resultaat:* Enkel de gewijzigde lijnen worden opgeschreven hieronder.
+
+```
+@ IN SOA golbat.cynalco.com. hostmaster.cynalco.com. (
+
+
+IN  NS     golbat.cynalco.com.
+IN  NS     tamatama.cynalco.com.
+
+
+2        IN  PTR  tamatama.cynalco.com.
+4        IN  PTR  karakara.cynalco.com.
+6        IN  PTR  sawamular.cynalco.com.
+```
+
 
 
 #### Bestandspermissies
 We bekijken of alle bestandspermissies kloppen adhv van [dit voorbeeld](https://github.com/HoGentTIN/elnx-sme-RobinBauwens/blob/solution/report/named.md).
+
+Deze staan allemaal correct:
+
+```
+[vagrant@golbat ~]$ sudo ls -Z /var/named
+sudo ls -Z /var/named
+-rw-r-----. root  named system_u:object_r:named_zone_t:s0 2.0.192.in-addr.arpa
+-rw-r-----. root  named system_u:object_r:named_zone_t:s0 56.168.192.in-addr.arpa
+-rw-r-----. root  named system_u:object_r:named_zone_t:s0 cynalco.com
+drwxrwx---. named named system_u:object_r:named_cache_t:s0 data
+drwxrwx---. named named system_u:object_r:named_cache_t:s0 dynamic
+-rw-r-----. root  named system_u:object_r:named_conf_t:s0 named.ca
+-rw-r-----. root  named system_u:object_r:named_zone_t:s0 named.empty
+-rw-r-----. root  named system_u:object_r:named_zone_t:s0 named.localhost
+-rw-r-----. root  named system_u:object_r:named_zone_t:s0 named.loopback
+drwxrwx---. named named system_u:object_r:named_cache_t:s0 slaves
+
+
+[vagrant@golbat etc]$ sudo ls -Z /etc | grep named
+drwxr-x---. root named system_u:object_r:etc_t:s0       named
+-rw-r-----. root named system_u:object_r:named_conf_t:s0 named.conf
+-rw-r-----. root named system_u:object_r:etc_t:s0       named.conf.rpmnew
+-rw-r--r--. root named system_u:object_r:etc_t:s0       named.iscdlv.key
+-rw-r-----. root named system_u:object_r:named_conf_t:s0 named.rfc1912.zones
+-rw-r--r--. root named system_u:object_r:etc_t:s0       named.root.key
+-rw-r-----. root named system_u:object_r:dnssec_t:s0    rndc.key
+```
 
 #### SELinux
 We voeren volgend commando uit om na te gaan of SELinux wel degelijk aanstaat (op `enforcing`).
@@ -1078,53 +1097,21 @@ Enforcing
 
 Als we dit uitvoeren, krijgen we ook effectief deze uitvoer.
 
-<!--
-Indien deze niet op `enforcing` staat, kunnen we dit aanpassen met `setenforce Enforcing`. Om dit permanent te maken dienen we het bestand `/etc/sysconfig/selinux` aan te passen met een teksteditor naar keuze.
--->
+```
+[vagrant@golbat etc]$ getenforce
+Enforcing
+```
 
 
 Voor `named` hebben we 2 SELinux-booleans (deze mogen op `off` staan):
 
 ```
-[vagrant@pu001 ~]$ getsebool -a | grep named
+[vagrant@golbat etc]$ getsebool -a | grep named
 named_tcp_bind_http_port --> off
 named_write_master_zones --> off
 ```
 
-<!--
-Als we de booleans van SELinux opvragen, stellen we vast dat `httpd_can_network_connect -- off` op "off" staat. Dit corrigeren we door volgende commando's in te geven:
-
-```
-[vagrant@nginx ~]$ sudo setsebool httpd_can_network_connect 1
-[vagrant@nginx ~]$ sudo setsebool httpd_can_network_connect 1 -P
-```
-
-Ook moeten we ervoor zorgen dat de context voor de (configuratie)bestanden (en keys) wel degelijk juist is, we kunnen dit controleren met `ls -Z`. Dit kunnen we dan oplossen door `sudo resolvecon -R .` uit te voeren in `/etc/pki/tls`.
-
-Dit lost nog altijd niets op, dus bekijken we de uitvoer van `ls -Z` nog eens grondig:
-
-```
-[vagrant@nginx certs]$ ls -Z
-lrwxrwxrwx. root root system_u:object_r:cert_t:s0      ca-bundle.crt -> /etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem
-lrwxrwxrwx. root root system_u:object_r:cert_t:s0      ca-bundle.trust.crt -> /etc/pki/ca-trust/extracted/openssl/ca-bundle.trust.crt
--rwxr-xr-x. root root system_u:object_r:bin_t:s0       make-dummy-cert
--rw-r--r--. root root system_u:object_r:cert_t:s0      Makefile
--rw-r--r--. root root unconfined_u:object_r:cert_t:s0  nginx.pem
-```
-
-We merken op dat `nginx.pem` `unconfined_u:object_r:cert_t:s0` is ipv `system_u ...`. Dit mag niet het geval zijn, we lossen dit op met volgende commando's.
-
-We proberen volgend commando eens (met `-F`):
-```
-[vagrant@nginx certs]$ sudo restorecon -vF nginx.pem
-restorecon reset /etc/pki/tls/certs/nginx.pem context unconfined_u:object_r:cert_t:s0->system_u:object_r:cert_t:s0
-```
-
-Hierna restarten we de server eens met `sudo reboot`.
-
-...
-
-We hebben alles doorlopen en nu kunnen we terugkeren naar de ...laag om `named` op te starten.
+We hebben alles doorlopen en nu kunnen we terugkeren naar de transportlaag om `named` op te starten.
 
 
 ## Opnieuw doorlopen (TCP/IP)
@@ -1134,71 +1121,284 @@ We hebben alles doorlopen en nu kunnen we terugkeren naar de ...laag om `named` 
 We voeren volgende commando's uit om de service te starten:
 
 ```
-[vagrant@nginx private]$ sudo systemctl start nginx
-[vagrant@nginx private]$ sudo systemctl status nginx
-● nginx.service - The nginx HTTP and reverse proxy server
-   Loaded: loaded (/usr/lib/systemd/system/nginx.service; disabled; vendor preset: disabled)
-   Active: active (running) since vr 2017-10-27 08:46:20 UTC; 7s ago
-  Process: 2766 ExecStart=/usr/sbin/nginx (code=exited, status=0/SUCCESS)
-  Process: 2763 ExecStartPre=/usr/sbin/nginx -t (code=exited, status=0/SUCCESS)
-  Process: 2761 ExecStartPre=/usr/bin/rm -f /run/nginx.pid (code=exited, status=0/SUCCESS)
- Main PID: 2769 (nginx)
-   CGroup: /system.slice/nginx.service
-           ├─2769 nginx: master process /usr/sbin/nginx
-           ├─2770 nginx: worker process
-           └─2771 nginx: worker process
+[vagrant@golbat ~]$ sudo systemctl start named
+[vagrant@golbat ~]$ sudo systemctl status named
+named.service - Berkeley Internet Name Domain (DNS)
+   Loaded: loaded (/usr/lib/systemd/system/named.service; enabled)
+   Active: active (running) since Fri 2017-12-08 09:42:16 UTC; 8min ago
+  Process: 4586 ExecStart=/usr/sbin/named -u named -c ${NAMEDCONF} $OPTIONS (code=exited, status=0/SUCCESS)
+  Process: 4583 ExecStartPre=/bin/bash -c if [ ! "$DISABLE_ZONE_CHECKING" == "yes" ]; then /usr/sbin/named-checkconf -z "$NAMEDCONF"; else echo "Checking of zone files is disabled"; fi (code=exited, status=0/SUCCESS)
+ Main PID: 4589 (named)
+   CGroup: /system.slice/named.service
+           └─4589 /usr/sbin/named -u named -c /etc/named.conf
+
+Dec 08 09:42:25 golbat.cynalco.com named[4589]: error (network unreachable) resolving '....53
+Dec 08 09:42:25 golbat.cynalco.com named[4589]: error (network unreachable) resolving '....53
+Dec 08 09:42:25 golbat.cynalco.com named[4589]: error (network unreachable) resolving '....53
+Dec 08 09:42:25 golbat.cynalco.com named[4589]: error (network unreachable) resolving 'd...53
+Dec 08 09:42:25 golbat.cynalco.com named[4589]: error (network unreachable) resolving 'd...53
+Dec 08 09:42:25 golbat.cynalco.com named[4589]: error (network unreachable) resolving '....53
+Dec 08 09:42:25 golbat.cynalco.com named[4589]: error (network unreachable) resolving '....53
+Dec 08 09:42:25 golbat.cynalco.com named[4589]: error (network unreachable) resolving '....53
+Dec 08 09:42:26 golbat.cynalco.com named[4589]: managed-keys-zone: Unable to fetch DNSKE...ut
+Dec 08 09:42:26 golbat.cynalco.com named[4589]: managed-keys-zone: Unable to fetch DNSKE...ut
+Hint: Some lines were ellipsized, use -l to show in full.
 ```
 
-Als we de pagina bezoeken, dan lukt dit maar we krijgen een foutmelding "Access denied".
+De service staat nu op `active (running)`.
 
+Hierna controleren we de poorten:
+```
+[vagrant@golbat ~]$ sudo ss -tulpn | grep named
+tcp    UNCONN     0      0              127.0.0.1:53                    *:*      users:(("named",4589,515),("named",4589,514))
+tcp    UNCONN     0      0                     :::53                   :::*      users:(("named",4589,513),("named",4589,512))
+tcp    LISTEN     0      10             127.0.0.1:53                    *:*      users:(("named",4589,22))
+tcp    LISTEN     0      128            127.0.0.1:953                   *:*      users:(("named",4589,23))
+tcp    LISTEN     0      10                    :::53                   :::*      users:(("named",4589,21))
+tcp    LISTEN     0      128                  ::1:953                  :::*      users:(("named",4589,24))
+```
+
+Hierbij zien we dat er geen poort openstaat voor `192.168.56.42`, dit betekent dat anderen (buitenaf) niet de server kunnen bereiken, het staat enkel ingesteld voor de loopback-interface(s).
 
 ### Phase 4: Application Layer (TCP/IP)
 
-Als we via `sudo tail -f /var/log/messages` dit controleren krijgen we volgende uitvoer:
-`pid=1942 comm="php-fpm" name="index.php" dev="dm-0" ino=67141778 scontext=system_u:system_r:httpd_t:s0 tcontext=system_u:object_r:user_home_t:s0 tclass=file`
+We veranderen de hoofdconfiguratie: `sudo vi /etc/named.conf`.
 
-We voeren eens `ls -Z` uit in `/etc/share/nginx/html/` en we krijgen volgende uitvoer:
 ```
-[vagrant@nginx html]$ ls -Z
--rw-r--r--. root root system_u:object_r:usr_t:s0       404.html
--rw-r--r--. root root system_u:object_r:usr_t:s0       50x.html
--rw-r--r--. root root system_u:object_r:usr_t:s0       index.html
--rw-r--r--. root root system_u:object_r:user_home_t:s0 index.php
--rw-r--r--. root root system_u:object_r:usr_t:s0       nginx-logo.png
--rw-r--r--. root root system_u:object_r:usr_t:s0       poweredby.png
+   listen-on port 53 { 127.0.0.1; }; -> listen-on port 53 { any; };
 ```
 
-We merken hier op dat index.php niet helemaal juist is (deze staat nog op `user_home_t:s0` dit lossen we op met volgende commando:
+Voer nu `sudo systemctl restart named` uit om de service te herstarten (en config opnieuw te laden).
+
+Merk op dat er nu wel een poort openstaat via IP-adres `192.168.56.42`:
 ```
-[vagrant@nginx html]$ sudo restorecon -v index.php
-restorecon reset /usr/share/nginx/html/index.php context system_u:object_r:user_home_t:s0->system_u:object_r:usr_t:s0
+[vagrant@golbat ~]$ sudo ss -tulpn | grep named
+tcp    UNCONN     0      0          192.168.56.42:53                    *:*      users:(("named",4821,519),("named",4821,518))
+tcp    UNCONN     0      0              10.0.2.15:53                    *:*      users:(("named",4821,517),("named",4821,516))
+tcp    UNCONN     0      0              127.0.0.1:53                    *:*      users:(("named",4821,515),("named",4821,514))
+tcp    UNCONN     0      0                     :::53                   :::*      users:(("named",4821,513),("named",4821,512))
+tcp    LISTEN     0      10         192.168.56.42:53                    *:*      users:(("named",4821,24))
+tcp    LISTEN     0      10             10.0.2.15:53                    *:*      users:(("named",4821,23))
+tcp    LISTEN     0      10             127.0.0.1:53                    *:*      users:(("named",4821,22))
+tcp    LISTEN     0      128            127.0.0.1:953                   *:*      users:(("named",4821,25))
+tcp    LISTEN     0      10                    :::53                   :::*      users:(("named",4821,21))
+tcp    LISTEN     0      128                  ::1:953                  :::*      users:(("named",4821,26))
+```
+
+
+Als we het testscript uitvoeren krijgen we nog altijd fouten, dit komt doordat er in `cynalco.com` nog fouten zitten: `butterfree` heeft nog IP-adres .13 ipv .12 en (omgekeerd hetzelfde bij `deeble`). Ook heeft `mankey` nog geen `CNAME`, voeg dit dus toe (zie `files`).
+
+```
+butterfree           IN  A      192.168.56.13 -> naar 192.168.56.12
+db1                  IN  CNAME  butterfree
+beedle               IN  A      192.168.56.12 -> naar 192.168.56.13
+db2                  IN  CNAME  beedle
+
+
+mankey               IN  A      192.168.56.56
+files                IN  CNAME  mankey        -> toegevoegd
+```
+
+
+
+<!--
+HOEFT NIET:
+Hierna veranderen we de config in `/etc/named.conf`.
+```
+       listen-on-v6 port 53 { any; }; -> naar listen-on-v6 port 53 { ::1; };
 ```
 -->
+
+We voegen de DNS toe bij de firewall (voor de zekerheid):
+
+```
+sudo firewall-cmd --add-service=dns
+sudo firewall-cmd --add-service=dns --permanent
+```
+
+<!--
+  HOEFT NIET:
+Hierna voegen we dit toe:
+`ZONE=public` bij  `/etc/sysconfig/network-scripts/ifcfg-enp0s8`.
+-->
+
+Laatste opgeloste fout waar ik veel tijd bij verloor:
+Specifieer ook welke secundaire DNS-server er is (bij `/var/named/cynalco.com`):
+
+```
+                     IN  NS     golbat.cynalco.com.
+                     IN  NS     tamatama.cynalco.com.
+@                    IN  MX     10  sawamular.cynalco.com.
+```
+
+Herstart hierna de service met `sudo systemctl restart named` (voor de zekerheid).
 
 ## End result
 
 
 ```
+[vagrant@golbat ~]$ bats golbat_test.bats
+ ✓ Forward lookups private servers
+ ✓ Forward lookups public servers
+ ✓ Reverse lookups private servers
+ ✓ Reverse lookups public servers
+ ✓ Alias lookups private servers
+ ✓ Alias lookups public servers
+ ✓ NS record lookup
+ ✓ Mail server lookup
+
+8 tests, 0 failures
+```
 
 ```
+Robin Bauwens@RobinB MINGW64 ~/Desktop (master)
+$ dig @192.168.56.42 tamatama.cynalco.com.
+
+; <<>> DiG 9.10.6 <<>> @192.168.56.42 tamatama.cynalco.com.
+; (1 server found)
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 12673
+;; flags: qr aa rd; QUERY: 1, ANSWER: 1, AUTHORITY: 2, ADDITIONAL: 2
+;; WARNING: recursion requested but not available
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 4096
+;; QUESTION SECTION:
+;tamatama.cynalco.com.          IN      A
+
+;; ANSWER SECTION:
+tamatama.cynalco.com.   604800  IN      A       192.0.2.2
+
+;; AUTHORITY SECTION:
+cynalco.com.            604800  IN      NS      golbat.cynalco.com.
+cynalco.com.            604800  IN      NS      tamatama.cynalco.com.
+
+;; ADDITIONAL SECTION:
+golbat.cynalco.com.     604800  IN      A       192.168.56.42
+
+;; Query time: 0 msec
+;; SERVER: 192.168.56.42#53(192.168.56.42)
+;; WHEN: Fri Dec 08 11:55:15 Romance (standaardtijd) 2017
+;; MSG SIZE  rcvd: 116
+
+
+
+Robin Bauwens@RobinB MINGW64 ~/Desktop (master)
+$ dig @192.168.56.42 golbat.cynalco.com.
+
+; <<>> DiG 9.10.6 <<>> @192.168.56.42 golbat.cynalco.com.
+; (1 server found)
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 36565
+;; flags: qr aa rd; QUERY: 1, ANSWER: 1, AUTHORITY: 2, ADDITIONAL: 2
+;; WARNING: recursion requested but not available
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 4096
+;; QUESTION SECTION:
+;golbat.cynalco.com.            IN      A
+
+;; ANSWER SECTION:
+golbat.cynalco.com.     604800  IN      A       192.168.56.42
+
+;; AUTHORITY SECTION:
+cynalco.com.            604800  IN      NS      golbat.cynalco.com.
+cynalco.com.            604800  IN      NS      tamatama.cynalco.com.
+
+;; ADDITIONAL SECTION:
+tamatama.cynalco.com.   604800  IN      A       192.0.2.2
+
+;; Query time: 0 msec
+;; SERVER: 192.168.56.42#53(192.168.56.42)
+;; WHEN: Fri Dec 08 11:55:32 Romance (standaardtijd) 2017
+;; MSG SIZE  rcvd: 116
+```
+
+![Result](img/troubleshooting-2/5.PNG)
+
+```
+Robin Bauwens@RobinB MINGW64 ~/Desktop (master)
+$ nslookup golbat.cynalco.com. 192.168.56.42
+Server:  golbat.cynalco.com
+Address:  192.168.56.42
+
+Name:    golbat.cynalco.com
+Address:  192.168.56.42
+
+
+Robin Bauwens@RobinB MINGW64 ~/Desktop (master)
+$ nslookup tamatama.cynalco.com. 192.168.56.42
+Server:  golbat.cynalco.com
+Address:  192.168.56.42
+
+Name:    tamatama.cynalco.com
+Address:  192.0.2.2
+```
+
+![Result 2](img/troubleshooting-2/6.PNG)
 
 ### Extra:
 Uitvoer controle poorten, draaiende service, uitvoeren van `dig` op hostsysteem met verwijzing `@192.168.56.42` naar domein/zone, reverse lookup eventueel etc.:
 
 ```
-$ dig @192.168.56.42 ns1.example.com +short
-testbindmaster.example.com.
-192.168.56.53
-$ dig @192.168.56.42 example.com www.example.com +short
-web.example.com.
-192.168.56.20
-192.168.56.21
-$ dig @192.168.56.42 MX example.com +short
-10 mail.example.com.
+Robin Bauwens@RobinB MINGW64 ~/Desktop (master)
+$ dig @192.168.56.42 golbat.cynalco.com +short
+192.168.56.42
+
+Robin Bauwens@RobinB MINGW64 ~/Desktop (master)
+$ dig @192.168.56.42 NS cynalco.com +short
+golbat.cynalco.com.
+tamatama.cynalco.com.
+
+Robin Bauwens@RobinB MINGW64 ~/Desktop (master)
+$ dig @192.168.56.42 MX cynalco.com +short
+10 sawamular.cynalco.com.
 ```
 
-**Opmerking**: Het is mogelijk dat `+short` niet ondersteund wordt voor Windows dig.
+![Result 3](img/troubleshooting-2/7.PNG)
 
+
+```
+Robin Bauwens@RobinB MINGW64 ~/Desktop (master)
+$ dig @192.168.56.42 cynalco.com
+
+; <<>> DiG 9.10.6 <<>> @192.168.56.42 cynalco.com
+; (1 server found)
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 59041
+;; flags: qr aa rd; QUERY: 1, ANSWER: 0, AUTHORITY: 1, ADDITIONAL: 1
+;; WARNING: recursion requested but not available
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 4096
+;; QUESTION SECTION:
+;cynalco.com.                   IN      A
+
+;; AUTHORITY SECTION:
+cynalco.com.            86400   IN      SOA     golbat.cynalco.com. hostmaster.cynalco.com. 15081921 86400 3600 604800 86400
+
+;; Query time: 0 msec
+;; SERVER: 192.168.56.42#53(192.168.56.42)
+;; WHEN: Fri Dec 08 12:01:43 Romance (standaardtijd) 2017
+;; MSG SIZE  rcvd: 94
+
+
+Robin Bauwens@RobinB MINGW64 ~/Desktop (master)
+$ nslookup cynalco.com 192.168.56.42
+Server:  golbat.cynalco.com
+Address:  192.168.56.42
+
+Name:    cynalco.com
+```
+
+![Result 4](img/troubleshooting-2/8.PNG)
+
+<!--
+**Opmerking**: Het is mogelijk dat `+short` niet ondersteund wordt voor Windows dig.
+-->
 
 ## Resources
 
