@@ -1396,6 +1396,43 @@ Name:    cynalco.com
 
 ![Result 4](img/troubleshooting-2/8.PNG)
 
+
+#### Remote execution script
+Download `bats` en voer het hierna uit.
+
+```
+$ git clone https://github.com/sstephenson/bats.git
+$ cd bats
+$ ./install.sh /usr/local
+
+Robin Bauwens@RobinB MINGW64 ~/Documents/GitHub/School - huidig (master)
+$ cd bats/
+
+Robin Bauwens@RobinB MINGW64 ~/Documents/GitHub/School - huidig/bats (master)
+$ ls
+bin/        golbat_test.bats*  libexec/  man/          README.md
+CONDUCT.md  install.sh*        LICENSE   package.json  test/
+
+Robin Bauwens@RobinB MINGW64 ~/Documents/GitHub/School - huidig/bats (master)
+$ ./golbat_test.bats
+/usr/local/bin/bats: line 1: ../libexec/bats: No such file or directory
+
+Robin Bauwens@RobinB MINGW64 ~/Documents/GitHub/School - huidig/bats (master)
+$ ./libexec/bats golbat_test.bats
+ ✓ Forward lookups private servers
+ ✓ Forward lookups public servers
+ ✓ Reverse lookups private servers
+ ✓ Reverse lookups public servers
+ ✓ Alias lookups private servers
+ ✓ Alias lookups public servers
+ ✓ NS record lookup
+ ✓ Mail server lookup
+
+8 tests, 0 failures
+```
+
+![Result 5-bats](img/troubleshooting-2/9.PNG)
+
 <!--
 **Opmerking**: Het is mogelijk dat `+short` niet ondersteund wordt voor Windows dig.
 -->
@@ -1446,3 +1483,19 @@ List all sources of useful information that you encountered while completing thi
 - [Config interfaces](https://www.centos.org/docs/5/html/Deployment_Guide-en-US/s1-networkscripts-interfaces.html)
 
 - [Linux interfaces up/down](http://mirrors.deepspace6.net/Linux+IPv6-HOWTO/x1028.html)
+
+- [BATS](https://github.com/sstephenson/bats)
+
+- [BIND zones](https://www.centos.org/docs/5/html/Deployment_Guide-en-US/s1-bind-zone.html)
+
+- [List entries domain](https://www.crucial.com.au/blog/2010/03/24/how-to-list-all-dns-recordsentries-for-a-domain-name-in-linux/)
+
+- [Caching](http://www.zytrax.com/books/dns/ch4/#caching)
+
+- [Firewall-cmd](https://forums.fedoraforum.org/showthread.php?289907-firewall-cmd-permanent-adding-an-interface-to-a-zone)
+
+- [Firewall-cmd 2](https://www.digitalocean.com/community/tutorials/how-to-set-up-a-firewall-using-firewalld-on-centos-7)
+
+- [host](https://pubs.vmware.com/bde-2/index.jsp?topic=%2Fcom.vmware.bigdataextensions.admin.doc%2FGUID-6985704B-7176-4071-8CDB-7047CEF5CE71.html)
+
+- [Zone files](https://www.centos.org/docs/5/html/Deployment_Guide-en-US/s1-bind-zone.html)
