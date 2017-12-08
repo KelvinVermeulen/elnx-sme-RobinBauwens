@@ -24,6 +24,9 @@ Om "problemen" met de toetsenbordindeling te vermijden gebruik dan één van vol
 
 **Opmerking:** `dig` werd ook geïnstalleerd op het hostsysteem om DNS-queries te kunnen sturen naar de VM (om de DNS-functionaliteit te testen).
 
+
+Eender welk DNS-antwoord is goed (dus ook een negatief, zolang er maar een antwoord is van de server).
+
 Naamgeving:
 - `BIND`: DNS Server in Red Hat ELNX
 - `named`: DNS-service
@@ -51,15 +54,24 @@ We verwachten dat `enp0s3` (NAT) en `enp0s8` (Host-Only adapter) (en `lo`) aanst
 De output die gegenereerd wordt is als volgt:
 
 ```
+[vagrant@golbat ~]$ ip link
 
+1: lo: UP, UP
+2: enp0s3 UP, UP
+3: enp0s8 state DOWN
 ```
 
-*Resultaat*: De instellingen zijn ..., alle interfaces hebben state UP.
+![ip link](img/troubleshooting-2/1.PNG)
 
+Merk op dat de toestand van `enp0s8` op DOWN staat. Dit gaan we oplossen door deze actief te zetten met `sudo ip link set dev enp0s8 up`.
+
+*Resultaat*: De instellingen voor de toestand van de netwerkadapters zijn nu correct, alle interfaces hebben state UP.
+
+![ip link actief](img/troubleshooting-2/2.PNG)
 
 Hiernaast controleren we ook of de instellingen in VirtualBox correct zijn:. Dit controleren we manueel in VirtualBox zelf bij `Preferences` -> `Network`.
 
-*Resultaat:*
+*Resultaat:* De instellingen binnen VirtualBox zijn OK, alle kabels zijn ook verbonden en we hebben 1 NAT en 1 Host-Only adapter.
 
 ### Phase 2: Internet/Network Layer (TCP/IP)
 
@@ -74,7 +86,11 @@ In deze laag controleren we volgende zaken:
 Zorg er eerst voor dat het IP-adres van je hostmachine in hetzelfde subnet ligt als die van de VM.
 Het IP-adres van `enp0s8` dient `192.168.56.42` te zijn (dit is VirtualBox Host-Only Ethernet Adapter #3 bij mijn instellingen).
 
+*Resultaat:* De instellingen binnen VirtualBox zijn in orde (o.a. Host-Only Ethernet Adapter #3).
+
 Zorg er ook voor dat de firewall van je systeem (hier: Windows Firewall) Echoaanvragen (ICMP) toelaat.
+
+-> Dit is ook in orde.
 
 Via `ip address` testen we de configuratie (ook hier zijn delen weggelaten).
 We verwachten volgende uitvoer:
@@ -89,19 +105,85 @@ ip address
     inet 192.168.56.42/24 brd 192.168.56.255 scope global enp0s8
 ```
 
-Indien hier zaken ontbreken/afwijken, kunnen we deze wijzigen in `/etc/sysconfig/network-scripts/ifcfg-IFACE` (met IFACE: `enp0s3` of `enp0s8`) met een teksteditor zoals `vi`. Vergeet ook niet om `network.service` te herstarten met `sudo systemctl restart network.service`.
+Indien hier zaken ontbreken/afwijken, kunnen we deze wijzigen in `/etc/sysconfig/network-scripts/ifcfg-IFACE` (met IFACE: `enp0s3` of `enp0s8`) met een teksteditor zoals `vi` (met adminrechten).
 
 De output die gegenereerd wordt is als volgt:
 
-```
+![ip link actief](img/troubleshooting-2/3.PNG)
+
+*Resultaat:* Merk op dat (na de activatie via `ip link`) `enp0s8` geen IP-adres toegekend heeft gekregen. Dit kunnen we veranderen in de netwerkconfiguratie(bestanden).
+
+Om dit op te lossen:
+
+`sudo vi /etc/sysconfig/network-scripts/ifcfg-enp0s8` en verander `ONBOOT=no` naar `ONBOOT=yes`.
+
+`:q!` is in QWERTY met shift + L, a, shift &
+
+![ip address onboot](img/troubleshooting-2/4.PNG)
+
+Vergeet ook niet om `network.service` te herstarten met `sudo systemctl restart network.service`.
+
+Vanaf nu kunnen we `ssh 192.168.56.42 -l vagrant` uitvoeren, merk op dat we eerst `ssh-keygen -R 192.168.56.42` moeten uitvoeren aangezien de vorige VM ook dit IP-adres had.
 
 ```
-*Resultaat:* 
+Robin Bauwens@RobinB MINGW64 ~/Desktop (master)
+$ ssh 192.168.56.42 -l vagrant
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@    WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!     @
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!
+Someone could be eavesdropping on you right now (man-in-the-middle attack)!
+It is also possible that a host key has just been changed.
+The fingerprint for the ECDSA key sent by the remote host is
+SHA256:W7g/Tsg+fcGXRcq2rF7sJFJgAfGtRsNdJAdqRydXf9E.
+Please contact your system administrator.
+Add correct host key in /c/Users/TEMP/.ssh/known_hosts to get rid of this message.
+Offending ECDSA key in /c/Users/TEMP/.ssh/known_hosts:8
+ECDSA host key for 192.168.56.42 has changed and you have requested strict checking.
+Host key verification failed.
 
-<!--
-Het aanpassen van de netwerkconfiguratie hoeft niet aangezien we de juiste instellingen toegekregen krijgen.
--> `enp0s8` heeft als IP-adres `192.168.56.42/24` (via Vagrant) en `enp0s3` heeft `10.0.2.15/24`. Dit is in orde.
--->
+Robin Bauwens@RobinB MINGW64 ~/Desktop (master)
+$ ssh-keygen -R 192.168.56.42
+# Host 192.168.56.42 found: line 8
+/c/Users/TEMP/.ssh/known_hosts updated.
+Original contents retained as /c/Users/TEMP/.ssh/known_hosts.old
+
+Robin Bauwens@RobinB MINGW64 ~/Desktop (master)
+$ ssh 192.168.56.42 -l vagrant
+The authenticity of host '192.168.56.42 (192.168.56.42)' can't be established.
+ECDSA key fingerprint is SHA256:W7g/Tsg+fcGXRcq2rF7sJFJgAfGtRsNdJAdqRydXf9E.
+Are you sure you want to continue connecting (yes/no)? yes
+Warning: Permanently added '192.168.56.42' (ECDSA) to the list of known hosts.
+vagrant@192.168.56.42's password:
+Last login: Fri Dec  8 08:19:41 2017
+Welcome to your Packer-built virtual machine.
+[vagrant@golbat ~]$
+```
+
+
+*Resultaat:* We stellen vast dat alle IP-instellingen nu correct zijn.
+
+```
+[vagrant@golbat ~]$ ip a
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host
+       valid_lft forever preferred_lft forever
+2: enp0s3: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP qlen 1000
+    link/ether 08:00:27:5c:64:28 brd ff:ff:ff:ff:ff:ff
+    inet 10.0.2.15/24 brd 10.0.2.255 scope global dynamic enp0s3
+       valid_lft 86168sec preferred_lft 86168sec
+    inet6 fe80::a00:27ff:fe5c:6428/64 scope link
+       valid_lft forever preferred_lft forever
+3: enp0s8: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP qlen 1000
+    link/ether 08:00:27:a4:25:4b brd ff:ff:ff:ff:ff:ff
+    inet 192.168.56.42/24 brd 192.168.56.255 scope global enp0s8
+       valid_lft forever preferred_lft forever
+    inet6 fe80::a00:27ff:fea4:254b/64 scope link
+       valid_lft forever preferred_lft forever
+```
 
 #### Default gateway
 Via `ip route` kunnen we dit nagaan.
@@ -116,30 +198,24 @@ default via 10.0.2.2 dev enp0s3 proto static metric 100
 
 Indien hier zaken ontbreken/afwijken, kunnen we dit toevoegen met `ip route add default via 10.0.2.2` en verwijderen met `ip route delete 192.168.56.0/24 dev enp0s8`.
 
-De output die gegenereerd wordt is als volgt:
+De output die gegenereerd wordt is als volgt (merk ook op dat er een APIPA-adres is, deze laten we staan):
 
 ```
-
-```
-
-*Resultaat*:
-
-<!--
-We stellen vast dat er een entry teveel in de config van `ip route` staat, we verwijderen deze met volgend commando:
-
-```
-[vagrant@nginx network-scripts]$ ip r
+[vagrant@golbat ~]$ ip r
 default via 10.0.2.2 dev enp0s3  proto static  metric 100
 10.0.2.0/24 dev enp0s3  proto kernel  scope link  src 10.0.2.15  metric 100
 169.254.0.0/16 dev enp0s8  scope link  metric 1003
 192.168.56.0/24 dev enp0s8  proto kernel  scope link  src 192.168.56.42
-[vagrant@nginx network-scripts]$ sudo ip route delete 169.254.0.0/16 dev enp0s8
-[vagrant@nginx network-scripts]$ ip route
-default via 10.0.2.2 dev enp0s3  proto static  metric 100
-10.0.2.0/24 dev enp0s3  proto kernel  scope link  src 10.0.2.15  metric 100
-192.168.56.0/24 dev enp0s8  proto kernel  scope link  src 192.168.56.42
 ```
+
+*Resultaat*:
+Buiten het feit dat 
+<!-- 
+`192.168.56.0/24` geen metric heeft (en 
 -->
+het APIPA-adres er tussen staat zijn de instellingen voor het routeren correct.
+
+
 
 Hierna herstarten we beide netwerkservices met `sudo systemctl restart network.service` en `sudo systemctl restart NetworkManager.service` om zeker te zijn dat de netwerkinstellingen correct zijn.
 
@@ -157,7 +233,7 @@ nameserver 10.0.2.3
 options single-request-reopen
 ```
 
-We gaan in dit bestand geen aanpassingen maken (is wel mogelijk).
+We gaan in dit bestand geen aanpassingen maken, aangezien de instellingen al correct staan.
 
 <!--
 Vergeet ook hier `network.service` niet eens te herstarten! 
@@ -166,10 +242,13 @@ Vergeet ook hier `network.service` niet eens te herstarten!
 De output die gegenereerd wordt is als volgt:
 
 ```
-
+[vagrant@golbat ~]$ cat /etc/resolv.conf
+# Generated by NetworkManager
+search hogent.be cynalco.com
+nameserver 10.0.2.3
 ```
 
-*Resultaat*:
+*Resultaat*: We gebruiken de DNS-server (van VirtualBox), deze instellingen staan goed.
 
 <!--
 We zien dat de nameserver correct ingesteld is, hier hoeven we dus niets aan te passen.
@@ -186,23 +265,210 @@ dig www.google.com @10.0.2.3 +short             Gebruik DNS-server van VirtualBo
 ping www.google.com
 ```
 
-**Opmerking:** `dig` staat niet geïnstalleerd en pings worden niet doorgelaten op het schoolnetwerk. We zullen de internetconnectie testen door `bind-utils` te installeren.
+*Resultaat:* 
+
+```
+[vagrant@golbat ~]$ dig www.google.com @10.0.2.3 +short
+216.58.213.196
+
+-> pings worden niet toegelaten op het schoolnetwerk!
+```
+
+We kunnen vanaf de VM een DNS-query sturen naar het internet. We hebben dus al zeker een werkende internetverbinding.
+
+
+**Opmerking:** We zullen de internetconnectie testen door `bind-utils` te installeren.
 
 ```
 sudo yum install bind-utils
 ```
 
+-> Dit hoeft eigenlijk niet aangezien we `dig` al kunnen uitvoeren, maar door `bind-utils` te installeren testen we impliciet op de internetverbinding.
+
+*Resultaat:*
+
+```
+[vagrant@golbat ~]$ sudo yum install bind-utils
+Loaded plugins: fastestmirror
+Repodata is over 2 weeks old. Install yum-cron? Or run: yum makecache fast
+base                                                                  | 3.6 kB  00:00:00
+extras                                                                | 3.4 kB  00:00:00
+updates                                                               | 3.4 kB  00:00:00
+(1/4): extras/7/x86_64/primary_db                                     | 130 kB  00:00:00
+(2/4): base/7/x86_64/group_gz                                         | 156 kB  00:00:00
+(3/4): updates/7/x86_64/primary_db                                    | 4.5 MB  00:00:03
+(4/4): base/7/x86_64/primary_db                                       | 5.7 MB  00:00:05
+Determining fastest mirrors
+ * base: mir01.syntis.net
+ * extras: mirror.guru
+ * updates: mirror.plusserver.com
+Resolving Dependencies
+--> Running transaction check
+---> Package bind-utils.x86_64 32:9.9.4-18.el7_1.3 will be updated
+---> Package bind-utils.x86_64 32:9.9.4-51.el7_4.1 will be an update
+--> Processing Dependency: bind-libs = 32:9.9.4-51.el7_4.1 for package: 32:bind-utils-9.9.4-51.el7_4.1.x86_64
+--> Processing Dependency: libGeoIP.so.1()(64bit) for package: 32:bind-utils-9.9.4-51.el7_4.1.x86_64
+--> Running transaction check
+---> Package GeoIP.x86_64 0:1.5.0-11.el7 will be installed
+---> Package bind-libs.x86_64 32:9.9.4-18.el7_1.3 will be updated
+--> Processing Dependency: bind-libs = 32:9.9.4-18.el7_1.3 for package: 32:bind-9.9.4-18.el7_1.3.x86_64
+---> Package bind-libs.x86_64 32:9.9.4-51.el7_4.1 will be an update
+--> Processing Dependency: bind-license = 32:9.9.4-51.el7_4.1 for package: 32:bind-libs-9.9.4-51.el7_4.1.x86_64
+--> Running transaction check
+---> Package bind.x86_64 32:9.9.4-18.el7_1.3 will be updated
+---> Package bind.x86_64 32:9.9.4-51.el7_4.1 will be an update
+---> Package bind-license.noarch 32:9.9.4-18.el7_1.3 will be updated
+--> Processing Dependency: bind-license = 32:9.9.4-18.el7_1.3 for package: 32:bind-libs-lite-9.9.4-18.el7_1.3.x86_64
+---> Package bind-license.noarch 32:9.9.4-51.el7_4.1 will be an update
+--> Running transaction check
+---> Package bind-libs-lite.x86_64 32:9.9.4-18.el7_1.3 will be updated
+---> Package bind-libs-lite.x86_64 32:9.9.4-51.el7_4.1 will be an update
+--> Finished Dependency Resolution
+
+Dependencies Resolved
+
+=============================================================================================
+ Package                 Arch            Version                      Repository        Size
+=============================================================================================
+Updating:
+ bind-utils              x86_64          32:9.9.4-51.el7_4.1          updates          203 k
+Installing for dependencies:
+ GeoIP                   x86_64          1.5.0-11.el7                 base             1.1 M
+Updating for dependencies:
+ bind                    x86_64          32:9.9.4-51.el7_4.1          updates          1.8 M
+ bind-libs               x86_64          32:9.9.4-51.el7_4.1          updates          1.0 M
+ bind-libs-lite          x86_64          32:9.9.4-51.el7_4.1          updates          733 k
+ bind-license            noarch          32:9.9.4-51.el7_4.1          updates           84 k
+
+Transaction Summary
+=============================================================================================
+Install             ( 1 Dependent package)
+Upgrade  1 Package  (+4 Dependent packages)
+
+Total download size: 4.8 M
+Is this ok [y/d/N]: y
+Downloading packages:
+Delta RPMs disabled because /usr/bin/applydeltarpm not installed.
+(1/6): bind-libs-lite-9.9.4-51.el7_4.1.x86_64.rpm                     | 733 kB  00:00:01
+(2/6): bind-license-9.9.4-51.el7_4.1.noarch.rpm                       |  84 kB  00:00:01
+(3/6): bind-utils-9.9.4-51.el7_4.1.x86_64.rpm                         | 203 kB  00:00:00
+(4/6): GeoIP-1.5.0-11.el7.x86_64.rpm                                  | 1.1 MB  00:00:02
+(5/6): bind-libs-9.9.4-51.el7_4.1.x86_64.rpm                          | 1.0 MB  00:00:04
+(6/6): bind-9.9.4-51.el7_4.1.x86_64.rpm                               | 1.8 MB  00:00:06
+---------------------------------------------------------------------------------------------
+Total                                                        815 kB/s | 4.8 MB  00:00:06
+Running transaction check
+Running transaction test
+Transaction test succeeded
+Running transaction
+  Installing : GeoIP-1.5.0-11.el7.x86_64                                                1/11
+  Updating   : 32:bind-license-9.9.4-51.el7_4.1.noarch                                  2/11
+  Updating   : 32:bind-libs-9.9.4-51.el7_4.1.x86_64                                     3/11
+  Updating   : 32:bind-9.9.4-51.el7_4.1.x86_64                                          4/11
+warning: /etc/named.conf created as /etc/named.conf.rpmnew
+  Updating   : 32:bind-utils-9.9.4-51.el7_4.1.x86_64                                    5/11
+  Updating   : 32:bind-libs-lite-9.9.4-51.el7_4.1.x86_64                                6/11
+  Cleanup    : 32:bind-libs-lite-9.9.4-18.el7_1.3.x86_64                                7/11
+  Cleanup    : 32:bind-utils-9.9.4-18.el7_1.3.x86_64                                    8/11
+  Cleanup    : 32:bind-9.9.4-18.el7_1.3.x86_64                                          9/11
+  Cleanup    : 32:bind-libs-9.9.4-18.el7_1.3.x86_64                                    10/11
+  Cleanup    : 32:bind-license-9.9.4-18.el7_1.3.noarch                                 11/11
+  Verifying  : GeoIP-1.5.0-11.el7.x86_64                                                1/11
+  Verifying  : 32:bind-9.9.4-51.el7_4.1.x86_64                                          2/11
+  Verifying  : 32:bind-utils-9.9.4-51.el7_4.1.x86_64                                    3/11
+  Verifying  : 32:bind-libs-lite-9.9.4-51.el7_4.1.x86_64                                4/11
+  Verifying  : 32:bind-libs-9.9.4-51.el7_4.1.x86_64                                     5/11
+  Verifying  : 32:bind-license-9.9.4-51.el7_4.1.noarch                                  6/11
+  Verifying  : 32:bind-libs-lite-9.9.4-18.el7_1.3.x86_64                                7/11
+  Verifying  : 32:bind-utils-9.9.4-18.el7_1.3.x86_64                                    8/11
+  Verifying  : 32:bind-license-9.9.4-18.el7_1.3.noarch                                  9/11
+  Verifying  : 32:bind-9.9.4-18.el7_1.3.x86_64                                         10/11
+  Verifying  : 32:bind-libs-9.9.4-18.el7_1.3.x86_64                                    11/11
+
+Dependency Installed:
+  GeoIP.x86_64 0:1.5.0-11.el7
+
+Updated:
+  bind-utils.x86_64 32:9.9.4-51.el7_4.1
+
+Dependency Updated:
+  bind.x86_64 32:9.9.4-51.el7_4.1                bind-libs.x86_64 32:9.9.4-51.el7_4.1
+  bind-libs-lite.x86_64 32:9.9.4-51.el7_4.1      bind-license.noarch 32:9.9.4-51.el7_4.1
+
+Complete!
+```
+
 We pingen eens naar de hostmachine (bekijk IP-adres in Windows via `ipconfig`) en naar de DG/DNS-server (van VirtualBox):
 ```
-ping xxx.xxx.xxx.xxx
+ping 172.18.172.59                              IP-adres hostsysteem
 ping 10.0.2.2
 ping 10.0.2.3
 ```
 
-Ook dit lukt naar de andere kant (Host naar VM; vanuit `cmd` van Windows):
+*Resultaat:*
+
+```
+[vagrant@golbat ~]$ ping 172.18.172.59
+PING 172.18.172.59 (172.18.172.59) 56(84) bytes of data.
+64 bytes from 172.18.172.59: icmp_seq=1 ttl=127 time=0.680 ms
+64 bytes from 172.18.172.59: icmp_seq=2 ttl=127 time=1.27 ms
+64 bytes from 172.18.172.59: icmp_seq=3 ttl=127 time=1.32 ms
+64 bytes from 172.18.172.59: icmp_seq=4 ttl=127 time=1.36 ms
+64 bytes from 172.18.172.59: icmp_seq=5 ttl=127 time=1.28 ms
+64 bytes from 172.18.172.59: icmp_seq=6 ttl=127 time=1.21 ms
+^C
+--- 172.18.172.59 ping statistics ---
+6 packets transmitted, 6 received, 0% packet loss, time 5012ms
+rtt min/avg/max/mdev = 0.680/1.192/1.367/0.235 ms
+[vagrant@golbat ~]$ ping 10.0.2.2
+PING 10.0.2.2 (10.0.2.2) 56(84) bytes of data.
+64 bytes from 10.0.2.2: icmp_seq=1 ttl=64 time=0.139 ms
+64 bytes from 10.0.2.2: icmp_seq=2 ttl=64 time=0.410 ms
+64 bytes from 10.0.2.2: icmp_seq=3 ttl=64 time=0.411 ms
+64 bytes from 10.0.2.2: icmp_seq=4 ttl=64 time=0.177 ms
+64 bytes from 10.0.2.2: icmp_seq=5 ttl=64 time=0.262 ms
+^C
+--- 10.0.2.2 ping statistics ---
+5 packets transmitted, 5 received, 0% packet loss, time 4002ms
+rtt min/avg/max/mdev = 0.139/0.279/0.411/0.115 ms
+[vagrant@golbat ~]$ ping 10.0.2.3
+PING 10.0.2.3 (10.0.2.3) 56(84) bytes of data.
+64 bytes from 10.0.2.3: icmp_seq=1 ttl=64 time=0.126 ms
+64 bytes from 10.0.2.3: icmp_seq=2 ttl=64 time=0.353 ms
+64 bytes from 10.0.2.3: icmp_seq=3 ttl=64 time=0.406 ms
+64 bytes from 10.0.2.3: icmp_seq=4 ttl=64 time=0.407 ms
+64 bytes from 10.0.2.3: icmp_seq=5 ttl=64 time=0.401 ms
+64 bytes from 10.0.2.3: icmp_seq=6 ttl=64 time=0.408 ms
+64 bytes from 10.0.2.3: icmp_seq=7 ttl=64 time=0.263 ms
+^C
+--- 10.0.2.3 ping statistics ---
+7 packets transmitted, 7 received, 0% packet loss, time 6005ms
+rtt min/avg/max/mdev = 0.126/0.337/0.408/0.101 ms
+[vagrant@golbat ~]$
+```
+
+Ook dit lukt naar de andere kant (Host naar VM; vanuit `cmd` van Windows of via Git Bash):
 ```
 ping 192.168.56.42
 ```
+
+```
+Robin Bauwens@RobinB MINGW64 ~/Desktop (master)
+$ ping 192.168.56.42
+
+Pinging 192.168.56.42 with 32 bytes of data:
+Reply from 192.168.56.42: bytes=32 time<1ms TTL=64
+Reply from 192.168.56.42: bytes=32 time=1ms TTL=64
+Reply from 192.168.56.42: bytes=32 time<1ms TTL=64
+Reply from 192.168.56.42: bytes=32 time<1ms TTL=64
+
+Ping statistics for 192.168.56.42:
+    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 0ms, Maximum = 1ms, Average = 0ms
+```
+
+*Resultaat:* Alle netwerkinstellingen van de VM zijn correct en we kunnen verbinding maken met het hostsysteem en het internet.
 
 ### Phase 3: Transport Layer (TCP/IP)
 
@@ -220,15 +486,16 @@ Het kan zijn dat er configuratieproblemen zijn, dit dienen we te controleren in 
 De output die gegenereerd wordt is als volgt:
 
 ```
-
+[vagrant@golbat ~]$ sudo named-checkconf /etc/named.conf
+[vagrant@golbat ~]$
 ```
 
-*Resultaat*:
+*Resultaat*: We krijgen een lege/geen uitvoer, dit betekent dus de er geen fouten gevonden zijn (qua syntax) in `/etc/named.conf`.
 
 - Gebruik volgende commando's (met andere argumenten; op de master DNS-server) om de zonebestanden te controleren. We verwachten volgende uitvoer (voor andere configuratie):
 
 ```
-$ sudo named-checkzone avalon.lan /var/named/avalon.lan
+$ sudo named-checkzone cynalco.com /var/named/cynalco.com
 zone avalon.lan/IN: loaded serial 17102010
 OK
 
@@ -237,13 +504,23 @@ zone 16.172.in-addr.arpa/IN: loaded serial 17102010
 OK
 ```
 
-De output die gegenereerd wordt is als volgt:
+De output die gegenereerd wordt is als volgt (voor `192.0.2.0/24` en `192.168.56/24`):
 
 ```
+[vagrant@golbat ~]$ sudo named-checkzone cynalco.com /var/named/cynalco.com
+zone cynalco.com/IN: loaded serial 15081921
+OK
 
+[vagrant@golbat ~]$ sudo named-checkzone 2.0.192.in-addr.arpa /var/named/2.0.192.in-addr.arpa
+zone 2.0.192.in-addr.arpa/IN: NS 'golbat.cynalco.com.2.0.192.in-addr.arpa' has no address records (A or AAAA)
+zone 2.0.192.in-addr.arpa/IN: not loaded due to errors.
+
+[vagrant@golbat ~]$ sudo named-checkzone 56.168.192.in-addr.arpa /var/named/56.168.192.in-addr.arpa
+zone 56.168.192.in-addr.arpa/IN: loading from master file /var/named/56.168.192.in-addr.arpa failed: file not found
+zone 56.168.192.in-addr.arpa/IN: not loaded due to errors.
 ```
 
-*Resultaat*:
+*Resultaat*: We merken op dat er fouten zitten in `/var/named/2.0.192.in-addr.arpa` en dat het bestand `/var/named/56.168.192.in-addr.arpa` niet bestaat (dit komt omdat de bestandsnaam `192.168.56.in-addr.arpa` een verkeerd formaat heeft, het moet omgekeerd staan "Reverse"). We zullen dit verder oplossen in de applicatielaag aangezien we configuratiebestanden moeten veranderen.
 
 
 - Foutboodschappen bekijken:
@@ -251,6 +528,25 @@ De output die gegenereerd wordt is als volgt:
 ```
 $ sudo rndc querylog on
 $ sudo journalctl -l -f -u named.service
+```
+
+**Opmerking:** We krijgen (een) fout(en) bij het uitvoeren van de voorgaande commando's:
+
+```
+[vagrant@golbat ~]$ sudo rndc querylog on
+rndc: connect failed: 127.0.0.1#953: connection refused
+[vagrant@golbat ~]$ sudo journalctl -l -f -u named.service
+-- Logs begin at Fri 2017-12-08 08:19:14 UTC. --
+Dec 08 08:19:44 golbat.cynalco.com named-checkconf[1296]: zone 2.0.192.in-addr.arpa/IN: NS 'golbat.cynalco.com.2.0.192.in-addr.arpa' has no address records (A or AAAA)
+Dec 08 08:19:44 golbat.cynalco.com named-checkconf[1296]: zone 2.0.192.in-addr.arpa/IN: not loaded due to errors.
+Dec 08 08:19:44 golbat.cynalco.com named-checkconf[1296]: _default/2.0.192.in-addr.arpa/IN: bad zone
+Dec 08 08:19:44 golbat.cynalco.com systemd[1]: named.service: control process exited, code=exited status=1
+Dec 08 08:19:44 golbat.cynalco.com systemd[1]: Unit named.service entered failed state.
+Dec 08 08:36:07 golbat.cynalco.com systemd[1]: Unit named.service cannot be reloaded because it is inactive.
+Dec 08 08:36:09 golbat.cynalco.com systemd[1]: Unit named.service cannot be reloaded because it is inactive.
+Dec 08 08:44:07 golbat.cynalco.com systemd[1]: Unit named.service cannot be reloaded because it is inactive.
+Dec 08 08:44:09 golbat.cynalco.com systemd[1]: Unit named.service cannot be reloaded because it is inactive.
+Dec 08 08:44:17 golbat.cynalco.com systemd[1]: Unit named.service cannot be reloaded because it is inactive.
 ```
 
 Hiernaast is het ook handig om `bind-tools` te installeren (dit vond normaal al plaats in de vorige laag): `sudo yum install bind-tools` Enkele commando's om de DNS-server te testen:
@@ -275,7 +571,6 @@ Address: 195.130.131.1\#53
 Non-authoritative answer:                       Non-authorative: deze server is niet verantwoordelijk voor hogent.be-domein
 Name: www.hogent.be                             Server die overeenkomt met www.hogent.be
 Address: 178.62.144.90                          
-
 ```
 
 Indien `bind-utils` niet geïnstalleerd is, gebruik dan onderstaand commando:
@@ -314,12 +609,28 @@ Indien hier de service niet draait, kunnen we dit aanpassen met `sudo systemctl 
 De output die gegenereerd wordt is als volgt:
 
 ```
+[vagrant@golbat ~]$ sudo systemctl status named
+named.service - Berkeley Internet Name Domain (DNS)
+   Loaded: loaded (/usr/lib/systemd/system/named.service; enabled)
+   Active: failed (Result: exit-code) since Fri 2017-12-08 08:19:44 UTC; 44min ago
 
+Dec 08 08:19:44 golbat.cynalco.com named-checkconf[1296]: zone 2.0.192.in-addr.arpa/IN: N...)
+Dec 08 08:19:44 golbat.cynalco.com named-checkconf[1296]: zone 2.0.192.in-addr.arpa/IN: n....
+Dec 08 08:19:44 golbat.cynalco.com named-checkconf[1296]: _default/2.0.192.in-addr.arpa/I...e
+Dec 08 08:19:44 golbat.cynalco.com systemd[1]: named.service: control process exited, co...=1
+Dec 08 08:19:44 golbat.cynalco.com systemd[1]: Unit named.service entered failed state.
+Dec 08 08:36:07 golbat.cynalco.com systemd[1]: Unit named.service cannot be reloaded bec...e.
+Dec 08 08:36:09 golbat.cynalco.com systemd[1]: Unit named.service cannot be reloaded bec...e.
+Dec 08 08:44:07 golbat.cynalco.com systemd[1]: Unit named.service cannot be reloaded bec...e.
+Dec 08 08:44:09 golbat.cynalco.com systemd[1]: Unit named.service cannot be reloaded bec...e.
+Dec 08 08:44:17 golbat.cynalco.com systemd[1]: Unit named.service cannot be reloaded bec...e.
+Hint: Some lines were ellipsized, use -l to show in full.
+
+[vagrant@golbat ~]$ sudo systemctl start named
+Job for named.service failed. See 'systemctl status named.service' and 'journalctl -xn' for details.
 ```
 
-*Resultaat*:
-
-
+*Resultaat*: De `named`-service draait niet (want er zijn fouten in de applicatielaag/configuratiebestanden).
 
 <!--
 We stellen vast dat de service niet draait op de VM, we corrigeren dit met volgende commando's:
@@ -367,23 +678,18 @@ tcp    LISTEN     0      10      ::1:53                   :::*                  
 tcp    LISTEN     0      128     ::1:953                  :::*                   users:(("named",pid=1152,fd=26))
 ```
 
-<!--
-(Ook zou er een entry moeten zijn voor `:::443` voor nginx.)
-
-**Opmerking: om ook HTTPS toe te laten, zetten we dit uit commentaar in `/etc/nginx/nginx.conf`.**
 
 
-Dit is nog niet het geval, simpelweg omdat nginx nog niet draait omwille van configuratiefouten:
--->
 
 
 De output die gegenereerd wordt is als volgt:
 
 ```
-
+[vagrant@golbat ~]$ sudo ss -tulpn | grep named
+[vagrant@golbat ~]$
 ```
 
-*Resultaat*:
+*Resultaat*: De service draait nog niet op de poorten, omdat `named` nog niet actief is omwille van configuratiefouten.
 
 #### Worden de services toegelaten door de firewall?
 We verwachten (ongeveer) volgende uitvoer:
@@ -411,12 +717,21 @@ Indien hier een service niet toegelaten is door de firewall, kunnen we volgende 
 De output die gegenereerd wordt is als volgt:
 
 ```
-
+[vagrant@golbat ~]$ sudo firewall-cmd --list-all
+public (default, active)
+  interfaces: enp0s3
+  sources:
+  services: dhcpv6-client ssh
+  ports: 53/tcp
+  masquerade: no
+  forward-ports:
+  icmp-blocks:
+  rich rules:
 ```
 
-*Resultaat*:
+*Resultaat*: We merken op dat enkel poort 53 gebruikt wordt voor DNS, we kunnen eventueel poort 953 ook toevoegen hiervoor.
 
-
+<!--
 De zone dient ook `public` te zijn voor beide interfaces:
 
 ```
@@ -432,10 +747,11 @@ De output die gegenereerd wordt is als volgt:
 ```
 
 *Resultaat*:
-
+-->
 
 Vergeet ook niet om de firewall eens te herstarten met `sudo systemctl restart firewalld`.
 
+<!--
 #### Bereikbaarheid via `nmap`
 Om de bereikbaarheid te testen (vanaf een andere host) kan je volgende commando's gebruiken:
 
@@ -459,6 +775,7 @@ De output die gegenereerd wordt is als volgt:
 ```
 
 *Resultaat*:
+-->
 
 ### Phase 4: Application Layer (TCP/IP)
 #### Configuratie (BIND)
@@ -920,3 +1237,12 @@ List all sources of useful information that you encountered while completing thi
 - [Check whether package is installed](https://unix.stackexchange.com/questions/122681/how-can-i-tell-whether-a-package-is-installed-via-yum-in-a-bash-script)
 
 - [Remove package yum](https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/6/html/Deployment_Guide/sec-Removing.html)
+
+
+- [Keygen](https://stackoverflow.com/questions/8654064/ubuntu-ssh-warning-remote-host-identification-has-changed)
+
+- [QWERTY](https://nl.wikipedia.org/wiki/QWERTY)
+
+- [Config interfaces](https://www.centos.org/docs/5/html/Deployment_Guide-en-US/s1-networkscripts-interfaces.html)
+
+- [Linux interfaces up/down](http://mirrors.deepspace6.net/Linux+IPv6-HOWTO/x1028.html)
