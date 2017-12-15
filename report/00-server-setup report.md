@@ -1,7 +1,7 @@
 # Enterprise Linux Lab Report
 
 - Student name: Robin Bauwens 
-- Github repo: <https://github.com/HoGentTIN/elnxsme-RobinBauwens.git>
+- Github repo: <https://github.com/HoGentTIN/elnx-sme-RobinBauwens.git>
 
 Klaarzetten van basis-setup voor alle servers.
 
