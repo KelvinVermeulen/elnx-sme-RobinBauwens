@@ -1398,7 +1398,7 @@ Name:    cynalco.com
 
 
 #### Remote execution script
-Download `bats` en voer het hierna uit.
+Download `bats` en voer het hierna uit. Download ook het script via FileZilla bvb.
 
 ```
 $ git clone https://github.com/sstephenson/bats.git
