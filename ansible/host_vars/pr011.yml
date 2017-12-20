@@ -1,0 +1,118 @@
+---
+
+# Zet gewone users in all.yml
+# Opmerking: het kan zijn dat je eens vagrant halt en up van pr011 moet doen zodat de firewall (samba-regel) effectief toegevoegd wordt
+
+# Samba
+samba_netbios_name: FILES
+samba_workgroup: AVALON
+samba_wins_support: true
+samba_load_homes: true
+samba_load_printers: false
+samba_create_varwww_symlinks: true
+samba_log: /var/log/samba.log
+
+samba_shares_root: /srv/shares # pas naam aan adhv testscript
+
+# valid_users = read
+# write_list = write
+samba_shares:
+  - name: management
+    group: management
+    write_list: +management
+    valid_users: +management
+    group: management
+    directory_mode: 770
+    #setype: public_content_rw_t   -> Hoeft niet gespecifieerd te zijn
+  - name: technical
+    group: technical
+    write_list: +technical
+    #valid_users: +technical, +public #eventueel alle andere groepen expliciet refereren
+    # valid users mag hier niet bij staan!
+    group: technical
+    #setype: public_content_rw_t
+  - name: sales
+    group: sales
+    write_list: +sales
+    valid_users: +sales, +management
+    group: sales
+    directory_mode: '0770' # niet 750, is default
+    #setype: public_content_rw_t
+  - name: it
+    group: it
+    write_list: +it
+    valid_users: +it, +management
+    directory_mode: '0770' # niet 750
+    #setype: public_content_rw_t
+  - name: public
+    group: public
+    write_list: +public
+    #directory_mode: 777
+    #valid_users: +public
+    #public: yes #-> Moet op "no" staan, enkel public voor bestaande gebruikers
+    #setype: public_content_t
+
+    # smbclient -L //FILES/
+    # smbclient //FILES/technical -Ualexanderd%drednaxela
+
+samba_users: # paswoorden moeten identiek zijn als naam zelf, niet reverse (zie testscript)
+  - name: stevenh
+    password: stevenh
+  - name: stevenv
+    password: stevenv
+  - name: leend
+    password: leend
+  - name: svena
+    password: svena
+  - name: nehirb
+    password: nehirb
+  - name: alexanderd
+    password: alexanderd
+  - name: krisv
+    password: krisv
+  - name: benoitp
+    password: benoitp
+  - name: anc
+    password: anc
+  - name: elenaa
+    password: elenaa
+  - name: evyt
+    password: evyt
+  - name: christophev
+    password: christophev
+  - name: stefaanv
+    password: stefaanv
+  - name: robin
+    password: testpassword
+
+
+# Als je specifiek opnieuw herhaald, dan moet je alle basisinstellingen ook overnemen anders worden deze niet geïnstalleerd!
+    # VSFTPD
+rhbase_install_packages:
+  - vsftpd
+#  - ftp
+  - tree
+  - bash-completion
+  - git
+  - nano
+  - bind-utils
+  - vim-enhanced
+  - wget
+rhbase_start_services:
+  - vsftpd
+rhbase_firewall_allow_services:
+  - ftp
+#  - dns # kan eventueel weggelaten worden
+  - samba
+
+vsftpd_local_root: /srv/shares # niet vergeten een plaats te geven (zelfde map als samba)! Geen anon_users
+
+vsftpd_anonymous_enable: no
+vsftpd_local_enable: yes
+vsftpd_options:
+  - key: delete_failed_uploads
+    value: 'YES'
+
+# Zie ook directory_mode in samba (voor VSFTP)
+
+# sudo cat /etc/vsftpd/vsftpd.conf

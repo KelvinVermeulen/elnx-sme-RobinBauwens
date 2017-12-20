@@ -1,6 +1,63 @@
 # site.yml
+# enkel rollen en tasks specifiëren
 ---
 - hosts: pu004
+  pre_tasks:
+    - name: Copy certificates
+      copy: 
+        src: "{{ item.src }}"
+        dest: "{{ item.dest}}"
+        # owner: robin -> geen owner meegeven, doet playbook failen
+      with_items:
+        - src: "/vagrant/ansible/ca.crt" # /vagrant wordt gemount bij opstarten VM, hiervan kunnen we de certificatie-bestanden kopiëren
+          dest: "/etc/pki/tls/certs/ca.crt"
+        - src: "/vagrant/ansible/ca.key"
+          dest: "/etc/pki/tls/private/ca.key"
+        #- src: "/vagrant/ansible/ca.csr" # Niet nodig
+        #  dest: "/etc/pki/tls/private/ca.csr" # Niet nodig
+
   become: true
   roles:
     - bertvv.rh-base
+    - bertvv.mariadb
+    - bertvv.httpd
+    - bertvv.wordpress
+
+- hosts: pu001
+  roles:
+    - bertvv.rh-base # niet vergeten!
+    - bertvv.bind
+
+- hosts: pu002
+  roles:
+    - bertvv.rh-base # niet vergeten!
+    - bertvv.bind
+
+- hosts: pr001
+  roles: 
+    - bertvv.rh-base
+    - bertvv.dhcp
+
+- hosts: pr011
+  roles:
+    - bertvv.rh-base
+    - bertvv.samba
+    - bertvv.vsftpd
+
+ # management moet toegang krijgen (rx) tot IT en Sales
+  post_tasks: # zet post tasks bij de juiste host
+  - name: ACL IT
+    acl:
+      path: /srv/shares/it
+      entity: management
+      etype: group
+      permissions: rx
+      state: present
+  - name: ACL Sales
+    acl: 
+      path: /srv/shares/sales
+      entity: management
+      etype: group
+      permissions: rx
+      state: present
+

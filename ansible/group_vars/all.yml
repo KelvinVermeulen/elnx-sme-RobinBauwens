@@ -1,3 +1,129 @@
 # group_vars/all.yml
 # Variables visible to all nodes
 ---
+rhbase_repositories:
+  - epel-release
+
+rhbase_firewall_allow_services:
+- samba
+- dns   # zeer belangrijk voor NetBIOS (zie 02: DNS & 03: Samba); In orde na reboot
+
+rhbase_install_packages:
+  - tree
+  - bash-completion
+  - git
+  - nano
+  - bind-utils
+  - vim-enhanced
+  - wget
+
+rhbase_ssh_user: robin
+rhbase_ssh_key: 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDTCIPkHvexVX1ag3PhWnEtxqj5qI49ofNEQ7BP2v+KQ81sXFWT/N7Y5P73Tnlbh96RwesKd991CgFYc/rFnoVgXPnK8xrSAjmUnFIC+X/I76KFrRrXtkcEXlxbzyg7HVN0bwelgpgM8vay0AnKBCPrYKu75Q2j9+z7Tc4+sQhVz9LM5sIbmuG4c8EMZ2xqwP78v5pMT9UeIvdh1uUlM6URABRkWEP2hZ7ssehep062+GEczMmZp40wZJ7+wtqSbKWjdAWt3agryEFYLT16RP82WbMb0/7+Q0O4dimo4R53a37TCeaB2FIeK5bEdWcHYiw7k3d/P4xg7nKS/KXl3EvH Robin Bauwens@RobinB'
+
+rhbase_motd: true
+
+rhbase_user_groups: # zeer belangrijk voor Samba
+  - management
+  - technical
+  - sales
+  - it
+  - public
+
+rhbase_users: # Let op: moet samengevoegd zijn met nieuwe samba-gebruikers!
+- name: robin
+  password: '$1$1$I6mqx3WU1uVbUDOgIcxuk/'
+  groups:
+    - wheel
+    - it
+    - public # niet vergeten!
+- name: stevenh
+  comment: 'Steven Hermans CEO'
+  password: $1$2$Nqs/5wUDo1DeH1JIzFrqG0
+  shell: /sbin/nologin
+  groups:
+    - management
+    - public
+- name: stevenv
+  comment: 'Steven Van Daele Software Engineer'
+  password: $1$2$2344sFykEbh7ijTNavdpw1
+  shell: /sbin/nologin
+  groups:
+    - technical
+    - public
+- name: leend
+  comment: 'Leen De Meester Software Engineer'
+  password: $1$2$VZKcJJrm6A0di9j/AjgV01
+  shell: /sbin/nologin
+  groups:
+    - technical
+    - public
+- name: svena
+  comment: 'Sven Aerens Account Manager'
+  password: $1$2$geW8IVwcvzRwZEQwIqt13.
+  shell: /sbin/nologin
+  groups:
+    - sales
+    - public
+- name: nehirb
+  comment: 'Nehir Başar System Engineer'
+  password: $1$2$vujMYzQrzVl7uPvDqP9mD/
+  shell: /bin/bash
+  groups:
+    - it
+    - public
+- name: alexanderd
+  comment: 'Alexander De Coninck Software Engineer'
+  password: $1$2$a2Vqee2QSKR3Iy6xjM/Gx1
+  shell: /sbin/nologin
+  groups:
+    - technical
+    - public
+- name: krisv
+  comment: 'Kris Vanhaverbeke CFO'
+  password: $1$2$MTaRBA5jtdU5zdtUugj9a/
+  shell: /sbin/nologin
+  groups:
+    - management
+    - public
+- name: benoitp
+  comment: 'Benoit Pluquet Account Manager'
+  password: $1$2$XoTDU5bhIw4gMy6jcUnfX/
+  shell: /sbin/nologin
+  groups:
+    - sales
+    - public
+- name: anc
+  comment: 'An Coppens Graphical Designer'
+  password: $1$2$weu8RAIae3XZLeaeRPxhm/
+  shell: /sbin/nologin
+  groups:
+    - technical
+    - public
+- name: elenaa
+  comment: 'Elena Andreev Office Manager'
+  password: $1$2$yh8paOlAqh88M4lIQsnT8.
+  shell: /sbin/nologin
+  groups:
+    - management
+    - public
+- name: evyt
+  comment: 'Evy Tilleman Technical Writer'
+  password: $1$2$emDlgTj6nh7qxuhCnVJqC1
+  shell: /sbin/nologin
+  groups:
+    - technical
+    - public
+- name: christophev
+  comment: 'Christophe Van der Meersche System Administrator'
+  password: $1$2$qHnRZmB9Qj/Zg5QJhyl7p0
+  shell: /bin/bash
+  groups:
+    - it
+    - public
+- name: stefaanv
+  comment: 'Stefaan Vernimmen Support Specialist'
+  password: $1$2$ZizXJ500tUJ1obsYNYhe51
+  shell: /sbin/nologin
+  groups:
+    - technical
+    - public

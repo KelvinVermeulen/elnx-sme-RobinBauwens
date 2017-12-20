@@ -66,3 +66,5 @@ Some suggestions:
 - Check the IP addresses: one should be the reserved IP address, the other should come from the pool of dynamic addresses.
 
 Finally, this VM should be able to view the "company website" by surfing to <http://www.avalon.lan> in a web browser and be able to access the fileserver both through SMB and FTP.
+
+- [DHCP role](https://github.com/bertvv/ansible-role-dhcp)
