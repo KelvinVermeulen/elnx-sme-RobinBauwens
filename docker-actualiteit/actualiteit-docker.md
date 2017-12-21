@@ -51,7 +51,16 @@ Mode                LastWriteTime         Length Name
 8. Bij het uitvoeren van `docker images` kunnen we zien dat er 2 images zijn bijgekomen: ![images](img/5.PNG)
 9. Je kan `docker run --name web web` gebruiken om een container `web` aan te maken en te starten.
 
+### Nginx
+1. Nadat we de inhoud van configuratiebestand `web/Dockerfile` aangevuld hebben, kunnen we een dockercontainer ophalen. ![Build](img/6.png)
+2. Hierna kunnen we de container uitvoeren met `docker run -p 9000:80 web`. We zetten poort 9000 van het hostsysteem open voor poort 80 van de (Docker) container.
+3. Als je surft naar `localhost:9000` dan kan je de website zien.
+4. Voer hierna `docker-compose build` uit. ![Docker-compose](img/7.png)
+5. Voer nu `docker-compose up` uit. Als we `http://192.168.99.100:8000/` verversen, dan kunnen we zien dat er uitvoer van `docker-compose up` bijkomt. ![Docker compose](img/dc-up.png)
 
 
 
 
+## Bronnen
+
+- [Verwijderen docker images en containers](https://techoverflow.net/2013/10/22/docker-remove-all-images-and-containers/)
