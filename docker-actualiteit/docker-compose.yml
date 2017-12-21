@@ -8,3 +8,4 @@ services:
         build: proxy
         ports:
           - "8000:80"
+          # Docker zoekt automatisch andere server op via eigen DNS-server 127.0.0.11
