@@ -57,10 +57,22 @@ Mode                LastWriteTime         Length Name
 3. Als je surft naar `localhost:9000` dan kan je de website zien.
 4. Voer hierna `docker-compose build` uit. ![Docker-compose](img/7.png)
 5. Voer nu `docker-compose up` uit. Als we `http://192.168.99.100:8000/` verversen, dan kunnen we zien dat er uitvoer van `docker-compose up` bijkomt. ![Docker compose](img/dc-up.png)
+6. We zouden graag load-balancing toepassen, en hiervoor gebruiken we dan `docker-compose up --scale web=5`. ![Scale](img/scale.PNG)
+7. Er kunnen nu problemen ontstaan als we (later) minder dan 5 containers willen gebruiken, de proxyserver zal ze alle 5 nog onthouden. De configuratie wordt niet herladen. Voeg de DNS-resolver toe en voorkom dat je het adres hard-codeert (gebruik dus een variabele) in `proxy.conf`.
+8. Om alles nog eens op te starten:
+```
+docker-compose build 
+docker-compose up --scale web=20
+```
 
+### Eindresultaat:
 
-
+![Docker Round-Robin DNS-load-balancing](img/final1.png)
+![Docker Round-Robin DNS-load-balancing](img/final2.PNG)
 
 ## Bronnen
 
 - [Verwijderen docker images en containers](https://techoverflow.net/2013/10/22/docker-remove-all-images-and-containers/)
+- [Video](https://www.youtube.com/watch?v=HJ9bECmuwKo)
+- [Load-balancing](https://www.sep.com/sep-blog/2017/02/28/load-balancing-with-nginx-and-docker/)
+- [Docker Hub Nginx](https://hub.docker.com/_/nginx/)
