@@ -61,3 +61,8 @@
       permissions: rx
       state: present
 
+
+    #- sadsfae.nagios
+
+
+    #geerlingguy.munin
