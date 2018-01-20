@@ -61,7 +61,7 @@ Error: Unable to find a match.
 
 <!--*Mogelijke oplossingen: andere versie Vagrant en VirtualBox*-->
 
-Zie `Sofware.md`, we blijven werken met de huidige softwareversies.
+Zie [Sofware.md](https://github.com/HoGentTIN/elnx-sme-RobinBauwens/blob/solution/Software.md), we blijven werken met de huidige softwareversies.
 
 Oplossing: we zullen werken met de box van `bertvv/centos72`, dit geeft bovenstaande fout niet (en zorgt er ook voor dat `enp0s8` wel een IP-adres krijgt. (Toevoegen via het maken van een (netwerk)configbestand en de netwerkservice te herstarten lost dit niet op).
 
@@ -96,9 +96,13 @@ Indien we van het werkstation of het hostsytseem naar `172.16.0.10:9090` surfen 
 
 Indien we naar hetzelfde IP-adres surfen, maar met poort `80`: Dan krijgen we de standaardinstellingen van de `apache`-container te zien.
 
-Als we nu een container (bvb een webcontainer) starten en de inhoud van webpagina afhalen mbhv `curl` (zie IP-adres in cockpit/dashboard).
-![172.17.0.2 vanaf hostsysteem VM Docker](img/4.png)
+![Cockpit & webserver](img/6.PNG)
 
+<!--
+Poorten nog niet open gezet (via ander IP-adres dus)
+Als we nu een container (bvb een webcontainer) starten en de inhoud van webpagina afhalen mbhv `curl` (zie IP-adres in cockpit/dashboard).
+![172.17.0.2 vanaf hostsysteem VM Docker](img/5.png)
+-->
 
 ### Extra controlecommando's
 
