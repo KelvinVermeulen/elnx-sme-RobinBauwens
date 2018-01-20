@@ -77,7 +77,13 @@ We zetten de poorten open om de webserver te bereiken, we gaan niet expliciet ee
 *Mochten we toch een nieuw netwerk maken bvb `172.16.0.0/16`, dan kunnen we de cockpit/dashboard op `172.16.0.10`  niet meer zien (omwille van een overlapping).*
 
 
-1. Start de VM met `vagrant up dockerhost --provision`, SSH in de VM met `vagrant ssh` en voer het installatiescript uit in `/vagrant/provisioning` met `sudo ./dockerhost.sh`.
+1. Start de VM (in `/actua/dockerhost-sandbox` van het hostsysteem), SSH in de VM en voer het installatiescript uit in `/vagrant/provisioning`.
+
+```
+vagrant up dockerhost --provision
+vagrant ssh
+sudo /vagrant/provisioning/dockerhost.sh
+```
 
 ![Installatiescript](img/1.png)
 

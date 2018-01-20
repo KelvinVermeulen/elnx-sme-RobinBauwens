@@ -379,7 +379,7 @@ rm: remove write-protected regular empty file 'bestand'? y
 total 0
 ```
 
-
+<!--
 **Todo:**
 
 
@@ -408,3 +408,4 @@ total 0
 * Uittesten {y} en (y) -> H3 -> Is goed, pas wel op voor verschillende keyboard layout (4= "1/4" ipv "{")!
 
 * Oef 3 werken met doorlopende tekst: Sorteer op het aantal voorkomens en behoud de alfabetische sortering van de woorden -> H3
+-->
