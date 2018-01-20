@@ -66,8 +66,10 @@ Zie `Sofware.md`, we blijven werken met de huidige softwareversies.
 Oplossing: we zullen werken met de box van `bertvv/centos72`, dit geeft bovenstaande fout niet (en zorgt er ook voor dat `enp0s8` wel een IP-adres krijgt. (Toevoegen via het maken van een (netwerk)configbestand en de netwerkservice te herstarten lost dit niet op).
 
 
-## Stappenplan met aangepaste Vagrantfile en vagrant-hosts.yml
+## Stappenplannen
+**Met aangepaste Vagrantfile en vagrant-hosts.yml**
 
+### Basisconfiguratie - apache
 We gebruiken een herwerkte versie van de [Vagrantfile](https://github.com/HoGentTIN/elnx-sme-RobinBauwens/blob/solution/actua/dockerhost-sandbox/Vagrantfile).
 
 We zetten de poorten open om de webserver te bereiken, we gaan niet expliciet een nieuw netwerk maken (binnen Docker)/nieuwe IP-adressen toekennen.
@@ -89,8 +91,10 @@ Opmerkingen:
 - We gebruiken de [officiële container](https://hub.docker.com/_/httpd/) van Apache HTTP Server Project.
 - We voeren de container uit zonder zelf een Dockerfile te configureren, dit werd ook in bovenstaande link meegedeeld.
 
-Indien we van het hostsysteem naar `172.16.0.10:9090` surfen zien we volgende pagina:
+Indien we van het werkstation of het hostsytseem naar `172.16.0.10:9090` surfen zien we volgende pagina:
 ![Cockpit](img/4.png)
+
+Indien we naar hetzelfde IP-adres surfen, maar met poort `80`: Dan krijgen we de standaardinstellingen van de `apache`-container te zien.
 
 Als we nu een container (bvb een webcontainer) starten en de inhoud van webpagina afhalen mbhv `curl` (zie IP-adres in cockpit/dashboard).
 ![172.17.0.2 vanaf hostsysteem VM Docker](img/4.png)
@@ -105,6 +109,9 @@ docker images
 docker network ls
 docker network inspect <id>
 sudo docker port <container-name>
+
+Commando's uitvoeren in container:
+sudo docker exec -it <container-name> /bin/bash
 ```
 
 
@@ -139,6 +146,8 @@ sudo docker-compose up
 - [Static IP Docker container](https://stackoverflow.com/questions/27937185/assign-static-ip-to-docker-container)
 - [Ping local network from container](https://forums.docker.com/t/ping-local-network-from-container/38994/2)
 - [Docker container Apache](https://stackoverflow.com/questions/27768194/how-to-use-docker-container-as-apache-server)
+- [Docker wordpress image & docker-compose](https://www.sitepoint.com/how-to-use-the-official-docker-wordpress-image/)
+- [Voer commando's uit binnen container](https://askubuntu.com/questions/505506/how-to-get-bash-or-ssh-into-a-running-container-in-background-mode)
 
 <!--
 Dit is gebaseerd op deze beginversie, maar zal de provisioning niet uitvoeren omwille van een fout (met Guest Additions?).
