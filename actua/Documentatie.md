@@ -63,104 +63,56 @@ Error: Unable to find a match.
 
 Zie `Sofware.md`, we blijven werken met de huidige softwareversies.
 
-Oplossing: we zullen werken met de box van `bertvv/centos72`, dit geeft bovenstaande fout niet (en zrogt er ook voor dat `enp0s8` wel een IP-adres krijgt. (Toevoegen via het maken van een (netwerk)configbestand en de netwerkservice te herstarten lost dit niet op).
+Oplossing: we zullen werken met de box van `bertvv/centos72`, dit geeft bovenstaande fout niet (en zorgt er ook voor dat `enp0s8` wel een IP-adres krijgt. (Toevoegen via het maken van een (netwerk)configbestand en de netwerkservice te herstarten lost dit niet op).
 
 
-## Stappenplan met aangepaste Vagrantfile
+## Stappenplan met aangepaste Vagrantfile en vagrant-hosts.yml
 
-We gebruiken een herwerkte versie van de Vagrantfile:
+We gebruiken een herwerkte versie van de [Vagrantfile](https://github.com/HoGentTIN/elnx-sme-RobinBauwens/blob/solution/actua/dockerhost-sandbox/Vagrantfile).
 
-```
-# -*- mode: ruby -*-
-# vi: ft=ruby :
+We zetten de poorten open om de webserver te bereiken, we gaan niet expliciet een nieuw netwerk maken (binnen Docker)/nieuwe IP-adressen toekennen.
 
-require 'rbconfig'
-require 'yaml'
+*Mochten we toch een nieuw netwerk maken bvb `172.16.0.0/16`, dan kunnen we de cockpit/dashboard op `172.16.0.10`  niet meer zien (omwille van een overlapping).*
 
-# Set your default base box here
-DEFAULT_BASE_BOX = 'bertvv/fedora25'
-# Indien deze niet werkt, gebruik: bertvv/centos72
 
-VAGRANTFILE_API_VERSION = '2'
-PROJECT_NAME = '/' + File.basename(Dir.getwd)
-
-# When set to `true`, Ansible will be forced to be run locally on the VM
-# instead of from the host machine (provided Ansible is installed).
-FORCE_LOCAL_RUN = false
-
-hosts = YAML.load_file('vagrant-hosts.yml')
-
-# {{{ Helper functions
-
-def run_locally?
-  windows_host? || FORCE_LOCAL_RUN
-end
-
-def windows_host?
-  RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/
-end
-
-# Set options for the network interface configuration. All values are
-# optional, and can include:
-# - ip (default = DHCP)
-# - netmask (default value = 255.255.255.0
-# - mac
-# - auto_config (if false, Vagrant will not configure this network interface
-# - intnet (if true, an internal network adapter will be created instead of a
-#   host-only adapter)
-def network_options(host)
-  options = {}
-
-  if host.key?('ip')
-    options[:ip] = host['ip']
-    options[:netmask] = host['netmask'] ||= '255.255.255.0'
-  else
-    options[:type] = 'dhcp'
-  end
-
-  options[:mac] = host['mac'].gsub(/[-:]/, '') if host.key?('mac')
-  options[:auto_config] = host['auto_config'] if host.key?('auto_config')
-  options[:virtualbox__intnet] = true if host.key?('intnet') && host['intnet']
-  options
-end
-
-def custom_synced_folders(vm, host)
-  return unless host.key?('synced_folders')
-  folders = host['synced_folders']
-
-  folders.each do |folder|
-    vm.synced_folder folder['src'], folder['dest'], folder['options']
-  end
-end
-
-# }}}
-
-Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-  config.ssh.insert_key = false
-    hosts.each do |host|
-    config.vm.define host['name'] do |node|
-      node.vm.box = host['box'] ||= DEFAULT_BASE_BOX
-      node.vm.box_url = host['box_url'] if host.key? 'box_url'
-
-      node.vm.hostname = host['name']
-      node.vm.network :private_network, network_options(host)
-      custom_synced_folders(node.vm, host)
-
-      node.vm.provider :virtualbox do |vb|
-        # WARNING: if the name of the current directory is the same as the
-        # host name, this will fail.
-        vb.customize ['modifyvm', :id, '--groups', PROJECT_NAME]
-      end
-    end
-  end
-end
-```
-
-Start de VM met `vagrant up dockerhost --provision` en voer het installatiescript uit in `/vagrant/provisioning` met `sudo ./dockerhost.sh`.
+1. Start de VM met `vagrant up dockerhost --provision`, SSH in de VM met `vagrant ssh` en voer het installatiescript uit in `/vagrant/provisioning` met `sudo ./dockerhost.sh`.
 
 ![Installatiescript](img/1.png)
 
-Binnen `/vagrant/provisioning/files` plaatsen we de configuratie van Docker.
+2. Voer volgend commando uit:
+```
+sudo docker run -td --name webserver -p 80:80 httpd
+```
+
+Opmerkingen: 
+
+- We gebruiken de [officiële container](https://hub.docker.com/_/httpd/) van Apache HTTP Server Project.
+- We voeren de container uit zonder zelf een Dockerfile te configureren, dit werd ook in bovenstaande link meegedeeld.
+
+Indien we van het hostsysteem naar `172.16.0.10:9090` surfen zien we volgende pagina:
+![Cockpit](img/4.png)
+
+Als we nu een container (bvb een webcontainer) starten en de inhoud van webpagina afhalen mbhv `curl` (zie IP-adres in cockpit/dashboard).
+![172.17.0.2 vanaf hostsysteem VM Docker](img/4.png)
+
+
+### Extra controlecommando's
+
+**Voer telkens onderstaande commando's uit met `sudo`**
+```
+docker ps
+docker images
+docker network ls
+docker network inspect <id>
+sudo docker port <container-name>
+```
+
+
+
+<!--
+## Load-balancing
+
+Binnen `/vagrant/provisioning/files` staat de configuratie van Docker (voor load-balancing). 
 
 Hierna voeren we `sudo docker-compose build` uit (in `/vagrant/provisioning/docker-actualiteit`).
 
@@ -175,14 +127,7 @@ sudo docker-compose up
 
 ![Commando's](img/3.png)
 
-Indien we van het hostsysteem naar `172.16.0.10:9090` surfen zien we volgende pagina:
-![Cockpit](img/4.png)
-
-Als we nu een container (bvb een webcontainer) starten en de inhoud van webpagina afhalen mbhv `curl` (zie IP-adres in cockpit/dashboard).
-![172.17.0.2 vanaf hostsysteem VM Docker](img/4.png)
-
-
-
+-->
 
 ## Bronnen
 
@@ -193,7 +138,7 @@ Als we nu een container (bvb een webcontainer) starten en de inhoud van webpagin
 - [Poorten openzetten Docker](https://www.youtube.com/watch?v=G36I1iqDZig)
 - [Static IP Docker container](https://stackoverflow.com/questions/27937185/assign-static-ip-to-docker-container)
 - [Ping local network from container](https://forums.docker.com/t/ping-local-network-from-container/38994/2)
-
+- [Docker container Apache](https://stackoverflow.com/questions/27768194/how-to-use-docker-container-as-apache-server)
 
 <!--
 Dit is gebaseerd op deze beginversie, maar zal de provisioning niet uitvoeren omwille van een fout (met Guest Additions?).
