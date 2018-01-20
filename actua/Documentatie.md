@@ -98,6 +98,9 @@ Indien we naar hetzelfde IP-adres surfen, maar met poort `80`: Dan krijgen we de
 
 ![Cockpit & webserver](img/6.PNG)
 
+Surfen naar `inside.avalon.lan` vanaf het werkstation (adhv servernaam), geeft de webpagina ook weer:
+![Webserver via volledige naam](img/7.PNG)
+
 <!--
 Poorten nog niet open gezet (via ander IP-adres dus)
 Als we nu een container (bvb een webcontainer) starten en de inhoud van webpagina afhalen mbhv `curl` (zie IP-adres in cockpit/dashboard).
@@ -152,6 +155,8 @@ sudo docker-compose up
 - [Docker container Apache](https://stackoverflow.com/questions/27768194/how-to-use-docker-container-as-apache-server)
 - [Docker wordpress image & docker-compose](https://www.sitepoint.com/how-to-use-the-official-docker-wordpress-image/)
 - [Voer commando's uit binnen container](https://askubuntu.com/questions/505506/how-to-get-bash-or-ssh-into-a-running-container-in-background-mode)
+- [Building a Simple Apache Web Server in a Container](https://access.redhat.com/articles/1328953)
+
 
 <!--
 Dit is gebaseerd op deze beginversie, maar zal de provisioning niet uitvoeren omwille van een fout (met Guest Additions?).
