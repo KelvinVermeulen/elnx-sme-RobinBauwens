@@ -37,5 +37,3 @@
 - name: pr001
   ip: 172.16.0.2
   netmask: 255.255.0.0 # Ook meegeven!
-- name: nagios
-  ip: 192.0.2.12
