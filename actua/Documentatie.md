@@ -30,6 +30,7 @@ We proberen volgend commando eens om het probleem met de GuestAdditions-versies 
 
 [Plugin vagrant-vbguest](https://kvz.io/blog/2013/01/16/vagrant-tip-keep-virtualbox-guest-additions-in-sync/)
 
+**Foutboodschap:**
 ```
     dockerhost: SSH auth method: private key
 ==> dockerhost: Machine booted and ready!
@@ -58,7 +59,7 @@ Package bzip2-1.0.6-21.fc25.x86_64 is already installed, skipping.
 Error: Unable to find a match.
 ```
 
-*Mogelijke oplossingen: andere versie Vagrant en VirtualBox*
+<!--*Mogelijke oplossingen: andere versie Vagrant en VirtualBox*-->
 
 Zie `Sofware.md`, we blijven werken met de huidige softwareversies.
 
@@ -179,9 +180,6 @@ Indien we van het hostsysteem naar `172.16.0.10:9090` surfen zien we volgende pa
 
 Als we nu een container (bvb een webcontainer) starten en de inhoud van webpagina afhalen mbhv `curl` (zie IP-adres in cockpit/dashboard).
 ![172.17.0.2 vanaf hostsysteem VM Docker](img/4.png)
-
-
-
 
 
 
