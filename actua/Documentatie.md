@@ -174,6 +174,12 @@ sudo docker-compose up
 
 ![Commando's](img/3.png)
 
+Indien we van het hostsysteem naar `172.16.0.10:9090` surfen zien we volgende pagina:
+![Cockpit](img/4.png)
+
+Als we nu een container (bvb een webcontainer) starten en de inhoud van webpagina afhalen mbhv `curl` (zie IP-adres in cockpit/dashboard).
+![172.17.0.2 vanaf hostsysteem VM Docker](img/4.png)
+
 ## Bronnen
 
 - [Commando's docker-compose](https://stackoverflow.com/questions/39663096/docker-compose-creating-multiple-instances-for-the-same-image)
