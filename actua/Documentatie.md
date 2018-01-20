@@ -157,6 +157,28 @@ end
 
 Start de VM met `vagrant up dockerhost --provision` en voer het installatiescript uit in `/vagrant/provisioning` met `sudo ./dockerhost.sh`.
 
+![Installatiescript](img/1.png)
+
+Binnen `/vagrant/provisioning/files` plaatsen we de configuratie van Docker.
+
+Hierna voeren we `sudo docker-compose build` uit (in `/vagrant/provisioning/docker-actualiteit`).
+
+![docker-compose build](img/2.png)
+
+Hierna kunnen we volgende commando's uitvoeren:
+
+```
+sudo docker-compose scale web=5
+sudo docker-compose up
+```
+
+![Commando's](img/3.png)
+
+## Bronnen
+
+- [Commando's docker-compose](https://stackoverflow.com/questions/39663096/docker-compose-creating-multiple-instances-for-the-same-image)
+- [Docker install Fedora](https://docs.docker.com/engine/installation/linux/docker-ce/fedora/#install-from-a-package)
+
 <!--
 Dit is gebaseerd op deze beginversie, maar zal de provisioning niet uitvoeren omwille van een fout (met Guest Additions?).
 Verwijder het mapje `provisioning` en volgende lijn uit `Vagrantfile`:
