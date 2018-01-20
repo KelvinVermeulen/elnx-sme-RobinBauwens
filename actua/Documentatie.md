@@ -180,10 +180,22 @@ Indien we van het hostsysteem naar `172.16.0.10:9090` surfen zien we volgende pa
 Als we nu een container (bvb een webcontainer) starten en de inhoud van webpagina afhalen mbhv `curl` (zie IP-adres in cockpit/dashboard).
 ![172.17.0.2 vanaf hostsysteem VM Docker](img/4.png)
 
+
+
+
+
+
+
 ## Bronnen
 
 - [Commando's docker-compose](https://stackoverflow.com/questions/39663096/docker-compose-creating-multiple-instances-for-the-same-image)
 - [Docker install Fedora](https://docs.docker.com/engine/installation/linux/docker-ce/fedora/#install-from-a-package)
+- [Container:IP toegankelijk maken](https://github.com/docker/for-win/issues/221)
+- [**Docker networking (!)**](https://runnable.com/docker/basic-docker-networking)
+- [Poorten openzetten Docker](https://www.youtube.com/watch?v=G36I1iqDZig)
+- [Static IP Docker container](https://stackoverflow.com/questions/27937185/assign-static-ip-to-docker-container)
+- [Ping local network from container](https://forums.docker.com/t/ping-local-network-from-container/38994/2)
+
 
 <!--
 Dit is gebaseerd op deze beginversie, maar zal de provisioning niet uitvoeren omwille van een fout (met Guest Additions?).
