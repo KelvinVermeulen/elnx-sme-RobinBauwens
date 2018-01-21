@@ -10,6 +10,7 @@ docker images
 docker network ls
 docker network inspect <id>
 sudo docker port <container-name>
+sudo docker rm <id>
 
 Commando's uitvoeren in container:
 sudo docker exec -it <container-name> /bin/bash
