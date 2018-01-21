@@ -2,7 +2,7 @@
 
 ## Stappenplan
 
-In de SME-opdracht wordt IP-adres `172.16.0.10` met alias `inside` voorzien als intranet webserver. Volgende code voorziet dit:
+In de SME-opdracht wordt IP-adres `172.16.0.10` met alias `inside` voorzien als intranet webserver. Volgende code (in `pu001.yml`) voorziet dit:
 
 ```
 - name: pr010
@@ -11,7 +11,7 @@ In de SME-opdracht wordt IP-adres `172.16.0.10` met alias `inside` voorzien als 
     - inside
 ```
 
-De bedoeling is dat we de mogelijkheden van Nginx load-balancing testen binnen ons netwerk bij het surfen naar `inside.avalon.lan`.
+De bedoeling is dat we de mogelijkheden van Docker (intranet webserver) testen binnen ons netwerk bij het surfen naar `inside.avalon.lan`.
 
 Alle configuratie bevindt zich in `/actua`, clone eerst het [startproject van bertvv/docker-sandbox](https://github.com/bertvv/docker-sandbox) en plaats dit dan ook in `/actua`.
 
@@ -97,7 +97,7 @@ Opmerkingen:
 - We gebruiken de [officiële container](https://hub.docker.com/_/httpd/) van Apache HTTP Server Project.
 - We voeren de container uit zonder zelf een Dockerfile te configureren, dit werd ook in bovenstaande link meegedeeld.
 
-Indien we van het werkstation of het hostsytseem naar `172.16.0.10:9090` surfen zien we volgende pagina:
+Indien we van het werkstation of het hostsysteem naar `172.16.0.10:9090` surfen zien we volgende pagina:
 ![Cockpit](img/4.png)
 
 Indien we naar hetzelfde IP-adres surfen, maar met poort `80`: Dan krijgen we de standaardinstellingen van de `apache`-container te zien.
@@ -112,20 +112,6 @@ Poorten nog niet open gezet (via ander IP-adres dus)
 Als we nu een container (bvb een webcontainer) starten en de inhoud van webpagina afhalen mbhv `curl` (zie IP-adres in cockpit/dashboard).
 ![172.17.0.2 vanaf hostsysteem VM Docker](img/5.png)
 -->
-
-### Extra controlecommando's
-
-**Voer telkens onderstaande commando's uit met `sudo`**
-```
-docker ps
-docker images
-docker network ls
-docker network inspect <id>
-sudo docker port <container-name>
-
-Commando's uitvoeren in container:
-sudo docker exec -it <container-name> /bin/bash
-```
 
 
 
