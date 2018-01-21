@@ -1,5 +1,5 @@
-# Opdracht actualiteit: nieuwe techniek
-## Docker-integratie webserver Nginx met proxy
+# Opdracht actualiteit: nieuwe techniek (hostsysteem)
+## Docker-integratie webserver Nginx met proxy op Windows 10
 
 ### Inleiding
 1. Zorg ervoor dat je Docker en Docker Toolbox geïnstalleerd hebt. De installatie zal Git Bash, VirtualBox etc. updaten. [Dit kan later tot gevolg hebben dat `vagrant ssh` niet meer zal werken](https://github.com/hashicorp/vagrant/issues/9027). Zorg ervoor dat je volgende versies hebt om dit probleem op te lossen:
@@ -59,11 +59,15 @@ Mode                LastWriteTime         Length Name
 5. Voer nu `docker-compose up` uit. Als we `http://192.168.99.100:8000/` verversen, dan kunnen we zien dat er uitvoer van `docker-compose up` bijkomt. ![Docker compose](img/dc-up.png)
 6. We zouden graag load-balancing toepassen, en hiervoor gebruiken we dan `docker-compose up --scale web=5`. ![Scale](img/scale.PNG)
 7. Er kunnen nu problemen ontstaan als we (later) minder dan 5 containers willen gebruiken, de proxyserver zal ze alle 5 nog onthouden. De configuratie wordt niet herladen. Voeg de DNS-resolver toe en voorkom dat je het adres hard-codeert (gebruik dus een variabele) in `proxy.conf`.
-8. Om alles nog eens op te starten:
+8. Om alles nog eens op te sommen:
+        - Open `Docker Quickstart Terminal`
+        - Ga naar de directory waar `docker-compose.yml` staat: (`elnx-sme-RobinBauwens/actua/dockerhost-sandbox/provisioning/files/docker-actualiteit`)
+        - Voer volgende commando's uit en surf naar `http://192.168.99.100:8000/`
 ```
 docker-compose build 
 docker-compose up --scale web=20
 ```
+
 
 ### Eindresultaat:
 
