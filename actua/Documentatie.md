@@ -1,15 +1,22 @@
 # Documentatie Docker intranet
 
-## Stappenplan
+## Voorbereiding en opzetten omgeving
 
-In de SME-opdracht wordt IP-adres `172.16.0.10` met alias `inside` voorzien als intranet webserver. Volgende code (in `pu001.yml`) voorziet dit:
-
+In de SME-opdracht wordt IP-adres `172.16.0.10` met alias `inside` voorzien als intranet webserver. 
+<details>
+    <summary>
+Volgende code (in `pu001.yml`) voorziet dit:
+    </summary> 
+    <p> 
 ```
 - name: pr010
   ip: 172.16.0.10
   aliases: 
     - inside
-```
+``` 
+    </p> 
+</details>
+
 
 De bedoeling is dat we de mogelijkheden van Docker (intranet webserver) testen binnen ons netwerk bij het surfen naar `inside.avalon.lan`.
 
@@ -66,10 +73,10 @@ Zie [Sofware.md](https://github.com/HoGentTIN/elnx-sme-RobinBauwens/blob/solutio
 Oplossing: we zullen werken met de box van `bertvv/centos72`, dit geeft bovenstaande fout niet (en zorgt er ook voor dat `enp0s8` wel een IP-adres krijgt. (Toevoegen via het maken van een (netwerk)configbestand en de netwerkservice te herstarten lost dit niet op).
 
 
-## Stappenplannen
+
 **Met aangepaste Vagrantfile en vagrant-hosts.yml**
 
-### Basisconfiguratie - apache
+## Stappenplan `http`-container `inside.avalon.lan`
 We gebruiken een herwerkte versie van de [Vagrantfile](https://github.com/HoGentTIN/elnx-sme-RobinBauwens/blob/solution/actua/dockerhost-sandbox/Vagrantfile).
 
 We zetten de poorten open om de webserver te bereiken, we gaan niet expliciet een nieuw netwerk maken (binnen Docker)/nieuwe IP-adressen toekennen.
@@ -92,7 +99,15 @@ sudo /vagrant/provisioning/dockerhost.sh
 sudo docker run -td --name webserver -p 80:80 httpd
 ```
 
-Opmerkingen: 
+
+
+
+https://github.com/HoGentTIN/elnx-sme-RobinBauwens/blob/solution/actua/dockerhost-sandbox/provisioning/files/docker-actualiteit/actualiteit-docker.md
+
+
+
+
+### Opmerkingen: 
 
 - We gebruiken de [officiële container](https://hub.docker.com/_/httpd/) van Apache HTTP Server Project.
 - We voeren de container uit zonder zelf een Dockerfile te configureren, dit werd ook in bovenstaande link meegedeeld.
