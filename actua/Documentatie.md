@@ -3,6 +3,7 @@
 ## Voorbereiding en opzetten omgeving
 
 In de SME-opdracht wordt IP-adres `172.16.0.10` met alias `inside` voorzien als intranet webserver. 
+
 Volgende code (in `pu001.yml`) voorziet dit:
 
 ```
@@ -131,6 +132,21 @@ sudo docker-compose up -d
 <!--
 ![Commando's](img/3.png)
 -->
+
+Hierna kunnen we Apache Benchmark downloaden en uitvoeren om beide soorten (1 container en meerdere containers) te testen:
+```
+sudo dnf install httpd-tools
+ab -n 5000 -c 10 http://172.16.0.10:80/        Let op "/"!
+ab -n 5000 -c 10 http://172.16.0.10:8000/      Let op "/"!
+```
+
+- Benchmark 1 webcontainer (Apache webcontainer)
+
+![Apache](img/benchmark_single.png)
+
+- Benchmark 5 webcontainers met 1 proxy (Alpine Nginx)
+![Alpine Nginx](img/benchmark_multiple.png)
+
 
 ## 3) Docker-integratie webserver Nginx met proxy op Windows 10
 

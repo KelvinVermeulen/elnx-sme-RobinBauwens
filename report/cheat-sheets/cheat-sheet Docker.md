@@ -40,6 +40,11 @@ sudo docker-compose build
 sudo docker-compose up -d
 ```
 
+Als de containers haperen:
+```
+sudo docker-compose stop
+```
+
 ### Apache Benchmark
 ```
 sudo dnf install httpd-tools
