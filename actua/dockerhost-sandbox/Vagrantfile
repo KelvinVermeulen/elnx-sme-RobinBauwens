@@ -6,7 +6,7 @@ require 'yaml'
 
 # Set your default base box here
 DEFAULT_BASE_BOX = 'bertvv/fedora25'
-# Indien deze niet werkt, gebruik: bertvv/centos72
+# Indien deze niet werkt, gebruik dan bertvv/centos72
 
 VAGRANTFILE_API_VERSION = '2'
 PROJECT_NAME = '/' + File.basename(Dir.getwd)
