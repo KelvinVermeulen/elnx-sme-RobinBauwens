@@ -112,32 +112,29 @@ Voer dan `sudo docker rm webserver` uit.
 
 Binnen `/vagrant/provisioning/files` staat de configuratie van Docker (voor load-balancing `docker-actualiteit`). 
 
-Hierna voeren we `sudo docker-compose build` uit (in `/vagrant/provisioning/docker-actualiteit`).
-
 ![docker-compose build](img/2.png)
 
-Hierna kunnen we volgende commando's uitvoeren:
+Hierna kunnen we volgende commando's uitvoeren(in `/vagrant/provisioning/docker-actualiteit`):
+
+**Voer ofwel `scale` ofwel `up` uit, niet beide!**
 
 ```
 sudo docker-compose build
+sudo docker-compose scale web=5 proxy=1
 
-sudo docker-compose scale web=2 proxy=1
-sudo docker-compose up -d    (ofwel ervoor)
+Ofwel:
 
-
-sudo docker-compose scale web=5
-sudo docker-compose up
+sudo docker-compose build
+sudo docker-compose up -d
 ```
 
+<!--
 ![Commando's](img/3.png)
-
 -->
 
 ## 3) Docker-integratie webserver Nginx met proxy op Windows 10
 
 [Installatie en configuratie van Docker op een Windows 10-systeem](https://github.com/HoGentTIN/elnx-sme-RobinBauwens/blob/solution/actua/dockerhost-sandbox/provisioning/files/docker-actualiteit/actualiteit-docker.md)
-
-
 
 
 
