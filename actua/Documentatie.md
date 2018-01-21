@@ -7,22 +7,19 @@ In de SME-opdracht wordt IP-adres `172.16.0.10` met alias `inside` voorzien als 
     <summary>
 Volgende code (in `pu001.yml`) voorziet dit:
     </summary> 
-    <p> 
 ```
 - name: pr010
   ip: 172.16.0.10
   aliases: 
     - inside
 ``` 
-    </p> 
 </details>
-
 
 De bedoeling is dat we de mogelijkheden van Docker (intranet webserver) testen binnen ons netwerk bij het surfen naar `inside.avalon.lan`.
 
 Alle configuratie bevindt zich in `/actua`, clone eerst het [startproject van bertvv/docker-sandbox](https://github.com/bertvv/docker-sandbox) en plaats dit dan ook in `/actua`.
 
-Gebruik volgende code voor `vagrant-hosts.yml`:
+- Gebruik volgende code voor `vagrant-hosts.yml`:
 
 ```
 - name: dockerhost
@@ -30,6 +27,11 @@ Gebruik volgende code voor `vagrant-hosts.yml`:
   netmask: 255.255.0.0
   box: bertvv/fedora25
 ```
+
+- Het `Vagrantfile`-bestand werd ook aangepast, o.a.:
+    - `DEFAULT_BASE_BOX` is nu `bertvv/fedora25` ipv `bertvv/centos72`
+    - Er werd code gebruikt van de [SME-opdracht](https://github.com/HoGentTIN/elnx-sme/blob/master/Vagrantfile)
+
 
 Er zit nog een fout in het opstarten, waarschijnlijk is dit te wijten aan een verschillende versie van Vagrant/VirtualBox.
 
