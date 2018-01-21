@@ -71,8 +71,11 @@ Zie [Sofware.md](https://github.com/HoGentTIN/elnx-sme-RobinBauwens/blob/solutio
 
 **Oplossing**: we zullen werken met de box van `bertvv/fedora25`, dit geeft bovenstaande fout niet (en zorgt er ook voor dat `enp0s8` wel een IP-adres krijgt (toevoegen via het maken van een (netwerk)configbestand en de netwerkservice te herstarten lost dit niet op).
 
+## 1) Docker-integratie webserver Nginx met proxy op Windows 10
 
-## 1) Stappenplan `http`-container `inside.avalon.lan`
+[Installatie en configuratie van Docker op een Windows 10-systeem](https://github.com/HoGentTIN/elnx-sme-RobinBauwens/blob/solution/actua/dockerhost-sandbox/provisioning/files/docker-actualiteit/actualiteit-docker.md)
+
+## 2) Stappenplan `http`-container `inside.avalon.lan`
 
 **Met aangepaste `Vagrantfile` en `vagrant-hosts.yml` (zie voorbereiding)**
 
@@ -109,7 +112,7 @@ See '/usr/bin/docker-current run --help'.
 Voer dan `sudo docker rm webserver` uit.
 
 
-## 2) Stappenplan meerdere containers (load-balancing) `inside.avalon.lan`
+## 3) Stappenplan meerdere containers (load-balancing) `inside.avalon.lan`
 
 Binnen `/vagrant/provisioning/files` staat de configuratie van Docker (voor load-balancing `docker-actualiteit`). 
 
@@ -147,14 +150,6 @@ ab -n 5000 -c 10 http://172.16.0.10:8000/      Let op "/"!
 - Benchmark 5 webcontainers met 1 proxy (Alpine Nginx)
 
 ![Alpine Nginx](img/benchmark_multiple.png)
-
-
-## 3) Docker-integratie webserver Nginx met proxy op Windows 10
-
-[Installatie en configuratie van Docker op een Windows 10-systeem](https://github.com/HoGentTIN/elnx-sme-RobinBauwens/blob/solution/actua/dockerhost-sandbox/provisioning/files/docker-actualiteit/actualiteit-docker.md)
-
-
-
 
 
 ### Opmerkingen: 
