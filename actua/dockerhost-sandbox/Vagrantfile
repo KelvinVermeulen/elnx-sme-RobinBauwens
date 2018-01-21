@@ -7,6 +7,7 @@ require 'yaml'
 # Set your default base box here
 DEFAULT_BASE_BOX = 'bertvv/fedora25'
 # Indien deze niet werkt, gebruik dan bertvv/centos72
+# Fedora heeft recentere versie van Docker dan CentOS
 
 VAGRANTFILE_API_VERSION = '2'
 PROJECT_NAME = '/' + File.basename(Dir.getwd)
@@ -78,6 +79,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         # host name, this will fail.
         vb.customize ['modifyvm', :id, '--groups', PROJECT_NAME]
       end
+      node.vm.provision 'shell', path: 'provisioning/' + host['name'] + '.sh'
     end
   end
 end

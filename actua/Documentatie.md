@@ -72,13 +72,13 @@ Error: Unable to find a match.
 
 Zie [Sofware.md](https://github.com/HoGentTIN/elnx-sme-RobinBauwens/blob/solution/Software.md), we blijven werken met de huidige softwareversies.
 
-Oplossing: we zullen werken met de box van `bertvv/centos72`, dit geeft bovenstaande fout niet (en zorgt er ook voor dat `enp0s8` wel een IP-adres krijgt. (Toevoegen via het maken van een (netwerk)configbestand en de netwerkservice te herstarten lost dit niet op).
+Oplossing: we zullen werken met de box van `bertvv/fedora25`, dit geeft bovenstaande fout niet (en zorgt er ook voor dat `enp0s8` wel een IP-adres krijgt (toevoegen via het maken van een (netwerk)configbestand en de netwerkservice te herstarten lost dit niet op).
 
 
+## 1) Stappenplan `http`-container `inside.avalon.lan`
 
-**Met aangepaste Vagrantfile en vagrant-hosts.yml**
+**Met aangepaste `Vagrantfile` en `vagrant-hosts.yml` (zie voorbereiding)**
 
-## Stappenplan `http`-container `inside.avalon.lan`
 We gebruiken een herwerkte versie van de [Vagrantfile](https://github.com/HoGentTIN/elnx-sme-RobinBauwens/blob/solution/actua/dockerhost-sandbox/Vagrantfile).
 
 We zetten de poorten open om de webserver te bereiken, we gaan niet expliciet een nieuw netwerk maken (binnen Docker)/nieuwe IP-adressen toekennen.
@@ -101,10 +101,14 @@ sudo /vagrant/provisioning/dockerhost.sh
 sudo docker run -td --name webserver -p 80:80 httpd
 ```
 
+## 2) Stappenplan meerdere containers (load-balancing) `inside.avalon.lan`
 
 
 
-https://github.com/HoGentTIN/elnx-sme-RobinBauwens/blob/solution/actua/dockerhost-sandbox/provisioning/files/docker-actualiteit/actualiteit-docker.md
+## 3) Docker-integratie webserver Nginx met proxy op Windows 10
+
+[Installatie en configuratie van Docker op een Windows 10-systeem](https://github.com/HoGentTIN/elnx-sme-RobinBauwens/blob/solution/actua/dockerhost-sandbox/provisioning/files/docker-actualiteit/actualiteit-docker.md)
+
 
 
 
@@ -165,7 +169,7 @@ sudo docker-compose up
 - [Docker wordpress image & docker-compose](https://www.sitepoint.com/how-to-use-the-official-docker-wordpress-image/)
 - [Voer commando's uit binnen container](https://askubuntu.com/questions/505506/how-to-get-bash-or-ssh-into-a-running-container-in-background-mode)
 - [Building a Simple Apache Web Server in a Container](https://access.redhat.com/articles/1328953)
-
+- [Collapsible markdown](https://gist.github.com/joyrexus/16041f2426450e73f5df9391f7f7ae5f#file-readme-md)
 
 <!--
 Dit is gebaseerd op deze beginversie, maar zal de provisioning niet uitvoeren omwille van een fout (met Guest Additions?).
