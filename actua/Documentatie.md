@@ -145,12 +145,15 @@ ab -n 5000 -c 10 http://172.16.0.10:8000/      Let op "/"!
 ![Apache](img/benchmark_single.png)
 
 - Benchmark 5 webcontainers met 1 proxy (Alpine Nginx)
+
 ![Alpine Nginx](img/benchmark_multiple.png)
 
 
 ## 3) Docker-integratie webserver Nginx met proxy op Windows 10
 
 [Installatie en configuratie van Docker op een Windows 10-systeem](https://github.com/HoGentTIN/elnx-sme-RobinBauwens/blob/solution/actua/dockerhost-sandbox/provisioning/files/docker-actualiteit/actualiteit-docker.md)
+
+
 
 
 
@@ -174,6 +177,13 @@ Poorten nog niet open gezet (via ander IP-adres dus)
 Als we nu een container (bvb een webcontainer) starten en de inhoud van webpagina afhalen mbhv `curl` (zie IP-adres in cockpit/dashboard).
 ![172.17.0.2 vanaf hostsysteem VM Docker](img/5.png)
 -->
+
+#### Pagina's voor demonstratie
+
+- [Docker Windows load-balancing](http://192.168.99.100:8000/)
+- [Docker Fedora 1 webcontainer-Apache](http://172.16.0.10/)
+- [Docker Fedora 1 webcontainer-Cockpit](http://172.16.0.10:9090/)
+- [Docker Fedora 5 webcontainers met 1 proxy-Alpine Nginx](http://192.168.99.100:8000/)
 
 
 
