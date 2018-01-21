@@ -2,7 +2,7 @@
 
 ## Voorbereiding en opzetten omgeving
 
-In de SME-opdracht wordt IP-adres `172.16.0.10` met alias `inside` voorzien als intranet webserver. 
+In de SME-opdracht wordt IP-adres `172.16.0.10` met alias `inside` voorzien als intranet webserver. Aangezien we de SME-opdracht verder uitbreiden, dient de infrastructuur ook opgestart te zijn.
 
 Volgende code (in `pu001.yml`) voorziet dit:
 
@@ -96,7 +96,7 @@ sudo /vagrant/provisioning/dockerhost.sh
 
 ![Installatiescript](img/1.png)
 
-2. Voer volgend commando uit:
+2. Voer volgend commando uit (uitvoeren van Docker image zonder `Dockerfile`, met default website):
 ```
 sudo docker run -td --name webserver -p 80:80 httpd
 ```
@@ -112,9 +112,16 @@ See '/usr/bin/docker-current run --help'.
 Voer dan `sudo docker rm webserver` uit.
 
 
+We gaan, naast de defaultpagina die "It Works!" weergeeft, een nieuw HTML-project toevoegen.
+
+Hiervoor gaan we de directory `public-html` die alle HTML, CSS en andere code bevat voor de intranet-website verplaatsen naar `/actua/dockerhost-sandbox`. Nadat de container werd opgestart, kunnen we de bestanden kopiëren naar de Docker webcontainer met volgend commando:
+```
+sudo docker cp public-html/. webserver:usr/local/apache2/htdocs/public-html
+```
+
 ## 3) Stappenplan meerdere containers (load-balancing) `inside.avalon.lan`
 
-Binnen `/vagrant/provisioning/files` staat de configuratie van Docker (voor load-balancing `docker-actualiteit`). 
+Binnen `/vagrant/provisioning/files/docker-actualiteit` staat de configuratie van Docker (voor load-balancing). 
 
 ![docker-compose build](img/2.png)
 
