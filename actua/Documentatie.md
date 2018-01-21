@@ -3,17 +3,15 @@
 ## Voorbereiding en opzetten omgeving
 
 In de SME-opdracht wordt IP-adres `172.16.0.10` met alias `inside` voorzien als intranet webserver. 
-<details>
-    <summary>
 Volgende code (in `pu001.yml`) voorziet dit:
-    </summary> 
+
 ```
 - name: pr010
   ip: 172.16.0.10
   aliases: 
     - inside
-``` 
-</details>
+```
+
 
 De bedoeling is dat we de mogelijkheden van Docker (intranet webserver) testen binnen ons netwerk bij het surfen naar `inside.avalon.lan`.
 
@@ -33,9 +31,9 @@ Alle configuratie bevindt zich in `/actua`, clone eerst het [startproject van be
     - Er werd code gebruikt van de [SME-opdracht](https://github.com/HoGentTIN/elnx-sme/blob/master/Vagrantfile)
 
 
-Er zit nog een fout in het opstarten, waarschijnlijk is dit te wijten aan een verschillende versie van Vagrant/VirtualBox.
+Er zit nog een fout in het opstarten, dit kan eventueel te wijten zijn aan een verschillende versie van Vagrant/VirtualBox.
 
-We proberen volgend commando eens om het probleem met de GuestAdditions-versies op te lossen: `vagrant plugin install vagrant-vbguest`
+We proberen volgend commando eens om het probleem met de GuestAdditions-versies op te lossen: `vagrant plugin install vagrant-vbguest`.
 
 [Plugin vagrant-vbguest](https://kvz.io/blog/2013/01/16/vagrant-tip-keep-virtualbox-guest-additions-in-sync/)
 
@@ -68,11 +66,9 @@ Package bzip2-1.0.6-21.fc25.x86_64 is already installed, skipping.
 Error: Unable to find a match.
 ```
 
-<!--*Mogelijke oplossingen: andere versie Vagrant en VirtualBox*-->
-
 Zie [Sofware.md](https://github.com/HoGentTIN/elnx-sme-RobinBauwens/blob/solution/Software.md), we blijven werken met de huidige softwareversies.
 
-Oplossing: we zullen werken met de box van `bertvv/fedora25`, dit geeft bovenstaande fout niet (en zorgt er ook voor dat `enp0s8` wel een IP-adres krijgt (toevoegen via het maken van een (netwerk)configbestand en de netwerkservice te herstarten lost dit niet op).
+**Oplossing**: we zullen werken met de box van `bertvv/fedora25`, dit geeft bovenstaande fout niet (en zorgt er ook voor dat `enp0s8` wel een IP-adres krijgt (toevoegen via het maken van een (netwerk)configbestand en de netwerkservice te herstarten lost dit niet op).
 
 
 ## 1) Stappenplan `http`-container `inside.avalon.lan`
@@ -101,9 +97,41 @@ sudo /vagrant/provisioning/dockerhost.sh
 sudo docker run -td --name webserver -p 80:80 httpd
 ```
 
+- Indien de container hapert, voer dan `sudo docker stop webserver` uit.
+- Indien je volgende foutboodschap krijgt:
+```
+[vagrant@dockerhost docker-actualiteit]$ sudo docker run -td --name webserver -p 80:80 httpd
+/usr/bin/docker-current: Error response from daemon: Conflict. The name "/webserver" is already in use by container 91558e94d12eb25bf10a627e11d2174cc767b0e46
+ad82c317d4a7129c336320e. You have to remove (or rename) that container to be able to reuse that name..
+See '/usr/bin/docker-current run --help'.
+```
+Voer dan `sudo docker rm webserver` uit.
+
+
 ## 2) Stappenplan meerdere containers (load-balancing) `inside.avalon.lan`
 
+Binnen `/vagrant/provisioning/files` staat de configuratie van Docker (voor load-balancing `docker-actualiteit`). 
 
+Hierna voeren we `sudo docker-compose build` uit (in `/vagrant/provisioning/docker-actualiteit`).
+
+![docker-compose build](img/2.png)
+
+Hierna kunnen we volgende commando's uitvoeren:
+
+```
+sudo docker-compose build
+
+sudo docker-compose scale web=2 proxy=1
+sudo docker-compose up -d    (ofwel ervoor)
+
+
+sudo docker-compose scale web=5
+sudo docker-compose up
+```
+
+![Commando's](img/3.png)
+
+-->
 
 ## 3) Docker-integratie webserver Nginx met proxy op Windows 10
 
@@ -136,25 +164,6 @@ Als we nu een container (bvb een webcontainer) starten en de inhoud van webpagin
 
 
 
-<!--
-## Load-balancing
-
-Binnen `/vagrant/provisioning/files` staat de configuratie van Docker (voor load-balancing). 
-
-Hierna voeren we `sudo docker-compose build` uit (in `/vagrant/provisioning/docker-actualiteit`).
-
-![docker-compose build](img/2.png)
-
-Hierna kunnen we volgende commando's uitvoeren:
-
-```
-sudo docker-compose scale web=5
-sudo docker-compose up
-```
-
-![Commando's](img/3.png)
-
--->
 
 ## Bronnen
 
