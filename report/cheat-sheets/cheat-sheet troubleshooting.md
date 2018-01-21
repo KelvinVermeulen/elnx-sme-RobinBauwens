@@ -41,7 +41,7 @@ ip link
 - `UP`: interface is verbonden
 - `NO-CARRIER`: geen signaal op interface
 
-[`ip link`](img/cheat-sheet/iplink.PNG)
+[`ip link`](../img/cheat-sheet/iplink.PNG)
 
 ## 2. Checklist internet layer
 
@@ -81,11 +81,11 @@ sudo hostnamectl status
 hostnamectl set-hostname <name>
 ```
 
-[`ip a`](img/cheat-sheet/ip_a.PNG)
-[`ip r`](img/cheat-sheet/ip_r.png)
-[`cat /etc/resolv.conf`](img/cheat-sheet/ifcfg-resolv.conf.PNG)
-[`enp0s3`](img/cheat-sheet/ifcfg-enp0s3.png)
-[`enp0s8`](img/cheat-sheet/ifcfg-enp0s8.png)
+[`ip a`](../img/cheat-sheet/ip_a.PNG)
+[`ip r`](../img/cheat-sheet/ip_r.png)
+[`cat /etc/resolv.conf`](../img/cheat-sheet/ifcfg-resolv.conf.PNG)
+[`enp0s3`](../img/cheat-sheet/ifcfg-enp0s3.png)
+[`enp0s8`](../img/cheat-sheet/ifcfg-enp0s8.png)
 
 **`enp0s8` kan soms opstarten zonder IP-adres, is een bug.**
 
@@ -136,8 +136,8 @@ cat /etc/services                    IANA
 getent services <domain>             Implementatie (zoeken naar databank services)
 ```
 
-[`ss -tulpn`](img/cheat-sheet/ss.PNG)
-[`getent services`](img/cheat-sheet/getent.PNG)
+[`ss -tulpn`](../img/cheat-sheet/ss.PNG)
+[`getent services`](../img/cheat-sheet/getent.PNG)
 
 ```
 sudo firewall-cmd --get-services | grep dns
@@ -164,8 +164,8 @@ sudo firewall-cmd --get-active-zones
 sudo iptables -L -n -v
 ```
 
-[`sudo firewall-cmd --list-all`](img/cheat-sheet/firewallcmd.PNG)
-[`sudo firewall-cmd --get-active-zones (kan ook enp0s8 bevatten)`](img/cheat-sheet/getactivezones.PNG)
+[`sudo firewall-cmd --list-all`](../img/cheat-sheet/firewallcmd.PNG)
+[`sudo firewall-cmd --get-active-zones (kan ook enp0s8 bevatten)`](../img/cheat-sheet/getactivezones.PNG)
 
 
 
@@ -207,8 +207,8 @@ sudo vi /etc/httpd/conf/httpd.conf          ::poortnummer om te zoeken (in vi)
 
 **Op te letten bij `nginx`:**
 
-![Nginx](img/cheat-sheet/nginx.PNG)
-![Nginx](img/cheat-sheet/nginx2.PNG)
+![Nginx](../img/cheat-sheet/nginx.PNG)
+![Nginx](../img/cheat-sheet/nginx2.PNG)
 
 Paden:
 - `/usr/share/nginx/html/`  `root root`
@@ -236,8 +236,8 @@ Paden:
 Locatie webserver bestanden: `var/www/html/`
 
 
-[`httpd.conf`](img/cheat-sheet/httpd.conf.PNG)
-[`httpd.conf (2)`](img/cheat-sheet/httpd.conf2.PNG)
+[`httpd.conf`](../img/cheat-sheet/httpd.conf.PNG)
+[`httpd.conf (2)`](../img/cheat-sheet/httpd.conf2.PNG)
 
 
 ## SELinux
@@ -261,9 +261,9 @@ sudo cat /var/log/audit/audit.log
 cat /etc/sysconfig/selinux          permanent maken + targeted is niet voor status zoals enforcing
 ```
 
-[`restorecon`](img/cheat-sheet/restorecon.PNG)
-[`sestatus`](img/cheat-sheet/sestatus.PNG)
-[`selinux`](img/cheat-sheet/selinux.PNG)
+[`restorecon`](../img/cheat-sheet/restorecon.PNG)
+[`sestatus`](../img/cheat-sheet/sestatus.PNG)
+[`selinux`](../img/cheat-sheet/selinux.PNG)
 
 ## Logfiles
 
@@ -329,16 +329,18 @@ dig -x 178.62.144.90 @193.190.173.1
 - Bestandspermissies
 - SELinux context
 
+<!--
 TODO: 
 - Aan te vullen met hoe op te lossen, welke commando's te controleren
 - Notities vrijdag 13/10/17 (les troubleshooting)
 - Connectie met hostsysteem
 - Bestandspermissies
 - Defaultwaarde voor adapters (IP-adressen, welke UP zijn etc.)
+-->
 
 ## Bereikbaarheid
 
-- `sudo nmap -sS -p 80,443 192.0.2.50` *te testen*
+- `sudo nmap -sS -p 80,443 192.0.2.50` <!-- *te testen* -->
 
 - `wget 192.0.2.50/wordpress`
 
