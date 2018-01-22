@@ -4,7 +4,8 @@ Tijdstip demo: 23/01/18 09:00
 
 1. Voer volgende commando's uit, binnen Git Bash, om de SME-infrastructuur op te zetten. *Het kan zijn dat je dit commando tweemaal moet uitvoeren omwille van de router.*
 ```
-cd "C:\Users\TEMP\Documents\GitHub\School - huidig\elnx-sme-RobinBauwens"  vagrant up
+cd "C:\Users\TEMP\Documents\GitHub\School - huidig\elnx-sme-RobinBauwens"  
+vagrant up
 ```
 2. Start, **nadat alles staat**, `ws001` op (via VirtualBox met GUI); dit doen we pas later aangezien deze (virtuele) computer nog (dynamische) IP-adressen moet toegewezen krijgen.
 3. Voer hierna volgende commando's uit om de VM's te vernietigen en opnieuw op te zetten:
@@ -51,6 +52,7 @@ ab -n 5000 -c 10 http://172.16.0.10:8000/
 ab -n 1000 -c 10 http://172.16.0.10:80/
 ```
 
+Extra commando's om te controleren:
 ```
 docker images
 docker ps
