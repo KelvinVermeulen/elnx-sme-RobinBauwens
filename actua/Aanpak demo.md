@@ -2,11 +2,14 @@
 
 23/01/18 09:00
 
-1. Ga naar `C:\Users\TEMP\Documents\GitHub\School - huidig\elnx-sme-RobinBauwens` binnen Git Bash en voer `vagrant up` uit (het kan zijn dat je dit commando tweemaal moet uitvoeren omwille van de router).
-2. Start, **nadat alles staat**, `ws001` op; dit doen we pas later aangezien deze (virtuele) computer nog (dynamische) IP-adressen moet toegewezen krijgen.
-3. Ga naar `C:\Users\TEMP\Documents\GitHub\School - huidig\elnx-sme-RobinBauwens\actua` en voer volgende commando's uit:
-
+1. Voer volgende commando's uit, binnen Git Bash, om de SME-infrastructuur op te zetten. *Het kan zijn dat je dit commando tweemaal moet uitvoeren omwille van de router.*
 ```
+cd "C:\Users\TEMP\Documents\GitHub\School - huidig\elnx-sme-RobinBauwens"  vagrant up
+```
+2. Start, **nadat alles staat**, `ws001` op (via VirtualBox met GUI); dit doen we pas later aangezien deze (virtuele) computer nog (dynamische) IP-adressen moet toegewezen krijgen.
+3. Voer hierna volgende commando's uit om de VM's te vernietigen en opnieuw op te zetten:
+```
+cd "C:\Users\TEMP\Documents\GitHub\School - huidig\elnx-sme-RobinBauwens\actua"
 vagrant destroy dockerhost
 vagrant up dockerhost --provision
 vagrant ssh
@@ -20,7 +23,6 @@ sudo docker run -td --name webserver -p 80:80 httpd
 cd /vagrant
 sudo docker cp public-html/. webserver:usr/local/apache2/htdocs/public-html
 ```
-
 5. Surf naar volgende websites:
     - http://172.16.0.10:80
     - http://172.16.0.10/public-html/
@@ -44,12 +46,10 @@ sudo dnf install -y httpd-tools
 ab -n 5000 -c 10 http://172.16.0.10:80/        
 ab -n 5000 -c 10 http://172.16.0.10:8000/      
 ```
-
 10. Open `webserver`-container in Cockpit en bekijk het requests-venster (logs) van `webserver`, voer hierna volgend commando uit:
 ```
 ab -n 1000 -c 10 http://172.16.0.10:80/
 ```
-
 
 ```
 docker images
