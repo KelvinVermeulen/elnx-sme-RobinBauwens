@@ -1,7 +1,8 @@
 # Cheat-sheet Docker
 
 ### Algemeen
-**Voer telkens onderstaande commando's uit met `sudo`**
+**Voer telkens onderstaande commando's uit met `sudo` (tenzij je de VM provisioning hebt uitgevoerd, zie `dockerhost.sh`)**
+
 ```
 sudo docker ps
 sudo docker images
