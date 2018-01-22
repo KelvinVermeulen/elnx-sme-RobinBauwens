@@ -12,6 +12,8 @@ sudo docker port <container-name>
 sudo docker stop <container-name>
 sudo docker rm <container-id>
 sudo docker rm <id>
+docker stats
+docker logs <container-name>
 
 Commando's uitvoeren in container:
 sudo docker exec -it <container-name> /bin/bash
@@ -38,16 +40,14 @@ sudo docker cp public-html/. webserver:usr/local/apache2/htdocs/public-html
 
 
 ### Multiple containers:
-**Voer ofwel `scale` ofwel `up` uit, niet beide!**
+**Voer eerst  `up` uit om de containers te maken en dan `scale`.**
 
 ```
-sudo docker-compose build
-sudo docker-compose scale web=5 proxy=1
+docker-compose build
+docker-compose up -d
 
-Ofwel:
-
-sudo docker-compose build
-sudo docker-compose up -d
+docker-compose stop
+docker-compose scale web=5 proxy=1
 ```
 
 Als de containers haperen:

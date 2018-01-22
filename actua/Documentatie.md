@@ -129,16 +129,14 @@ Binnen `/vagrant/provisioning/files/docker-actualiteit` staat de configuratie va
 
 Hierna kunnen we volgende commando's uitvoeren(in `/vagrant/provisioning/docker-actualiteit`):
 
-**Voer ofwel `scale` ofwel `up` uit, niet beide!**
+**Voer eerst  `up` uit om de containers te maken en dan `scale`.**
 
 ```
-sudo docker-compose build
-sudo docker-compose scale web=5 proxy=1
+docker-compose build
+docker-compose up -d
 
-Ofwel:
-
-sudo docker-compose build
-sudo docker-compose up -d
+docker-compose stop
+docker-compose scale web=5 proxy=1
 ```
 
 <!--
@@ -147,7 +145,7 @@ sudo docker-compose up -d
 
 Hierna kunnen we Apache Benchmark downloaden en uitvoeren om beide soorten (1 container en meerdere containers) te testen:
 ```
-sudo dnf install httpd-tools
+sudo dnf install -y httpd-tools
 ab -n 5000 -c 10 http://172.16.0.10:80/        
 ab -n 5000 -c 10 http://172.16.0.10:8000/      
 ```
