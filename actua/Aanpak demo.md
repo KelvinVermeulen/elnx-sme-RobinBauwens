@@ -16,7 +16,7 @@ vagrant up pr010 --provision
 vagrant ssh
 ```
 4. Hierna starten we een webcontainer op:
-    - Het eerst commando start een single `httpd` (Apache) webcontainer op waarbij poort 80 van de host gebruikt zal worden voor poort 80 van de webcontainer. Deze container bevat enkel de default-website "It works!"/. *Clear cache of refresh nog eens.*
+    - Het eerste commando start een single `httpd` (Apache) webcontainer op waarbij poort 80 van de host gebruikt zal worden voor poort 80 van de webcontainer. Deze container bevat enkel de default-website "It works!"/. *Clear cache of refresh nog eens.*
     - We gaan, naast de defaultpagina, een nieuw HTML-project toevoegen. Hiervoor gaan we de directory `public-html` die alle HTML, CSS en andere code bevat voor de intranet-website verplaatsen naar `/actua/dockerhost-sandbox`. Het derde commando zal dan deze directory kopiëren naar de webcontainer.
 
 ```

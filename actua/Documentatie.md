@@ -101,6 +101,9 @@ vagrant ssh
 ```
 sudo docker run -td --name webserver -p 80:80 httpd
 ```
+`-p` of `--publish`: Publish a container’s port(s) to the host
+
+Bvb: `-p 80:8080`: Bind poort `8080` van de container naar poort `80` van de host. Eerste poort is die van de container, tweede poort is die van de host.
 
 - Indien de container hapert, voer dan `sudo docker stop webserver` uit.
 - Indien je volgende foutboodschap krijgt:
@@ -213,7 +216,7 @@ Als we nu een container (bvb een webcontainer) starten en de inhoud van webpagin
 - [Building a Simple Apache Web Server in a Container](https://access.redhat.com/articles/1328953)
 - [Collapsible markdown](https://gist.github.com/joyrexus/16041f2426450e73f5df9391f7f7ae5f#file-readme-md)
 - [Vagrant Hostname](https://www.vagrantup.com/docs/vagrantfile/machine_settings.html)
-
+- [Bind poort container naar host poort](https://docs.docker.com/engine/reference/commandline/run/#full-container-capabilities-privileged)
 
 <!--
 Dit is gebaseerd op deze beginversie, maar zal de provisioning niet uitvoeren omwille van een fout (met Guest Additions?).
