@@ -119,6 +119,10 @@ Hiervoor gaan we de directory `public-html` die alle HTML, CSS en andere code be
 sudo docker cp public-html/. webserver:usr/local/apache2/htdocs/public-html
 ```
 
+We kunnen deze website dan bereiken door te surfen naar `http://172.16.0.10/public-html/` of naar `inside.avalon.lan/public-html`
+
+![Intranet Single Container Custom HTML](img/8.PNG)
+
 ## 3) Stappenplan meerdere containers (load-balancing) `inside.avalon.lan`
 
 Binnen `/vagrant/provisioning/files/docker-actualiteit` staat de configuratie van Docker (voor load-balancing). 
