@@ -91,12 +91,11 @@ We zetten de poorten open om de webserver te bereiken, we gaan niet expliciet ee
 ```
 vagrant up dockerhost --provision
 vagrant ssh
-sudo /vagrant/provisioning/dockerhost.sh
 ```
 
 ![Installatiescript](img/1.png)
 
-2. Voer volgend commando uit (uitvoeren van Docker image zonder `Dockerfile`, met default website):
+2. Voer volgend commando uit (uitvoeren van Docker image `httpd` zonder `Dockerfile`, met default website):
 ```
 sudo docker run -td --name webserver -p 80:80 httpd
 ```
@@ -110,7 +109,6 @@ ad82c317d4a7129c336320e. You have to remove (or rename) that container to be abl
 See '/usr/bin/docker-current run --help'.
 ```
 Voer dan `sudo docker rm webserver` uit.
-
 
 We gaan, naast de defaultpagina die "It Works!" weergeeft, een nieuw HTML-project toevoegen.
 
@@ -150,9 +148,10 @@ sudo docker-compose up -d
 Hierna kunnen we Apache Benchmark downloaden en uitvoeren om beide soorten (1 container en meerdere containers) te testen:
 ```
 sudo dnf install httpd-tools
-ab -n 5000 -c 10 http://172.16.0.10:80/        Let op "/"!
-ab -n 5000 -c 10 http://172.16.0.10:8000/      Let op "/"!
+ab -n 5000 -c 10 http://172.16.0.10:80/        
+ab -n 5000 -c 10 http://172.16.0.10:8000/      
 ```
+*Let op "/"!*
 
 - Benchmark 1 webcontainer (Apache webcontainer)
 
@@ -170,6 +169,11 @@ ab -n 5000 -c 10 http://172.16.0.10:8000/      Let op "/"!
 
 Indien we van het werkstation of het hostsysteem naar `172.16.0.10:9090` surfen zien we volgende pagina:
 ![Cockpit](img/4.png)
+
+*Het is mogelijk dat we de service nog moeten opstarten:*
+```
+sudo systemctl start cockpit
+```
 
 Indien we naar hetzelfde IP-adres surfen, maar met poort `80`: Dan krijgen we de standaardinstellingen van de `apache`-container te zien.
 
