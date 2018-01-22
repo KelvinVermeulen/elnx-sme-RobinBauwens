@@ -9,7 +9,7 @@ cd "C:\Users\TEMP\Documents\GitHub\School - huidig\elnx-sme-RobinBauwens"  vagra
 2. Start, **nadat alles staat**, `ws001` op (via VirtualBox met GUI); dit doen we pas later aangezien deze (virtuele) computer nog (dynamische) IP-adressen moet toegewezen krijgen.
 3. Voer hierna volgende commando's uit om de VM's te vernietigen en opnieuw op te zetten:
 ```
-cd "C:\Users\TEMP\Documents\GitHub\School - huidig\elnx-sme-RobinBauwens\actua"
+cd "/c/Users/TEMP/Documents/GitHub/School - huidig/elnx-sme-RobinBauwens/actua/dockerhost-sandbox"
 vagrant destroy dockerhost
 vagrant up dockerhost --provision
 vagrant ssh
@@ -23,19 +23,19 @@ sudo docker run -td --name webserver -p 80:80 httpd
 cd /vagrant
 sudo docker cp public-html/. webserver:usr/local/apache2/htdocs/public-html
 ```
-5. Surf naar volgende websites:
+5. Surf naar volgende websites (`172.16.0.10` kan je vervangen door `inside.avalon.lan`):
     - http://172.16.0.10:80
     - http://172.16.0.10/public-html/
     - https://172.16.0.10:9090/
 6. We kunnen nu zien dat er een container `webserver` aan het draaien is op poort 80. We gebruiken dus niet het IP-adres maar wel de poort van de host (hier: de VM `inside.avalon.lan`). Het IP-adres ligt ook in een ander netwerksegment (`172.16.0.0/16` en `172.17.0.0/16`).
 7. Laat de pagina met "Containers" openstaan. Nu gaan we verder met meerdere containers (multi-container applications met `docker-compose`). Voer volgende commando's uit:
 ```
-/vagrant/provisioning/files/docker-actualiteit
-docker-compose build
-docker-compose up -d
+cd /vagrant/provisioning/files/docker-actualiteit
+sudo docker-compose build
+sudo docker-compose up -d
 
-docker-compose stop
-docker-compose scale web=5 proxy=1
+sudo docker-compose stop
+sudo docker-compose scale web=5 proxy=1
 ```
 8. Surf naar volgende website:
     - http://172.16.0.10:8000/
@@ -65,3 +65,14 @@ docker logs webserver       (idem als log-venster van Cockpit/Dashboard)
 - http://172.16.0.10:9090/ = Cockpit/Dashboard
 - http://172.16.0.10/public-html/ = Custom HTML-project
 - http://172.16.0.10:8000/ = Meerdere `Nginx` webcontainers
+
+Tijd om alles op te zetten: ongeveer 12 min 20 seconden.
+
+Doel = isoleren van processen (hier: webprocessen en deze integreren in de SME-opdracht)
+
+1 proces per container.
+`FROM`=parentimage, dockerfiles builden maakt een image-tree en dit maakt de containers.
+
+Container is block bovenop OS, Windows moet bvb een VM genaamd `boot2docker` aanmaken om Docker-containers te kunnen uitvoeren.
+
+Docker-compose is voor multi-container Docker applicaties.

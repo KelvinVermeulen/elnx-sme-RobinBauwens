@@ -12,7 +12,7 @@ Volgende code (in `pu001.yml`) voorziet dit:
   aliases: 
     - inside
 ```
-
+Een statisch IP-adres en een alias (voor DNS).
 
 De bedoeling is dat we de mogelijkheden van Docker (intranet webserver) testen binnen ons netwerk bij het surfen naar `inside.avalon.lan`.
 
