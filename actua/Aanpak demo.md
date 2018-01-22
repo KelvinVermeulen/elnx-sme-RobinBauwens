@@ -1,6 +1,6 @@
 # Aanpak demo
 
-23/01/18 09:00
+Tijdstip demo: 23/01/18 09:00
 
 1. Voer volgende commando's uit, binnen Git Bash, om de SME-infrastructuur op te zetten. *Het kan zijn dat je dit commando tweemaal moet uitvoeren omwille van de router.*
 ```
@@ -10,12 +10,12 @@ cd "C:\Users\TEMP\Documents\GitHub\School - huidig\elnx-sme-RobinBauwens"  vagra
 3. Voer hierna volgende commando's uit om de VM's te vernietigen en opnieuw op te zetten:
 ```
 cd "/c/Users/TEMP/Documents/GitHub/School - huidig/elnx-sme-RobinBauwens/actua/dockerhost-sandbox"
-vagrant destroy dockerhost
-vagrant up dockerhost --provision
+vagrant destroy pr010
+vagrant up pr010 --provision
 vagrant ssh
 ```
 4. Hierna starten we een webcontainer op:
-    - Het eerst commando start een single `httpd` (Apache) webcontainer op waarbij poort 80 van de host gebruikt zal worden voor poort 80 van de webcontainer. Deze container bevat enkel de default-website "It works!"/. *Deze staat default al op poort 80 maar we gaan dit nog eens specifiek meegeven.*
+    - Het eerst commando start een single `httpd` (Apache) webcontainer op waarbij poort 80 van de host gebruikt zal worden voor poort 80 van de webcontainer. Deze container bevat enkel de default-website "It works!"/. *Clear cache of refresh nog eens.*
     - We gaan, naast de defaultpagina, een nieuw HTML-project toevoegen. Hiervoor gaan we de directory `public-html` die alle HTML, CSS en andere code bevat voor de intranet-website verplaatsen naar `/actua/dockerhost-sandbox`. Het derde commando zal dan deze directory kopiëren naar de webcontainer.
 
 ```
@@ -76,3 +76,4 @@ Doel = isoleren van processen (hier: webprocessen en deze integreren in de SME-o
 Container is block bovenop OS, Windows moet bvb een VM genaamd `boot2docker` aanmaken om Docker-containers te kunnen uitvoeren.
 
 Docker-compose is voor multi-container Docker applicaties.
+Bij `docker images` kunnen we zien dat de proxy- en webcontainer dezelfde images zijn als die van `FROM nginx:alpine`. Dit zijn zelfgemaakte images die we definiëren met verschillende rollen.

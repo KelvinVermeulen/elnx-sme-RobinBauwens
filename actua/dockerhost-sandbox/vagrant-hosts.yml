@@ -26,7 +26,7 @@
 # [1] http://docs.vagrantup.com/v2/synced-folders/basic_usage.html
 ---
 
-- name: dockerhost
+- name: pr010
   ip: 172.16.0.10 #172.16.0.10
   netmask: 255.255.0.0
   box: bertvv/fedora25

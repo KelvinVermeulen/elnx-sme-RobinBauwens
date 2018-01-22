@@ -7,6 +7,8 @@ git checkout master
 git pull origin master
 git merge solution
 git push origin master
+
+git checkout solution   Branch terugzetten
 ```
 
 

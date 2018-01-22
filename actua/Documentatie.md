@@ -21,7 +21,7 @@ Alle configuratie bevindt zich in `/actua`, clone eerst het [startproject van be
 - Gebruik volgende code voor `vagrant-hosts.yml`:
 
 ```
-- name: dockerhost
+- name: pr010
   ip: 172.16.0.10
   netmask: 255.255.0.0
   box: bertvv/fedora25
@@ -40,15 +40,15 @@ We proberen volgend commando eens om het probleem met de GuestAdditions-versies 
 
 **Foutboodschap:**
 ```
-    dockerhost: SSH auth method: private key
-==> dockerhost: Machine booted and ready!
-[dockerhost] GuestAdditions versions on your host (5.1.30) and guest (5.1.12) do not match.
+    pr010: SSH auth method: private key
+==> pr010: Machine booted and ready!
+[pr010] GuestAdditions versions on your host (5.1.30) and guest (5.1.12) do not match.
 Last metadata expiration check: 0:00:47 ago on Fri Jan 19 21:55:28 2018.
 No package kernel-devel-4.8.16-300.fc25.x86_64 available.
 Package make-1:4.1-5.fc24.x86_64 is already installed, skipping.
 Package bzip2-1.0.6-21.fc25.x86_64 is already installed, skipping.
 Error: Unable to find a match.
-==> dockerhost: Checking for guest additions in VM...
+==> pr010: Checking for guest additions in VM...
 The following SSH command responded with a non-zero exit status.
 Vagrant assumes that this means the command failed!
 
@@ -71,6 +71,8 @@ Zie [Sofware.md](https://github.com/HoGentTIN/elnx-sme-RobinBauwens/blob/solutio
 
 **Oplossing**: we zullen werken met de box van `bertvv/fedora25`, dit geeft bovenstaande fout niet (en zorgt er ook voor dat `enp0s8` wel een IP-adres krijgt (toevoegen via het maken van een (netwerk)configbestand en de netwerkservice te herstarten lost dit niet op).
 
+**Via de Vagrant provisioning hoeven we niet telkens `sudo` mee te geven voor de Docker-commando's.**
+
 ## 1) Docker-integratie webserver Nginx met proxy op Windows 10
 
 [Installatie en configuratie van Docker op een Windows 10-systeem](https://github.com/HoGentTIN/elnx-sme-RobinBauwens/blob/solution/actua/dockerhost-sandbox/provisioning/files/docker-actualiteit/actualiteit-docker.md)
@@ -89,7 +91,7 @@ We zetten de poorten open om de webserver te bereiken, we gaan niet expliciet ee
 1. Start de VM (in `/actua/dockerhost-sandbox` van het hostsysteem), SSH in de VM en voer het installatiescript uit in `/vagrant/provisioning`.
 
 ```
-vagrant up dockerhost --provision
+vagrant up pr010 --provision
 vagrant ssh
 ```
 
@@ -103,7 +105,7 @@ sudo docker run -td --name webserver -p 80:80 httpd
 - Indien de container hapert, voer dan `sudo docker stop webserver` uit.
 - Indien je volgende foutboodschap krijgt:
 ```
-[vagrant@dockerhost docker-actualiteit]$ sudo docker run -td --name webserver -p 80:80 httpd
+[vagrant@pr010 docker-actualiteit]$ sudo docker run -td --name webserver -p 80:80 httpd
 /usr/bin/docker-current: Error response from daemon: Conflict. The name "/webserver" is already in use by container 91558e94d12eb25bf10a627e11d2174cc767b0e46
 ad82c317d4a7129c336320e. You have to remove (or rename) that container to be able to reuse that name..
 See '/usr/bin/docker-current run --help'.
@@ -200,7 +202,7 @@ Als we nu een container (bvb een webcontainer) starten en de inhoud van webpagin
 
 - [Commando's docker-compose](https://stackoverflow.com/questions/39663096/docker-compose-creating-multiple-instances-for-the-same-image)
 - [Docker install Fedora](https://docs.docker.com/engine/installation/linux/docker-ce/fedora/#install-from-a-package)
-- [Container:IP toegankelijk maken](https://github.com/docker/for-win/issues/221)
+- [Container: IP toegankelijk maken](https://github.com/docker/for-win/issues/221)
 - [**Docker networking (!)**](https://runnable.com/docker/basic-docker-networking)
 - [Poorten openzetten Docker](https://www.youtube.com/watch?v=G36I1iqDZig)
 - [Static IP Docker container](https://stackoverflow.com/questions/27937185/assign-static-ip-to-docker-container)
@@ -210,6 +212,8 @@ Als we nu een container (bvb een webcontainer) starten en de inhoud van webpagin
 - [Voer commando's uit binnen container](https://askubuntu.com/questions/505506/how-to-get-bash-or-ssh-into-a-running-container-in-background-mode)
 - [Building a Simple Apache Web Server in a Container](https://access.redhat.com/articles/1328953)
 - [Collapsible markdown](https://gist.github.com/joyrexus/16041f2426450e73f5df9391f7f7ae5f#file-readme-md)
+- [Vagrant Hostname](https://www.vagrantup.com/docs/vagrantfile/machine_settings.html)
+
 
 <!--
 Dit is gebaseerd op deze beginversie, maar zal de provisioning niet uitvoeren omwille van een fout (met Guest Additions?).
@@ -235,4 +239,4 @@ NETMASK=255.255.0.0
 -->
 
 ### Opmerkingen
-- De naam blijft `dockerhost` bij `vagrant-hosts.yml`
+- De naam werd veranderd van `dockerhost` naar `pr010` bij `vagrant-hosts.yml` en `/provisioning/dockerhost.sh`. 
