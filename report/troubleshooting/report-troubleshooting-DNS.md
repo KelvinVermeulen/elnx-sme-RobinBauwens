@@ -61,13 +61,13 @@ De output die gegenereerd wordt is als volgt:
 3: enp0s8 state DOWN
 ```
 
-![ip link](img/troubleshooting-2/1.PNG)
+![ip link](../img/troubleshooting-2/1.PNG)
 
 Merk op dat de toestand van `enp0s8` op DOWN staat. Dit gaan we oplossen door deze actief te zetten met `sudo ip link set dev enp0s8 up`.
 
 *Resultaat*: De instellingen voor de toestand van de netwerkadapters zijn nu correct, alle interfaces hebben state UP.
 
-![ip link actief](img/troubleshooting-2/2.PNG)
+![ip link actief](../img/troubleshooting-2/2.PNG)
 
 Hiernaast controleren we ook of de instellingen in VirtualBox correct zijn:. Dit controleren we manueel in VirtualBox zelf bij `Preferences` -> `Network`.
 
@@ -109,7 +109,7 @@ Indien hier zaken ontbreken/afwijken, kunnen we deze wijzigen in `/etc/sysconfig
 
 De output die gegenereerd wordt is als volgt:
 
-![ip link actief](img/troubleshooting-2/3.PNG)
+![ip link actief](../img/troubleshooting-2/3.PNG)
 
 *Resultaat:* Merk op dat (na de activatie via `ip link`) `enp0s8` geen IP-adres toegekend heeft gekregen. Dit kunnen we veranderen in de netwerkconfiguratie(bestanden).
 
@@ -119,7 +119,7 @@ Om dit op te lossen:
 
 `:q!` is in QWERTY met shift + L, a, shift &
 
-![ip address onboot](img/troubleshooting-2/4.PNG)
+![ip address onboot](../img/troubleshooting-2/4.PNG)
 
 Vergeet ook niet om `network.service` te herstarten met `sudo systemctl restart network.service`.
 
@@ -971,7 +971,7 @@ data  dynamic  named.ca  named.empty  named.localhost  named.loopback  slaves
 
 - `/var/named` (enkel als `root` bereikbaar)
 
-[Klik hier](https://github.com/HoGentTIN/elnx-sme-RobinBauwens/blob/solution/report/named.md) om de inhoud van deze bestanden te zien.
+[Klik hier](https://github.com/HoGentTIN/elnx-sme-RobinBauwens/blob/solution/report/troubleshooting/named.md) om de inhoud van deze bestanden te zien.
 
 We gaan dus enkele zaken veranderen in `/etc/named.conf` met een teksteditor zoals `vi`, vergeet ook niet om adminrechten mee te geven!
 
@@ -1057,7 +1057,7 @@ IN  NS     tamatama.cynalco.com.
 
 
 #### Bestandspermissies
-We bekijken of alle bestandspermissies kloppen adhv van [dit voorbeeld](https://github.com/HoGentTIN/elnx-sme-RobinBauwens/blob/solution/report/named.md).
+We bekijken of alle bestandspermissies kloppen adhv van [dit voorbeeld](https://github.com/HoGentTIN/elnx-sme-RobinBauwens/blob/solution/report/troubleshooting/named.md).
 
 Deze staan allemaal correct:
 
@@ -1316,7 +1316,7 @@ tamatama.cynalco.com.   604800  IN      A       192.0.2.2
 ;; MSG SIZE  rcvd: 116
 ```
 
-![Result](img/troubleshooting-2/5.PNG)
+![Result](../img/troubleshooting-2/5.PNG)
 
 ```
 Robin Bauwens@RobinB MINGW64 ~/Desktop (master)
@@ -1337,7 +1337,7 @@ Name:    tamatama.cynalco.com
 Address:  192.0.2.2
 ```
 
-![Result 2](img/troubleshooting-2/6.PNG)
+![Result 2](../img/troubleshooting-2/6.PNG)
 
 ### Extra:
 Uitvoer controle poorten, draaiende service, uitvoeren van `dig` op hostsysteem met verwijzing `@192.168.56.42` naar domein/zone, reverse lookup eventueel etc.:
@@ -1357,7 +1357,7 @@ $ dig @192.168.56.42 MX cynalco.com +short
 10 sawamular.cynalco.com.
 ```
 
-![Result 3](img/troubleshooting-2/7.PNG)
+![Result 3](../img/troubleshooting-2/7.PNG)
 
 
 ```
@@ -1394,7 +1394,7 @@ Address:  192.168.56.42
 Name:    cynalco.com
 ```
 
-![Result 4](img/troubleshooting-2/8.PNG)
+![Result 4](../img/troubleshooting-2/8.PNG)
 
 
 #### Remote execution script
@@ -1431,7 +1431,7 @@ $ ./libexec/bats golbat_test.bats
 8 tests, 0 failures
 ```
 
-![Result 5-bats](img/troubleshooting-2/9.PNG)
+![Result 5-bats](../img/troubleshooting-2/9.PNG)
 
 <!--
 **Opmerking**: Het is mogelijk dat `+short` niet ondersteund wordt voor Windows dig.
