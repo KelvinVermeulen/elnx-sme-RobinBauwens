@@ -558,7 +558,7 @@ restorecon reset /usr/share/nginx/html/index.php context system_u:object_r:user_
 
 Nu hebben we alles geïnstalleerd en we kunnen de pagina bereiken via HTTP en HTTPS zonder enige fouten.
 
-![Final](img/troubleshooting/final.PNG)
+![Final](../img/troubleshooting/final.PNG)
 
 ```
 [vagrant@nginx html]$ sudo ~/runbats.sh
@@ -592,7 +592,8 @@ tcp   LISTEN     0      128                                         :::80       
 List all sources of useful information that you encountered while completing this assignment: books, manuals, HOWTO's, blog posts, etc.
 
 - [DNS-server](https://unix.stackexchange.com/questions/28941/what-dns-servers-am-i-using)
-[Aanpassen `ip route`](https://www.cyberciti.biz/faq/howto-linux-configuring-default-route-with-ipcommand/)
+
+- [Aanpassen `ip route`](https://www.cyberciti.biz/faq/howto-linux-configuring-default-route-with-ipcommand/)
 
 - [Check whether package is installed](https://unix.stackexchange.com/questions/122681/how-can-i-tell-whether-a-package-is-installed-via-yum-in-a-bash-script)
 
