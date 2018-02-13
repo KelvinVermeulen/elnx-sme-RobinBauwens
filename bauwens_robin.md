@@ -43,9 +43,11 @@ O2: Deskundig
 
 ## Opdracht Actualiteit
 
+Interne webserver in de SME-opstelling op Docker. Load-balancer + 20 webcontainers
+
 ### Eindbeoordeling
 
-O3: <BEOORDELING>
+O3: Deskundig
 
 ## Rapportering
 
@@ -58,9 +60,9 @@ R1: Deskundig
 
 ### Demonstraties
 
-R2: <BEOORDELING>
+R2: Deskundig
 
 ### Cheat sheet
 
-R3: <BEOORDELING>
+R3: Gevorderd
 
